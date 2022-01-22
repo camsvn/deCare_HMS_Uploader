@@ -1,7 +1,19 @@
+import CloudSync from './cloudSyncO.svg'; //
+/**
+ * Above import is for svg-transformer feature
+ * Ref: https://www.npmjs.com/package/react-native-svg-transformer
+ */
 export const icons = {
   back: require("./arrow-left.png"),
   bullet: require("./bullet.png"),
   bug: require("./ladybug.png"),
+  checkMark: require("./checkmark.png")
+}
+
+export const VIcons = {
+  cloudSync: require("./cloudSync").default,
+  // cloudSync: CloudSync,
 }
 
 export type IconTypes = keyof typeof icons
+export type VIconTypes = keyof typeof VIcons
