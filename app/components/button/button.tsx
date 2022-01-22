@@ -1,5 +1,6 @@
 import * as React from "react"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, Pressable } from "react-native"
+import { color } from "../../theme"
 import { Text } from "../text/text"
 import { viewPresets, textPresets } from "./button.presets"
 import { ButtonProps } from "./button.props"
@@ -15,6 +16,7 @@ export function Button(props: ButtonProps) {
     preset = "primary",
     tx,
     text,
+    type = "opacity",
     style: styleOverride,
     textStyle: textStyleOverride,
     children,
@@ -28,9 +30,16 @@ export function Button(props: ButtonProps) {
 
   const content = children || <Text tx={tx} text={text} style={textStyles} />
 
+  if (type === 'opacity')
+    return (
+      <TouchableOpacity style={viewStyles} {...rest}>
+        {content}
+      </TouchableOpacity>
+    )
+
   return (
-    <TouchableOpacity style={viewStyles} {...rest}>
+    <Pressable android_ripple={{color: color.dimWhite, borderless: true}} style={viewStyles} {...rest}>
       {content}
-    </TouchableOpacity>
+    </Pressable>
   )
 }

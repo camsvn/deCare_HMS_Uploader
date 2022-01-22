@@ -6,7 +6,7 @@ import { color, spacing } from "../../theme"
  */
 const BASE_VIEW: ViewStyle = {
   paddingVertical: spacing[2],
-  paddingHorizontal: spacing[2],
+  paddingHorizontal: spacing[4],
   borderRadius: 4,
   justifyContent: "center",
   alignItems: "center",
@@ -32,7 +32,7 @@ export const viewPresets: Record<string, ViewStyle> = {
    */
   link: {
     ...BASE_VIEW,
-    paddingHorizontal: 0,
+    // paddingHorizontal: 0,
     paddingVertical: 0,
     alignItems: "flex-start",
   } as ViewStyle,
@@ -44,7 +44,7 @@ export const textPresets: Record<ButtonPresetNames, TextStyle> = {
     ...BASE_TEXT,
     color: color.text,
     paddingHorizontal: 0,
-    paddingVertical: 0,
+    paddingVertical: 0
   } as TextStyle,
 }
 
