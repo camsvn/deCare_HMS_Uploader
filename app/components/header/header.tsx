@@ -10,16 +10,20 @@ import { translate } from "../../i18n/"
 // static styles
 const ROOT: ViewStyle = {
   flexDirection: "row",
-  paddingHorizontal: spacing[4],
-  alignItems: "center",
-  paddingTop: spacing[5],
-  paddingBottom: spacing[5],
-  justifyContent: "flex-start",
+  // paddingHorizontal: spacing[4],
+  // alignItems: "center",
+  // paddingTop: spacing[5],
+  // paddingBottom: spacing[5],
+  // justifyContent: "flex-start"
+
 }
 const TITLE: TextStyle = { textAlign: "center" }
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
 const LEFT: ViewStyle = { width: 32 }
+const LEFT_BUTTON: ViewStyle = { paddingHorizontal: 0, marginHorizontal: spacing[4] }
+const BUTTON: ViewStyle = { paddingHorizontal: 0, marginHorizontal: spacing[4] }
 const RIGHT: ViewStyle = { width: 32 }
+const BORDER: ViewStyle = {borderWidth:2, borderColor: 'red'}
 
 /**
  * Header that appears on many screens. Will hold navigation buttons and screen title.
@@ -40,7 +44,9 @@ export function Header(props: HeaderProps) {
   return (
     <View style={[ROOT, style]}>
       {leftIcon ? (
-        <Button preset="link" onPress={onLeftPress}>
+        <Button preset="link" onPress={onLeftPress} type="highlight"
+        style={BUTTON}
+        >
           <Icon icon={leftIcon} />
         </Button>
       ) : (
@@ -50,7 +56,9 @@ export function Header(props: HeaderProps) {
         <Text style={[TITLE, titleStyle]} text={header} />
       </View>
       {rightIcon ? (
-        <Button preset="link" onPress={onRightPress}>
+        <Button preset="link" onPress={onRightPress} type="highlight"
+        style={BUTTON}
+        >
           <Icon icon={rightIcon} />
         </Button>
       ) : (

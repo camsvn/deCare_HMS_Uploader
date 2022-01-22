@@ -1,5 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from "react-native"
-import { IconTypes } from "../icon/icons"
+import { IconTypes, VIconTypes } from "../icon/icons"
 import { TxKeyPath } from "../../i18n"
 
 export interface HeaderProps {
@@ -16,7 +16,7 @@ export interface HeaderProps {
   /**
    * Icon that should appear on the left
    */
-  leftIcon?: IconTypes
+  leftIcon?: IconTypes | VIconTypes
 
   /**
    * What happens when you press the left icon
@@ -26,7 +26,7 @@ export interface HeaderProps {
   /**
    * Icon that should appear on the right
    */
-  rightIcon?: IconTypes
+  rightIcon?: IconTypes | VIconTypes
 
   /**
    * What happens when you press the right icon
