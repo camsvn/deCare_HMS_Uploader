@@ -24,10 +24,11 @@ export const color = {
    * The screen background.
    */
   background: palette.white,
+  dimWhite: "rgba(255, 255, 255, 0.1)",
   /**
    * The main tinting color.
    */
-  primary: palette.orange,
+  primary: palette.mirage,
   /**
    * The main tinting color, but darker.
    */
