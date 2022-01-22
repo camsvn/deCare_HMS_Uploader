@@ -2,10 +2,16 @@
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "header": "DeCare HMS"
   },
   "errors": {
     "invalidEmail": "Invalid email address."
+  },
+  "homeScreen": {
+    "poweredBy": "POWERED BY IGNITE",
+    "readyForLaunch": "Ready for launch.",
+    "continue": "CONTINUE"
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY IGNITE",
