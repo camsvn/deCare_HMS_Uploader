@@ -10,11 +10,11 @@ export const icons = {
   // checkMark: require("./checkmark.png")
 }
 
-export const VIcons = {
+export const vIcons = {
   cloudSync: require("./cloudSync").default,
   checkMark: require("./checkMark").default,
   // cloudSync: CloudSync,
 }
 
 export type IconTypes = keyof typeof icons
-export type VIconTypes = keyof typeof VIcons
+export type VIconTypes = keyof typeof vIcons

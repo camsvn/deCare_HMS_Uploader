@@ -2,27 +2,38 @@ import * as React from "react"
 import { View, ImageStyle } from "react-native"
 import { AutoImage as Image } from "../auto-image/auto-image"
 import { IconProps } from "./icon.props"
-import { icons, VIcons } from "./icons"
+import { isVectorIcon } from "./icon.presets"
+import { icons, vIcons } from "./icons"
 import Cloud from "./icons/cloudSyncO.svg";
 
 const ROOT: ImageStyle = {
   resizeMode: "contain",
 }
 
-export function Icon(props: IconProps) {
+function PNGIcon(props: IconProps) {
   const { style: styleOverride, icon, containerStyle } = props
-  let SvgIcon;
-  if (Object.keys(VIcons).includes(icon)) {SvgIcon = VIcons[icon]};  
 
   return (
     <View style={containerStyle}>
-      {
-        Object.keys(icons).includes(icon) ?
-         <Image style={[ROOT, styleOverride]} source={icons[icon]} /> :
-         Object.keys(VIcons).includes(icon) ?
-          <SvgIcon /> : null
-      }
-      {/* <Cloud /> */}
+      <Image style={[ROOT, styleOverride]} source={icons[icon]} /> 
     </View>
   )
+}
+
+function VIcon (props: IconProps) {
+  const { icon, containerStyle } = props
+  const SvgIcon = vIcons[icon];
+  return (
+    <View style={containerStyle}>
+      <SvgIcon /> 
+    </View>
+  ) 
+}
+
+export function Icon(props: IconProps) {
+  if (isVectorIcon(props.icon)) {
+    return <VIcon {...props} />
+  } else {
+    return <PNGIcon {...props} />
+  }
 }
