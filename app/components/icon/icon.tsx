@@ -21,11 +21,11 @@ function PNGIcon(props: IconProps) {
 }
 
 function VIcon (props: IconProps) {
-  const { icon, containerStyle } = props
+  const { icon, containerStyle, fillColor } = props
   const SvgIcon = vIcons[icon];
   return (
     <View style={containerStyle}>
-      <SvgIcon /> 
+      <SvgIcon fillColor={fillColor}/> 
     </View>
   ) 
 }

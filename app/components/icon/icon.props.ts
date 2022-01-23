@@ -1,4 +1,4 @@
-import { ImageStyle, StyleProp, ViewStyle } from "react-native"
+import { ColorValue, ImageStyle, StyleProp, ViewStyle } from "react-native"
 import { IconTypes, VIconTypes } from "./icons"
 
 export interface IconProps {
@@ -18,4 +18,5 @@ export interface IconProps {
    */
 
   icon?: IconTypes | VIconTypes
+  fillColor?: ColorValue
 }
