@@ -10,5 +10,7 @@ export const palette = {
   deepPurple: "#5D2555",
   mirage: "#151D28",
   haiti: "#120E2C",
-  greySuit: "#BAB6C8"
+  greySuit: "#BAB6C8",
+  screamingGreen: '#63FF6C',
+  bitterSweetRed: '#FF6C63'
 }

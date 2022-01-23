@@ -8,8 +8,8 @@ import {
   Screen,
   Text,
   GradientBackground,
-  AutoImage as Image,
-  TextField
+  TextField,
+  Icon
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
@@ -117,6 +117,31 @@ const INFO_TEXT_CONTAINER: ViewStyle = {
   alignItems: 'center'
 }
 
+const OP_FORM: ViewStyle = {
+  flexDirection: "row",
+  marginBottom: spacing[2]
+}
+
+const SEARCH_INPUT_WRAPPER: ViewStyle = {
+  flex: 1
+}
+
+const SEARCH_INPUT: TextStyle = {
+  borderWidth: 1,
+  borderRadius: 50,
+  borderColor: '#707070',
+  letterSpacing: 0.5,
+  paddingLeft: spacing[4]
+}
+
+const SUBMIT_BUTTON: ViewStyle = {
+  marginLeft: spacing[2],
+  width: 53,
+  borderRadius: 30,
+  backgroundColor: color.goGreen  
+}
+
+
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
     const searchField = useRef<TextInput>();
@@ -183,12 +208,20 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
             For everyone else, this is where you'll see a live preview of your fully functioning app
             using Ignite.
           </Text> */}
-          <TextField
-           forwardedRef={searchField}
-           placeholder="Enter OP Number" 
-           keyboardType="numeric" 
-           returnKeyType="search"
-           maxLength={7} />
+          <View style={OP_FORM}>
+            <TextField
+             forwardedRef={searchField}
+             style={SEARCH_INPUT_WRAPPER}
+             inputStyle={SEARCH_INPUT}
+             placeholder="Enter OP Number" 
+             keyboardType="numeric" 
+             returnKeyType="search"
+             maxLength={7}
+            />
+            <Button style={SUBMIT_BUTTON}>
+              <Icon icon="checkMark" fillColor={color.palette.mirage}/>
+            </Button>
+           </View>
           {/* <Text style={TITLE_WRAPPER}>
             <Text style={TITLE} text="Your new app2, Amal " />
             <Text style={ALMOST} text="almost" />
@@ -205,17 +238,17 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
           </Text> */}
         </Screen>
         <HideWithKeyboard>
-        <SafeAreaView style={FOOTER}>
-          <View style={FOOTER_CONTENT}>
-            <Button
-              testID="next-screen-button"
-              style={CONTINUE}
-              textStyle={CONTINUE_TEXT}
-              tx="welcomeScreen.continue"
-              onPress={nextScreen}
-            />
-          </View>
-        </SafeAreaView>
+          <SafeAreaView style={FOOTER}>
+            <View style={FOOTER_CONTENT}>
+              <Button
+                testID="next-screen-button"
+                style={CONTINUE}
+                textStyle={CONTINUE_TEXT}
+                tx="welcomeScreen.continue"
+                onPress={nextScreen}
+              />
+            </View>
+          </SafeAreaView>
         </HideWithKeyboard>
       </View>
       </>
