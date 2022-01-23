@@ -9,4 +9,6 @@ export const palette = {
   angry: "#dd3333",
   deepPurple: "#5D2555",
   mirage: "#151D28",
+  haiti: "#120E2C",
+  greySuit: "#BAB6C8"
 }
