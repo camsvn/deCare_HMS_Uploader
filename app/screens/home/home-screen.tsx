@@ -30,7 +30,7 @@ const HEADER: TextStyle = {
   paddingBottom: spacing[3] + spacing[1],
   // paddingBottom: spacing[4] + spacing[1],
   paddingHorizontal: 0,
-  // backgroundColor: color.primary,
+  backgroundColor: color.primary,
   borderBottomLeftRadius: 20,
   borderBottomRightRadius: 20,
   // borderWidth: 2,

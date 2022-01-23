@@ -7,11 +7,12 @@ export const icons = {
   back: require("./arrow-left.png"),
   bullet: require("./bullet.png"),
   bug: require("./ladybug.png"),
-  checkMark: require("./checkmark.png")
+  // checkMark: require("./checkmark.png")
 }
 
 export const VIcons = {
   cloudSync: require("./cloudSync").default,
+  checkMark: require("./checkMark").default,
   // cloudSync: CloudSync,
 }
 
