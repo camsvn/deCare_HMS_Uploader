@@ -1,5 +1,5 @@
-import React, { FC } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import React, { FC, useEffect, useRef, useState } from "react"
+import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView, TextInput, Keyboard } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -9,11 +9,13 @@ import {
   Text,
   GradientBackground,
   AutoImage as Image,
+  TextField
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
+import HideWithKeyboard from 'react-native-hide-with-keyboard'
 
-// const bowserLogo = require("./bowser.png")
+import BlankCanvas from './BlankCanvas'
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -25,6 +27,7 @@ const TEXT: TextStyle = {
   fontFamily: typography.primary,
 }
 const BOLD: TextStyle = { fontWeight: "bold" }
+const CENTER: TextStyle = {textAlign: "center"}
 const HEADER: TextStyle = {
   paddingTop: spacing[3],
   paddingBottom: spacing[3] + spacing[1],
@@ -53,7 +56,8 @@ const TITLE_WRAPPER: TextStyle = {
 const TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
-  fontSize: 28,
+  color: color.text,
+  fontSize: 20,
   lineHeight: 38,
   // textAlign: "center",
 }
@@ -72,10 +76,10 @@ const BOWSER: ImageStyle = {
 }
 const CONTENT: TextStyle = {
   ...TEXT,
-  color: "#BAB6C8",
+  color: color.dimText,
   fontSize: 15,
   lineHeight: 22,
-  marginBottom: spacing[5],
+  // marginBottom: spacing[5],
 }
 const CONTINUE: ViewStyle = {
   paddingVertical: spacing[4],
@@ -100,9 +104,50 @@ const BORDERTEST: ViewStyle = {
   alignSelf: 'center',
 }
 
+const INFO_IMAGE_CONTAINER: ViewStyle = {
+  // height: 150,
+  flex: 1,
+  // borderWidth: 2,
+  // borderColor: 'red',
+  justifyContent: "center"
+}
+
+const INFO_TEXT_CONTAINER: ViewStyle = {
+  marginHorizontal: spacing[5],
+  alignItems: 'center'
+}
+
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
+    const searchField = useRef<TextInput>();
+    const [isKeyboardVisible, setKeyboardVisibilty] = useState(false);
     const nextScreen = () => navigation.navigate("demo")
+
+    useEffect(() => {
+      const keyboardShowSub = Keyboard.addListener('keyboardDidShow', () => {
+        // console.log('Keyboard Active');
+        setKeyboardVisibilty(true);
+      });
+      const keyboardHideSub = Keyboard.addListener('keyboardDidHide', () => {
+        // console.log('Keyboard Hide');
+        setKeyboardVisibilty(false);
+        // searchField.current.blur();
+      });
+    
+      return () => {
+        keyboardShowSub.remove();
+        keyboardHideSub.remove();
+      };
+    }, []);
+
+    useEffect(() => {
+      if (!isKeyboardVisible) {
+        // console.log("Amal keyboard is not Visible")
+        // console.log(searchField.current) 
+        searchField.current?.blur()    
+      }
+    }, [isKeyboardVisible])
+    
 
     return (
       <>
@@ -120,14 +165,36 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-          <Text style={TITLE_WRAPPER}>
+        <Screen style={CONTAINER} preset="fixed" backgroundColor={color.palette.white}>
+          <View style={INFO_IMAGE_CONTAINER}>
+            <HideWithKeyboard>
+              <BlankCanvas />
+            </HideWithKeyboard>
+            <View style={INFO_TEXT_CONTAINER}>
+              <Text style={TITLE}>
+                There is no patient selected.
+              </Text>
+              <Text style={[CONTENT, CENTER]}>
+                Once you choose a patient, they'll appear here.
+              </Text>
+            </View>
+          </View>
+          {/* <Text style={CONTENT}>
+            For everyone else, this is where you'll see a live preview of your fully functioning app
+            using Ignite.
+          </Text> */}
+          <TextField
+           forwardedRef={searchField}
+           placeholder="Enter OP Number" 
+           keyboardType="numeric" 
+           returnKeyType="search"
+           maxLength={7} />
+          {/* <Text style={TITLE_WRAPPER}>
             <Text style={TITLE} text="Your new app2, Amal " />
             <Text style={ALMOST} text="almost" />
             <Text style={TITLE} text="!" />
           </Text>
           <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-          {/* <Image source={bowserLogo} style={BOWSER} /> */}
           <Text style={CONTENT}>
             This probably isn't what your app is going to look like. Unless your designer handed you
             this screen and, in that case, congrats! You're ready to ship.
@@ -135,8 +202,9 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
           <Text style={CONTENT}>
             For everyone else, this is where you'll see a live preview of your fully functioning app
             using Ignite.
-          </Text>
+          </Text> */}
         </Screen>
+        <HideWithKeyboard>
         <SafeAreaView style={FOOTER}>
           <View style={FOOTER_CONTENT}>
             <Button
@@ -148,6 +216,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
             />
           </View>
         </SafeAreaView>
+        </HideWithKeyboard>
       </View>
       </>
     )

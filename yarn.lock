@@ -14375,6 +14375,11 @@
     "invariant" "^2.2.4"
     "prop-types" "^15.7.2"
 
+"react-native-hide-with-keyboard@^1.2.1":
+  "integrity" "sha512-O3aI0TkfHLaWO3bjO8bDXgOZ/R/K+Ca8CaXOyHJT71eQlyp2CnycUIa/qHUGkXbVpqjt0hZC7k+MUAer82UOaQ=="
+  "resolved" "https://registry.npmjs.org/react-native-hide-with-keyboard/-/react-native-hide-with-keyboard-1.2.1.tgz"
+  "version" "1.2.1"
+
 "react-native-keychain@6.2.0":
   "integrity" "sha512-U6fnOQRJPq+c0Abl+FoYy9v0H3kQU587tMamU/o+MoBSUScFLE3DQpkyT1PW4NF5IObgiGuqQdmjC2KgtBpjGA=="
   "resolved" "https://registry.npmjs.org/react-native-keychain/-/react-native-keychain-6.2.0.tgz"
