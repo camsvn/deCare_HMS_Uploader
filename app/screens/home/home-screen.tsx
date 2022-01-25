@@ -144,35 +144,8 @@ const SUBMIT_BUTTON: ViewStyle = {
 
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
-    // const searchField = useRef<TextInput>();
-    // const [isKeyboardVisible, setKeyboardVisibilty] = useState(false);
+
     const nextScreen = () => navigation.navigate("demo")
-
-    // useEffect(() => {
-    //   const keyboardShowSub = Keyboard.addListener('keyboardDidShow', () => {
-    //     // console.log('Keyboard Active');
-    //     setKeyboardVisibilty(true);
-    //   });
-    //   const keyboardHideSub = Keyboard.addListener('keyboardDidHide', () => {
-    //     // console.log('Keyboard Hide');
-    //     setKeyboardVisibilty(false);
-    //     // searchField.current.blur();
-    //   });
-    
-    //   return () => {
-    //     keyboardShowSub.remove();
-    //     keyboardHideSub.remove();
-    //   };
-    // }, []);
-
-    // useEffect(() => {
-    //   if (!isKeyboardVisible) {
-    //     // console.log("Amal keyboard is not Visible")
-    //     // console.log(searchField.current) 
-    //     searchField.current?.blur()    
-    //   }
-    // }, [isKeyboardVisible])
-    
 
     return (
       <>
@@ -210,7 +183,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
           </Text> */}
           <View style={OP_FORM}>
             <TextField
-            //  forwardedRef={searchField}
              blurWithoutKeyboard
              style={SEARCH_INPUT_WRAPPER}
              inputStyle={SEARCH_INPUT}
