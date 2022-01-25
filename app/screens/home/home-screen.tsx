@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView, TextInput, Keyboard } from "react-native"
+import React, { FC } from "react"
+import { View, ViewStyle, TextStyle, SafeAreaView } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -7,19 +7,18 @@ import {
   Header,
   Screen,
   Text,
-  GradientBackground,
   TextField,
-  Icon
+  Icon,
+  HideWithKeyboard,
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
-import HideWithKeyboard from 'react-native-hide-with-keyboard'
 
 import BlankCanvas from './BlankCanvas'
 
-const FULL: ViewStyle = { flex: 1 }
+const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
 const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
+  // backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
 }
 const TEXT: TextStyle = {
@@ -31,13 +30,10 @@ const CENTER: TextStyle = {textAlign: "center"}
 const HEADER: TextStyle = {
   paddingTop: spacing[3],
   paddingBottom: spacing[3] + spacing[1],
-  // paddingBottom: spacing[4] + spacing[1],
   paddingHorizontal: 0,
   backgroundColor: color.primary,
   borderBottomLeftRadius: 20,
-  borderBottomRightRadius: 20,
-  // borderWidth: 2,
-  // borderColor: 'red'
+  borderBottomRightRadius: 20
 }
 const HEADER_TITLE: TextStyle = {
   ...TEXT,
@@ -45,41 +41,20 @@ const HEADER_TITLE: TextStyle = {
   fontSize: 28,
   // lineHeight: 38,
   textAlign: "center",
-  letterSpacing: 1.5,
-  // borderWidth: 2,
-  // borderColor: 'green'
-}
-const TITLE_WRAPPER: TextStyle = {
-  ...TEXT,
-  // textAlign: "center",
+  letterSpacing: 1.5
 }
 const TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
   color: color.text,
   fontSize: 20,
-  lineHeight: 38,
-  // textAlign: "center",
-}
-const ALMOST: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 26,
-  fontStyle: "italic",
-}
-const BOWSER: ImageStyle = {
-  alignSelf: "center",
-  marginVertical: spacing[5],
-  maxWidth: "100%",
-  width: 343,
-  height: 230,
+  lineHeight: 38
 }
 const CONTENT: TextStyle = {
   ...TEXT,
   color: color.dimText,
   fontSize: 15,
-  lineHeight: 22,
-  // marginBottom: spacing[5],
+  lineHeight: 22
 }
 const CONTINUE: ViewStyle = {
   paddingVertical: spacing[4],
@@ -97,50 +72,31 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
 }
-const BORDERTEST: ViewStyle = {
-  flex: 1,
-  borderColor: 'red',
-  borderWidth: 2,
-  alignSelf: 'center',
-}
-
-const INFO_IMAGE_CONTAINER: ViewStyle = {
-  // height: 150,
-  flex: 1,
-  // borderWidth: 2,
-  // borderColor: 'red',
-  justifyContent: "center"
-}
-
-const INFO_TEXT_CONTAINER: ViewStyle = {
+const NO_PATIENT_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
+const INFO_IMAGE_CONTAINER: ViewStyle = { width: '85%', alignSelf: 'center' }
+const INFO_TEXT_CONTAINER: ViewStyle = { 
   marginHorizontal: spacing[5],
   alignItems: 'center'
 }
-
-const OP_FORM: ViewStyle = {
-  flexDirection: "row",
-  marginBottom: spacing[2]
-}
-
-const SEARCH_INPUT_WRAPPER: ViewStyle = {
-  flex: 1
-}
-
+const OP_FORM: ViewStyle = { flexDirection: "row", marginBottom: spacing[2] }
+const SEARCH_INPUT_WRAPPER: ViewStyle = { flex: 1 }
 const SEARCH_INPUT: TextStyle = {
-  borderWidth: 1,
+  borderWidth: 0.1,
   borderRadius: 50,
   borderColor: '#707070',
   letterSpacing: 0.5,
-  paddingLeft: spacing[4]
+  paddingLeft: spacing[4],
+  elevation: 3
 }
-
 const SUBMIT_BUTTON: ViewStyle = {
   marginLeft: spacing[2],
   width: 53,
   borderRadius: 30,
-  backgroundColor: color.goGreen  
+  borderWidth: 0.1,
+  borderColor: '#707070',
+  backgroundColor: color.goGreen,  
+  elevation: 3
 }
-
 
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
@@ -149,11 +105,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
 
     return (
       <>
-      {/* <View style={{height: 52, backgroundColor: '#151D28'}}>
-        <Text style={[TITLE_WRAPPER, TITLE, BORDERTEST]} text="DeCare HMS 123"/>
-      </View> */}
       <View testID="WelcomeScreen" style={FULL}>
-        <GradientBackground colors={["#422443", "#281b34"]} />
         <Header
          leftIcon="cloudSync"
          rightIcon="checkMark" 
@@ -163,10 +115,12 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
-        <Screen style={CONTAINER} preset="fixed" backgroundColor={color.palette.white}>
-          <View style={INFO_IMAGE_CONTAINER}>
+        <Screen style={CONTAINER} backgroundColor={color.transparent} preset="fixed">
+          <View style={NO_PATIENT_CONTAINER}>
             <HideWithKeyboard>
-              <BlankCanvas />
+              <View style={INFO_IMAGE_CONTAINER}>
+                <BlankCanvas />
+              </View>
             </HideWithKeyboard>
             <View style={INFO_TEXT_CONTAINER}>
               <Text style={TITLE}>
@@ -177,10 +131,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
               </Text>
             </View>
           </View>
-          {/* <Text style={CONTENT}>
-            For everyone else, this is where you'll see a live preview of your fully functioning app
-            using Ignite.
-          </Text> */}
           <View style={OP_FORM}>
             <TextField
              blurWithoutKeyboard
