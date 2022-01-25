@@ -1,8 +1,9 @@
-import React from "react"
+import React, {useEffect, useRef} from "react"
 import { StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from "react-native"
 import { color, spacing, typography } from "../../theme"
 import { translate, TxKeyPath } from "../../i18n"
 import { Text } from "../text/text"
+import { useKeyboardVisibilty } from "../../utils/hooks/useKeyboardVisibilty"
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
@@ -60,12 +61,14 @@ export interface TextFieldProps extends TextInputProps {
   preset?: keyof typeof PRESETS
 
   forwardedRef?: any
+
+  blurWithoutKeyboard?: boolean
 }
 
 /**
  * A component which has a label and an input together.
  */
-export function TextField(props: TextFieldProps) {
+function DefaultTextField(props: TextFieldProps) {
   const {
     placeholderTx,
     placeholder,
@@ -97,4 +100,32 @@ export function TextField(props: TextFieldProps) {
       />
     </View>
   )
+}
+
+/**
+ * A component which has a label and an input together. And Blur the input field with KeyboardHide event
+ */
+function BlurTextFieldWithoutKeyboard (props: TextFieldProps) {
+  const isKeyboardVisible = useKeyboardVisibilty();
+  const textField = useRef<TextInput>();
+
+  const {forwardedRef, ...rest} = props
+
+  useEffect(() => {
+    if (!isKeyboardVisible && textField.current.isFocused()) {
+      textField.current.blur();
+    }
+  }, [isKeyboardVisible]);
+  
+  return <DefaultTextField {...rest} forwardedRef={textField} />
+}
+
+/**
+ * A component which has a label and an input together.
+ */
+export function TextField (props: TextFieldProps) {
+  if (props.blurWithoutKeyboard)
+    return <BlurTextFieldWithoutKeyboard {...props}/>
+
+  return <DefaultTextField {...props}/>
 }
