@@ -92,7 +92,7 @@ function DefaultTextField(props: TextFieldProps) {
       }
       <TextInput
         placeholder={actualPlaceholder}
-        placeholderTextColor={color.palette.lighterGrey}
+        placeholderTextColor={color.dimText}
         underlineColorAndroid={color.transparent}
         {...rest}
         style={inputStyles}
