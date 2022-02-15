@@ -1,5 +1,5 @@
-import React, { FC } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView } from "react-native"
+import React, { FC, useState } from "react"
+import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -15,6 +15,7 @@ import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import BlankCanvas from './BlankCanvas'
+import { useRenderCount } from "../../utils/hooks/useRenderCount"
 
 const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
 const CONTAINER: ViewStyle = {
@@ -98,10 +99,17 @@ const SUBMIT_BUTTON: ViewStyle = {
   elevation: 3
 }
 
-export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
+export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = observer(
   ({ navigation }) => {
 
+    const renderCount = useRenderCount();
+    console.log('HomeScreen Rendered')
+
     const nextScreen = () => navigation.navigate("demo")
+
+    const onSubmitOP = () => {
+      return ''
+    }
 
     return (
       <>
@@ -129,9 +137,10 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
               <Text style={[CONTENT, CENTER]}>
                 Once you choose a patient, they'll appear here.
               </Text>
+              <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
             </View>
           </View>
-          <View style={OP_FORM}>
+          {/* <View style={OP_FORM}>
             <TextField
              blurWithoutKeyboard
              style={SEARCH_INPUT_WRAPPER}
@@ -144,7 +153,8 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
             <Button style={SUBMIT_BUTTON}>
               <Icon icon="checkMark" fillColor={color.palette.mirage}/>
             </Button>
-           </View>
+           </View> */}
+           <OpSearch />
           {/* <Text style={TITLE_WRAPPER}>
             <Text style={TITLE} text="Your new app2, Amal " />
             <Text style={ALMOST} text="almost" />
@@ -178,3 +188,29 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = o
     )
   },
 )
+
+interface TextFieldProps extends TextInputProps {}
+
+const OpSearch = (props: TextFieldProps) => {
+  const [text, onChangeText] = useState(null);
+  
+  return (
+    <View style={OP_FORM}>
+      <TextField
+        blurWithoutKeyboard
+        style={SEARCH_INPUT_WRAPPER}
+        inputStyle={SEARCH_INPUT}
+        placeholder="Enter OP Number"
+        keyboardType="numeric"
+        returnKeyType="search"
+        maxLength={7}
+        onChangeText={onChangeText}
+        value={text}
+        onSubmitEditing={() => console.log('FromMain Component',text)}
+      />
+      <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+        <Icon icon="checkMark" fillColor={color.palette.mirage} />
+      </Button>
+    </View>
+  )
+}
