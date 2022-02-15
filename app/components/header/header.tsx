@@ -1,6 +1,6 @@
 import React from "react"
 import { View, ViewStyle, TextStyle } from "react-native"
-import { HeaderProps } from "./header.props"
+import { HeaderProps, IconsType } from "./header.props"
 import { Button } from "../button/button"
 import { Text } from "../text/text"
 import { Icon } from "../icon/icon"
@@ -43,11 +43,11 @@ export function Header(props: HeaderProps) {
 
   return (
     <View style={[ROOT, style]}>
-      {leftIcon ? (
+      {leftIcon  || leftIcon !== 'unset' ? (
         <Button preset="link" onPress={onLeftPress} type="highlight"
         style={BUTTON}
         >
-          <Icon icon={leftIcon} />
+          <Icon icon={leftIcon as IconsType} />
         </Button>
       ) : (
         <View style={LEFT} />
@@ -55,11 +55,11 @@ export function Header(props: HeaderProps) {
       <View style={TITLE_MIDDLE}>
         <Text style={[TITLE, titleStyle]} text={header} />
       </View>
-      {rightIcon ? (
+      {rightIcon || rightIcon !== "unset" ? (
         <Button preset="link" onPress={onRightPress} type="highlight"
         style={BUTTON}
         >
-          <Icon icon={rightIcon} />
+          <Icon icon={rightIcon as IconsType} />
         </Button>
       ) : (
         <View style={RIGHT} />
