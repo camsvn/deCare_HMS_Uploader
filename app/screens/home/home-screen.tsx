@@ -14,7 +14,7 @@ import {
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
-import BlankCanvas from './BlankCanvas'
+import BlankCanvasSvg from './BlankCanvasSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
 
 const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
@@ -127,7 +127,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
           <View style={NO_PATIENT_CONTAINER}>
             <HideWithKeyboard>
               <View style={INFO_IMAGE_CONTAINER}>
-                <BlankCanvas />
+                <BlankCanvasSvg />
               </View>
             </HideWithKeyboard>
             <View style={INFO_TEXT_CONTAINER}>
