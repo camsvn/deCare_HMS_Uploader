@@ -140,35 +140,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
               <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
             </View>
           </View>
-          {/* <View style={OP_FORM}>
-            <TextField
-             blurWithoutKeyboard
-             style={SEARCH_INPUT_WRAPPER}
-             inputStyle={SEARCH_INPUT}
-             placeholder="Enter OP Number" 
-             keyboardType="numeric" 
-             returnKeyType="search"
-             maxLength={7}
-            />
-            <Button style={SUBMIT_BUTTON}>
-              <Icon icon="checkMark" fillColor={color.palette.mirage}/>
-            </Button>
-           </View> */}
-           <OpSearch />
-          {/* <Text style={TITLE_WRAPPER}>
-            <Text style={TITLE} text="Your new app2, Amal " />
-            <Text style={ALMOST} text="almost" />
-            <Text style={TITLE} text="!" />
-          </Text>
-          <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-          <Text style={CONTENT}>
-            This probably isn't what your app is going to look like. Unless your designer handed you
-            this screen and, in that case, congrats! You're ready to ship.
-          </Text>
-          <Text style={CONTENT}>
-            For everyone else, this is where you'll see a live preview of your fully functioning app
-            using Ignite.
-          </Text> */}
+          <OpSearch />
         </Screen>
         <HideWithKeyboard>
           <SafeAreaView style={FOOTER}>
