@@ -142,7 +142,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
           </View>
           <OpSearch />
         </Screen>
-        <HideWithKeyboard>
+        {/* <HideWithKeyboard>
           <SafeAreaView style={FOOTER}>
             <View style={FOOTER_CONTENT}>
               <Button
@@ -154,7 +154,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
               />
             </View>
           </SafeAreaView>
-        </HideWithKeyboard>
+        </HideWithKeyboard> */}
       </View>
       </>
     )

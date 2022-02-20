@@ -6,12 +6,13 @@
  */
 import React from "react"
 import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
+import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
+import { HideWithKeyboard } from '../components'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -48,8 +49,8 @@ const AppStack = () => {
       }}
       initialRouteName="home"
     >
-      <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
     </Stack.Navigator>
@@ -57,21 +58,14 @@ const AppStack = () => {
 }
 
 const SettingsStack = createNativeStackNavigator();
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Details!</Text>
-    </View>
-  );
-}
 
 function SettingsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings screen</Text>
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        title="Go to Demo"
+        onPress={() => navigation.navigate('welcome')}
       />
     </View>
   );
@@ -79,24 +73,30 @@ function SettingsScreen({ navigation }) {
 
 function SettingsStackScreen() {
   return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings1" component={SettingsScreen} />
-      <SettingsStack.Screen name="Details" component={DetailsScreen} />
+    <SettingsStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="SettingsRoot"    
+    >
+      <SettingsStack.Screen name="SettingsRoot" component={SettingsScreen} />
+      <SettingsStack.Screen name="welcome" component={WelcomeScreen} />
+      <SettingsStack.Screen name="demo" component={DemoScreen} />
+      <SettingsStack.Screen name="demoList" component={DemoListScreen} />
     </SettingsStack.Navigator>
   );
 }
 
 const FOOTER_CONTENT: ViewStyle = {
   backgroundColor: "#20162D",
-  height: 64,
-  alignItems: "center",
+  height: 74,
+  // alignItems: "center",
   flexDirection: "row"
 }
 
 const BUTTON_WRAPPER: ViewStyle = {
   flex: 1,
-  paddingVertical: 12,
+  marginVertical: 18,
   marginHorizontal: 32,
+  // height: 44,
   alignItems: "center",
   justifyContent: "center",
 }
@@ -113,11 +113,13 @@ const TAB_TITLE: TextStyle = {
 const DIVIDER: ViewStyle = {
  borderWidth: 0.5,
  borderColor: 'white',
- height: 44
+ height: 44,
+ alignSelf: "center"
 }
 
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({ state, descriptors, navigation } : BottomTabBarProps) {
   return (
+    <HideWithKeyboard>
     <View style={FOOTER_CONTENT}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -139,7 +141,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 
           if (!isFocused && !event.defaultPrevented) {
             // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({ name: route.name, merge: true });
+            navigation.navigate({ name: route.name, merge: true, params: {} });
           }
         };
 
@@ -173,6 +175,7 @@ function MyTabBar({ state, descriptors, navigation }) {
         );
       })}
     </View>
+    </HideWithKeyboard>
   );
 }
 
