@@ -43,7 +43,7 @@ export function Header(props: HeaderProps) {
 
   return (
     <View style={[ROOT, style]}>
-      {leftIcon  || leftIcon !== 'unset' ? (
+      {leftIcon  && leftIcon !== 'unset' ? (
         <Button preset="link" onPress={onLeftPress} type="highlight"
         style={BUTTON}
         >
@@ -55,7 +55,7 @@ export function Header(props: HeaderProps) {
       <View style={TITLE_MIDDLE}>
         <Text style={[TITLE, titleStyle]} text={header} />
       </View>
-      {rightIcon || rightIcon !== "unset" ? (
+      {rightIcon && rightIcon !== "unset" ? (
         <Button preset="link" onPress={onRightPress} type="highlight"
         style={BUTTON}
         >
