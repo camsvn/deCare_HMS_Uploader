@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react"
-import { StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from "react-native"
+import { ImageStyle, StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from "react-native"
 import { color, spacing, typography } from "../../theme"
 import { translate, TxKeyPath } from "../../i18n"
 import { Text } from "../text/text"
@@ -35,6 +35,10 @@ const ICON: ViewStyle = {
   alignSelf: "center",
   paddingLeft: spacing[4],
   paddingVertical: spacing[3]
+}
+
+const UNSET_BACKICON_STYLE: ViewStyle = {
+  paddingRight: 0,
 }
 
 // currently we have no presets, but that changes quickly when you build your app.
@@ -97,6 +101,10 @@ export interface TextFieldProps extends TextInputProps {
   radius?: number
 
   iconSize?: number
+
+  showBackButton?: boolean
+
+  onBackPress?: () => void
 }
 
 /**
@@ -109,9 +117,11 @@ function DefaultTextField(props: TextFieldProps) {
     labelTx,
     label,
     onRightPress,
+    onBackPress,
     iconSize,
-    rightIcon = "close",
-    leftIcon = "search",
+    rightIcon,
+    leftIcon,
+    showBackButton = false,
     preset = "default",
     style: styleOverride,
     containerStyle: ContainerStyleOverride,
@@ -134,10 +144,14 @@ function DefaultTextField(props: TextFieldProps) {
         <Text preset="fieldLabel" tx={labelTx} text={label} />
       }
       <View style={inputWrapperStyles}>
-        {leftIcon && leftIcon !=="unset" &&
+        {!showBackButton ? leftIcon && leftIcon !=="unset" &&
           <View style={iconStyles}>
             <Icon icon={leftIcon as IconsType} width={iconSize}/>
           </View>
+          :
+          <Button preset="link" onPress={onBackPress} type="opacity" highlightColor={'#a8a8a8'} style={UNSET_BACKICON_STYLE}>
+            <Icon icon="back" />
+          </Button>
         }
         <TextInput
           placeholder={actualPlaceholder}
@@ -178,9 +192,9 @@ function BlurTextFieldWithoutKeyboard (props: TextFieldProps) {
 }
 
 /**
- * A component which has a label and an input together. And Blur the input field with KeyboardHide event
+ * A component which has a label, icons and an input together. And Blur the input field with KeyboardHide event
  */
- function SearchTextField (props: TextFieldProps) {
+ export function SearchTextField (props: TextFieldProps) {
   const isKeyboardVisible = useKeyboardVisibilty();
   const textField = useRef<TextInput>();
 
@@ -192,7 +206,14 @@ function BlurTextFieldWithoutKeyboard (props: TextFieldProps) {
     }
   }, [isKeyboardVisible]);
   
-  return <DefaultTextField {...rest} forwardedRef={textField} />
+  return <DefaultTextField 
+          rightIcon = "close"
+          leftIcon = "search"
+          showBackButton = {isKeyboardVisible}
+          onBackPress = {() => textField.current.blur()}
+          forwardedRef={textField}
+          {...rest}
+        />
 }
 
 /**

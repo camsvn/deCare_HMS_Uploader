@@ -8,6 +8,7 @@ import {
   Screen,
   Text,
   TextField,
+  SearchTextField,
   Icon,
   HideWithKeyboard,
 } from "../../components"
@@ -179,8 +180,9 @@ const OpSearch = (props: TextFieldProps) => {
   
   return (
     <View style={OP_FORM}>
-      <TextField
-        blurWithoutKeyboard
+      <SearchTextField
+        // blurWithoutKeyboard
+        rightIcon = {text ? "close" : "unset"}
         containerStyle={SEARCH_INPUT_WRAPPER}
         inputStyle={SEARCH_INPUT}
         placeholder="Enter OP Number"
@@ -192,11 +194,11 @@ const OpSearch = (props: TextFieldProps) => {
         onChangeText={onChangeText}
         value={text}
         onSubmitEditing={() => console.log('FromMain Component',text)}
-        onRightPress={() => console.log("Clear")}
+        onRightPress={() => onChangeText('')}
       />
-      {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+      {/* {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
         <Icon icon="checkMark" fillColor={color.palette.mirage} />
-      </Button> }
+      </Button> } */}
     </View>
   )
 }
