@@ -1,4 +1,5 @@
 import { ColorValue, ImageStyle, StyleProp, ViewStyle } from "react-native"
+import { Color, NumberProp } from "react-native-svg"
 import { IconTypes, VIconTypes } from "./icons"
 
 export interface IconProps {
@@ -18,5 +19,7 @@ export interface IconProps {
    */
 
   icon?: IconTypes | VIconTypes
-  fillColor?: ColorValue
+  fillColor?: Color
+  width?: NumberProp
+  height?: NumberProp
 }

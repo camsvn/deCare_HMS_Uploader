@@ -34,6 +34,8 @@ export function Header(props: HeaderProps) {
     onRightPress,
     rightIcon,
     leftIcon,
+    leftIconSize,
+    rightIconSize,
     headerText,
     headerTx,
     style,
@@ -47,7 +49,7 @@ export function Header(props: HeaderProps) {
         <Button preset="link" onPress={onLeftPress} type="highlight"
         style={BUTTON}
         >
-          <Icon icon={leftIcon as IconsType} />
+          <Icon icon={leftIcon as IconsType} width={leftIconSize} />
         </Button>
       ) : (
         <View style={LEFT} />
@@ -59,7 +61,7 @@ export function Header(props: HeaderProps) {
         <Button preset="link" onPress={onRightPress} type="highlight"
         style={BUTTON}
         >
-          <Icon icon={rightIcon as IconsType} />
+          <Icon icon={rightIcon as IconsType} width={rightIconSize}/>
         </Button>
       ) : (
         <View style={RIGHT} />

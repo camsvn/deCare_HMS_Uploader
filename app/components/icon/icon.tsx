@@ -4,6 +4,7 @@ import { AutoImage as Image } from "../auto-image/auto-image"
 import { IconProps } from "./icon.props"
 import { isVectorIcon } from "./icon.presets"
 import { icons, vIcons } from "./icons"
+import Svg from "react-native-svg"
 import Cloud from "./icons/cloudSyncO.svg";
 
 const ROOT: ImageStyle = {
@@ -21,11 +22,11 @@ function PNGIcon(props: IconProps) {
 }
 
 function VIcon (props: IconProps) {
-  const { icon, containerStyle, fillColor } = props
-  const SvgIcon = vIcons[icon];
+  const { icon, containerStyle, fillColor, width = 24, height = 24 } = props
+  const SvgIcon = vIcons[icon] as Svg;
   return (
     <View style={containerStyle}>
-      <SvgIcon fillColor={fillColor}/> 
+      <SvgIcon color={fillColor} width={width} height={height}/> 
     </View>
   ) 
 }

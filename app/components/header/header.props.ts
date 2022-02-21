@@ -45,4 +45,7 @@ export interface HeaderProps {
    * Title style overrides.
    */
   titleStyle?: StyleProp<TextStyle>
+
+  rightIconSize?: number
+  leftIconSize?: number
 }

@@ -13,6 +13,8 @@ export const icons = {
 export const vIcons = {
   cloudSync: require("./cloudSync").default,
   checkMark: require("./checkMark").default,
+  close: require("./close").default,
+  search: require("./search").default,
   // cloudSync: CloudSync,
 }
 
