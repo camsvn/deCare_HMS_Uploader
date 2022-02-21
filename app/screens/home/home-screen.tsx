@@ -80,23 +80,31 @@ const INFO_TEXT_CONTAINER: ViewStyle = {
   alignItems: 'center'
 }
 const OP_FORM: ViewStyle = { flexDirection: "row", marginBottom: spacing[2] }
-const SEARCH_INPUT_WRAPPER: ViewStyle = { flex: 1 }
+const SEARCH_INPUT_WRAPPER: ViewStyle = { flex: 1,
+  borderWidth: 1.25,
+  borderRadius: 6,
+  borderColor: '#c5c5c5',
+  elevation: 2
+}
 const SEARCH_INPUT: TextStyle = {
-  borderWidth: 0.1,
-  borderRadius: 50,
-  borderColor: '#707070',
+  // borderWidth: 1.25,
+  // borderRadius: 6,
+  // borderColor: '#707070',
+  // borderColor: '#c5c5c5',
   letterSpacing: 0.5,
-  paddingLeft: spacing[4],
-  elevation: 3
+  // paddingLeft: spacing[2],
+  flex: 1,
+  fontWeight: 'bold'
+  // elevation: 2
 }
 const SUBMIT_BUTTON: ViewStyle = {
   marginLeft: spacing[2],
   width: 53,
-  borderRadius: 30,
+  borderRadius: 3,
   borderWidth: 0.1,
   borderColor: '#707070',
   backgroundColor: color.goGreen,  
-  elevation: 3
+  // elevation: 3
 }
 
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = observer(
@@ -117,6 +125,8 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
         <Header
          leftIcon="cloudSync"
          rightIcon="checkMark" 
+         leftIconSize={30}
+         rightIconSize={30}
          headerTx="common.header" 
          style={HEADER} 
          titleStyle={HEADER_TITLE} 
@@ -164,25 +174,30 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
 interface TextFieldProps extends TextInputProps {}
 
 const OpSearch = (props: TextFieldProps) => {
-  const [text, onChangeText] = useState(null);
+  const [text, onChangeText] = useState('');
+
+  const isSearchBoxEmpty = () => text === ''
   
   return (
     <View style={OP_FORM}>
       <TextField
         blurWithoutKeyboard
-        style={SEARCH_INPUT_WRAPPER}
+        containerStyle={SEARCH_INPUT_WRAPPER}
         inputStyle={SEARCH_INPUT}
         placeholder="Enter OP Number"
         keyboardType="numeric"
         returnKeyType="search"
         maxLength={7}
+        radius={6}
+        iconSize={16}
         onChangeText={onChangeText}
         value={text}
         onSubmitEditing={() => console.log('FromMain Component',text)}
+        onRightPress={() => console.log("Clear")}
       />
-      <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+      {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
         <Icon icon="checkMark" fillColor={color.palette.mirage} />
-      </Button>
+      </Button> }
     </View>
   )
 }

@@ -4,10 +4,21 @@ import { color, spacing, typography } from "../../theme"
 import { translate, TxKeyPath } from "../../i18n"
 import { Text } from "../text/text"
 import { useKeyboardVisibilty } from "../../utils/hooks/useKeyboardVisibilty"
+import { IconTypes, VIconTypes } from "../icon/icons"
+import { Icon } from "../icon/icon"
+import { Button } from "../button/button"
+
+export type IconsType = IconTypes | VIconTypes
+type IconType = IconsType | "unset"
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
   // paddingVertical: spacing[3],
+}
+
+const INPUT_WRAPPER: ViewStyle = {
+  flexDirection: 'row',
+  backgroundColor: 'white'
 }
 
 // the base styling for the TextInput
@@ -17,11 +28,20 @@ const INPUT: TextStyle = {
   minHeight: 44,
   fontSize: 18,
   backgroundColor: color.palette.white,
+  marginHorizontal: spacing[2]
+}
+
+const ICON: ViewStyle = {
+  alignSelf: "center",
+  paddingLeft: spacing[4],
+  paddingVertical: spacing[3]
 }
 
 // currently we have no presets, but that changes quickly when you build your app.
 const PRESETS: { [name: string]: ViewStyle } = {
-  default: {},
+  default: {
+            
+  } as ViewStyle,
 }
 
 export interface TextFieldProps extends TextInputProps {
@@ -55,6 +75,10 @@ export interface TextFieldProps extends TextInputProps {
    */
   inputStyle?: StyleProp<TextStyle>
 
+  containerStyle? : StyleProp<ViewStyle>
+
+  iconStyle? : StyleProp<ViewStyle>
+
   /**
    * Various look & feels.
    */
@@ -63,6 +87,16 @@ export interface TextFieldProps extends TextInputProps {
   forwardedRef?: any
 
   blurWithoutKeyboard?: boolean
+
+  rightIcon?: IconType
+
+  leftIcon?: IconType
+
+  onRightPress?: () => void
+
+  radius?: number
+
+  iconSize?: number
 }
 
 /**
@@ -74,14 +108,23 @@ function DefaultTextField(props: TextFieldProps) {
     placeholder,
     labelTx,
     label,
+    onRightPress,
+    iconSize,
+    rightIcon = "close",
+    leftIcon = "search",
     preset = "default",
     style: styleOverride,
+    containerStyle: ContainerStyleOverride,
     inputStyle: inputStyleOverride,
+    iconStyle: iconStyleOverride,
     forwardedRef,
+    radius,
     ...rest
   } = props
 
-  const containerStyles = [CONTAINER, PRESETS[preset], styleOverride]
+  const containerStyles = [CONTAINER, PRESETS[preset], ContainerStyleOverride, {borderRadius: radius}]
+  const inputWrapperStyles = [INPUT_WRAPPER, styleOverride, {borderRadius: radius}]
+  const iconStyles = [ICON, iconStyleOverride]
   const inputStyles = [INPUT, inputStyleOverride]
   const actualPlaceholder = placeholderTx ? translate(placeholderTx) : placeholder
 
@@ -90,14 +133,28 @@ function DefaultTextField(props: TextFieldProps) {
       {labelTx || label &&
         <Text preset="fieldLabel" tx={labelTx} text={label} />
       }
-      <TextInput
-        placeholder={actualPlaceholder}
-        placeholderTextColor={color.dimText}
-        underlineColorAndroid={color.transparent}
-        {...rest}
-        style={inputStyles}
-        ref={forwardedRef}
-      />
+      <View style={inputWrapperStyles}>
+        {leftIcon && leftIcon !=="unset" &&
+          <View style={iconStyles}>
+            <Icon icon={leftIcon as IconsType} width={iconSize}/>
+          </View>
+        }
+        <TextInput
+          placeholder={actualPlaceholder}
+          placeholderTextColor={color.dimText}
+          underlineColorAndroid={color.transparent}
+          {...rest}
+          style={inputStyles}
+          ref={forwardedRef}
+        />
+        {rightIcon && rightIcon !=="unset" &&
+          <Button preset="link" onPress={onRightPress} type="opacity" highlightColor={'#a8a8a8'}
+          style={iconStyles}
+          >
+            <Icon icon={rightIcon as IconsType} width={iconSize}/>
+          </Button>
+        }
+      </View>
     </View>
   )
 }
@@ -106,6 +163,24 @@ function DefaultTextField(props: TextFieldProps) {
  * A component which has a label and an input together. And Blur the input field with KeyboardHide event
  */
 function BlurTextFieldWithoutKeyboard (props: TextFieldProps) {
+  const isKeyboardVisible = useKeyboardVisibilty();
+  const textField = useRef<TextInput>();
+
+  const {forwardedRef, ...rest} = props
+
+  useEffect(() => {
+    if (!isKeyboardVisible && textField.current.isFocused()) {
+      textField.current.blur();
+    }
+  }, [isKeyboardVisible]);
+  
+  return <DefaultTextField {...rest} forwardedRef={textField} />
+}
+
+/**
+ * A component which has a label and an input together. And Blur the input field with KeyboardHide event
+ */
+ function SearchTextField (props: TextFieldProps) {
   const isKeyboardVisible = useKeyboardVisibilty();
   const textField = useRef<TextInput>();
 
