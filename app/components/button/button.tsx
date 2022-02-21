@@ -17,6 +17,7 @@ export function Button(props: ButtonProps) {
     tx,
     text,
     type = "opacity",
+    highlightColor = color.dimWhite,
     style: styleOverride,
     textStyle: textStyleOverride,
     children,
@@ -38,7 +39,7 @@ export function Button(props: ButtonProps) {
     )
 
   return (
-    <Pressable android_ripple={{color: color.dimWhite, borderless: true}} style={viewStyles} {...rest}>
+    <Pressable android_ripple={{color: highlightColor, borderless: true}} style={viewStyles} {...rest}>
       {content}
     </Pressable>
   )
