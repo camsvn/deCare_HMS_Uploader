@@ -111,7 +111,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
   ({ navigation }) => {
 
     const renderCount = useRenderCount();
-    console.log('HomeScreen Rendered')
 
     const nextScreen = () => navigation.navigate("demo")
 
