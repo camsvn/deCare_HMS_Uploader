@@ -9,7 +9,7 @@ import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewSt
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen } from "../screens"
+import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen, TomogramScreen } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
 import { HideWithKeyboard } from '../components'
@@ -28,6 +28,7 @@ import { HideWithKeyboard } from '../components'
  */
 export type NavigatorParamList = {
   home: undefined
+  tomogram: undefined
   welcome: undefined
   demo: undefined
   demoList: undefined
@@ -46,10 +47,13 @@ const AppStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        gestureEnabled: false,
+        animation: "slide_from_right"
       }}
       initialRouteName="home"
     >
       <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="tomogram" component={TomogramScreen} />
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
