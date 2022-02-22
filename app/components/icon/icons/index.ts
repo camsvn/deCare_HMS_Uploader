@@ -15,6 +15,8 @@ export const vIcons = {
   checkMark: require("./checkMark").default,
   close: require("./close").default,
   search: require("./search").default,
+  removeCircle: require("./removeCircle").default,
+  camera: require("./camera").default
   // cloudSync: CloudSync,
 }
 
