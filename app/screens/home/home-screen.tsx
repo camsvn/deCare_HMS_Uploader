@@ -125,8 +125,8 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
         <Header
          leftIcon="cloudSync"
          rightIcon="checkMark" 
-         leftIconSize={30}
-         rightIconSize={30}
+         leftIconSize={26}
+         rightIconSize={24}
          headerTx="common.header" 
          style={HEADER} 
          titleStyle={HEADER_TITLE} 
