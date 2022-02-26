@@ -83,6 +83,8 @@ export interface TextFieldProps extends TextInputProps {
 
   iconStyle? : StyleProp<ViewStyle>
 
+  labelStyle? : StyleProp<TextStyle>
+
   /**
    * Various look & feels.
    */
@@ -127,6 +129,7 @@ function DefaultTextField(props: TextFieldProps) {
     containerStyle: ContainerStyleOverride,
     inputStyle: inputStyleOverride,
     iconStyle: iconStyleOverride,
+    labelStyle,
     forwardedRef,
     radius,
     ...rest
@@ -141,7 +144,7 @@ function DefaultTextField(props: TextFieldProps) {
   return (
     <View style={containerStyles}>
       {labelTx || label &&
-        <Text preset="fieldLabel" tx={labelTx} text={label} />
+        <Text preset="fieldLabel" tx={labelTx} text={label} style={labelStyle}/>
       }
       <View style={inputWrapperStyles}>
         {!showBackButton ? leftIcon && leftIcon !=="unset" &&

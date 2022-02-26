@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps } from "react-native"
-import { StackScreenProps } from "@react-navigation/stack"
+import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
   Button,
@@ -88,15 +88,9 @@ const SEARCH_INPUT_WRAPPER: ViewStyle = { flex: 1,
   elevation: 2
 }
 const SEARCH_INPUT: TextStyle = {
-  // borderWidth: 1.25,
-  // borderRadius: 6,
-  // borderColor: '#707070',
-  // borderColor: '#c5c5c5',
   letterSpacing: 0.5,
-  // paddingLeft: spacing[2],
   flex: 1,
   fontWeight: 'bold'
-  // elevation: 2
 }
 const SUBMIT_BUTTON: ViewStyle = {
   marginLeft: spacing[2],
@@ -123,10 +117,10 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
       <>
       <View testID="WelcomeScreen" style={FULL}>
         <Header
-         leftIcon="cloudSync"
-         rightIcon="checkMark" 
-         leftIconSize={26}
-         rightIconSize={24}
+        //  leftIcon="cloudSync"
+        //  rightIcon="checkMark" 
+        //  leftIconSize={26}
+        //  rightIconSize={24}
          headerTx="common.header" 
          style={HEADER} 
          titleStyle={HEADER_TITLE} 
@@ -150,7 +144,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
               <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
             </View>
           </View>
-          <OpSearch />
+          <OpSearch navigation={navigation}/>
         </Screen>
         {/* <HideWithKeyboard>
           <SafeAreaView style={FOOTER}>
@@ -171,12 +165,20 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
   },
 )
 
-interface TextFieldProps extends TextInputProps {}
+interface TextFieldProps extends TextInputProps {
+  navigation: StackNavigationProp<NavigatorParamList, "home">
+}
 
 const OpSearch = (props: TextFieldProps) => {
   const [text, onChangeText] = useState('');
+  const { navigation } = props;
 
   const isSearchBoxEmpty = () => text === ''
+
+  const onSubmit = () => {
+    navigation.navigate('tomogram', {opid: text});
+    onChangeText('');
+  }
   
   return (
     <View style={OP_FORM}>
@@ -193,12 +195,12 @@ const OpSearch = (props: TextFieldProps) => {
         iconSize={16}
         onChangeText={onChangeText}
         value={text}
-        onSubmitEditing={() => console.log('FromMain Component',text)}
+        onSubmitEditing={onSubmit}
         onRightPress={() => onChangeText('')}
       />
-      {/* {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+      {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={onSubmit}>
         <Icon icon="checkMark" fillColor={color.palette.mirage} />
-      </Button> } */}
+      </Button> }
     </View>
   )
 }

@@ -28,7 +28,7 @@ import { HideWithKeyboard } from '../components'
  */
 export type NavigatorParamList = {
   home: undefined
-  tomogram: undefined
+  tomogram: {opid: string}
   welcome: undefined
   demo: undefined
   demoList: undefined
