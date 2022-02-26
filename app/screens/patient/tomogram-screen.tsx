@@ -12,6 +12,7 @@ import {
   Icon,
   HideWithKeyboard,
 } from "../../components"
+import { ImagePickerComponent } from '../../components/functional'
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
@@ -151,12 +152,13 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
         />
         <Screen style={CONTAINER} backgroundColor={color.transparent} preset="fixed">
           <View style={NO_PATIENT_CONTAINER}>
+            <ImagePickerComponent />
             {/* <HideWithKeyboard> */}
-              <View style={INFO_IMAGE_CONTAINER}>
+              {/* <View style={INFO_IMAGE_CONTAINER}>
                 <AddTomogramSvg />
-              </View>
+              </View> */}
             {/* </HideWithKeyboard> */}
-            <View style={INFO_TEXT_CONTAINER}>
+            {/* <View style={INFO_TEXT_CONTAINER}>
               <Text style={TITLE}>
                 There is no tomogram added.
               </Text>
@@ -164,7 +166,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
                 Once you add tomogram details, they'll appear here.
               </Text>
               <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
-            </View>
+            </View> */}
           </View>
           <OpSearch title={opid} navigation={navigation}/>
         </Screen>
