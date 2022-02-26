@@ -34,8 +34,8 @@ const HEADER: TextStyle = {
   paddingBottom: spacing[3] + spacing[1],
   paddingHorizontal: 0,
   backgroundColor: color.primary,
-  borderBottomLeftRadius: 20,
-  borderBottomRightRadius: 20
+  borderBottomLeftRadius: 5,
+  borderBottomRightRadius: 5
 }
 const HEADER_TITLE: TextStyle = {
   ...TEXT,
