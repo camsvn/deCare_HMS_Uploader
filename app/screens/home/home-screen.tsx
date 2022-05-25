@@ -17,6 +17,9 @@ import { NavigatorParamList } from "../../navigators"
 
 import BlankCanvasSvg from './BlankCanvasSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
+import { useStores } from "../../models"
+import { showMessage, hideMessage } from "react-native-flash-message"
+
 
 const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
 const CONTAINER: ViewStyle = {
@@ -173,11 +176,25 @@ const OpSearch = (props: TextFieldProps) => {
   const [text, onChangeText] = useState('');
   const { navigation } = props;
 
+  const { opStore } = useStores()
+  const { getPatient } = opStore
+
   const isSearchBoxEmpty = () => text === ''
 
   const onSubmit = () => {
-    navigation.navigate('tomogram', {opid: text});
-    onChangeText('');
+    console.log(text)
+    getPatient(text, (err) => {
+      console.log("executing callback")
+      if (!err) {
+        navigation.navigate('tomogram', {opid: text});
+        onChangeText('');
+        return
+      }
+      showMessage({
+        message: `Patient: ${err}`,
+        type: "danger"
+      })
+    })
   }
   
   return (
