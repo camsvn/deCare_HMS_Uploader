@@ -13,6 +13,7 @@ import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen, TomogramScreen }
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
 import { HideWithKeyboard } from '../components'
+import FlashMessage from "react-native-flash-message";
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -213,6 +214,7 @@ export const AppNavigator = (props: NavigationProps) => {
       <StatusBar backgroundColor={color.primary}/>
       {/* <AppStack /> */}
       <AppRootTab />
+      <FlashMessage position="top" />
     </NavigationContainer>
   )
 }
