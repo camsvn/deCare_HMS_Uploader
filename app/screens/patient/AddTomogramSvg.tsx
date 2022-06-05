@@ -87,7 +87,7 @@ const SvgComponent = (props) => (
         cy={35.227}
         r={35.227}
         transform="translate(243.14 210.995)"
-        fill="#5D2555"
+        fill="#6c63ff"
       />
       <Path
         data-name="Path 60"
@@ -137,7 +137,7 @@ const SvgComponent = (props) => (
       <Path
         data-name="Path 69"
         d="M171.177 116.911h-51.866a1.543 1.543 0 0 1-1.541-1.541V74.891a1.543 1.543 0 0 1 1.541-1.541h51.866a1.543 1.543 0 0 1 1.541 1.541v40.478a1.543 1.543 0 0 1-1.541 1.542Z"
-        fill="#5D2555"
+        fill="#6c63ff"
       />
     </G>
   </Svg>
