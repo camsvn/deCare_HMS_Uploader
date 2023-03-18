@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps } from "react-native"
+import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -11,13 +11,16 @@ import {
   SearchTextField,
   Icon,
   HideWithKeyboard,
+  GradientBackground,
 } from "../../components"
 import { ImagePickerComponent } from '../../components/functional'
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import AddTomogramSvg from './AddTomogramSvg'
+import AddButtonSvg from './AddButtonSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
+import { useStores } from "../../models"
 
 const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
 const CONTAINER: ViewStyle = {
@@ -51,7 +54,7 @@ const TITLE: TextStyle = {
   ...BOLD,
   color: color.text,
   fontSize: 20,
-  lineHeight: 38
+  lineHeight: 65,
 }
 const CONTENT: TextStyle = {
   ...TEXT,
@@ -76,6 +79,7 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingHorizontal: spacing[4],
 }
 const NO_PATIENT_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
+const PATIENT_CONTAINER: ViewStyle = { flex: 1, marginTop: 30, marginBottom: 10}
 const INFO_IMAGE_CONTAINER: ViewStyle = { width: '75%', alignSelf: 'center', transform: [{translateX: -10}] }
 const INFO_TEXT_CONTAINER: ViewStyle = { 
   marginHorizontal: spacing[5],
@@ -129,6 +133,18 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     const { opid } = route.params;
 
     const renderCount = useRenderCount();
+    const { opStore }  = useStores()
+    const [data, setData] = useState([
+      { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
+      { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
+      { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
+      { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
+      { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
+      { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
+      { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
+      { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
+      { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
+    ]);
 
     const nextScreen = () => navigation.navigate("demo")
 
@@ -150,10 +166,31 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
+        <View style={{flexDirection: 'row'}}>
+          <GradientBackground colors={["#E6E6E6", "#FFF"]} locations={[.5,1]} />
+          <Text style={[TITLE, {flex: 1, paddingLeft: spacing[4]}]}>
+            {opStore.name}
+          </Text>
+          <TouchableOpacity style={{position: 'relative', top: 30,right: 5, height:60, width: 60, borderRadius: 50}}>
+            <AddButtonSvg styleOveride={{height:55, width: 55}}/>
+          </TouchableOpacity>
+          {/* <Button style={[SUBMIT_BUTTON, {position: 'relative', right: 10, top: 35, borderRadius: 30, width:60, height: 60}]}>
+            <Icon icon="camera" fillColor={color.palette.mirage} style />
+          </Button> */}
+        </View>
         <Screen style={CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={NO_PATIENT_CONTAINER}>
-            <ImagePickerComponent />
-            {/* <HideWithKeyboard> */}
+          <View style={data ? PATIENT_CONTAINER : NO_PATIENT_CONTAINER}>
+            {data ? <TomogramListView data={data} setData={setData} /> : <NoTomogramView renderCount={renderCount}/>}
+          {/* <NoPatientView renderCount={renderCount}/> */}
+            {/* <View style={{
+              borderColor: 'red', 
+              borderWidth: 3, 
+              position: 'absolute', 
+              right: 0,
+              top: 0,}}>
+              <ImagePickerComponent />
+            </View> */}
+            {/* <HideWithKeyboard> */}            
               {/* <View style={INFO_IMAGE_CONTAINER}>
                 <AddTomogramSvg />
               </View> */}
@@ -188,6 +225,76 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     )
   },
 )
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 20,
+  },
+});
+
+const TomogramListView = (props) => {
+  const {data, setData} = props;
+
+  const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+
+  return (
+    <FlatList
+        data={data}
+        renderItem={({item}) => <Item title={item.description} />}
+        keyExtractor={item => item.id}
+        // style={{
+        //   borderColor: 'red', 
+        //   borderWidth: 3, 
+        //   // position: 'absolute', 
+        //   // right: 0,
+        //   // top: 0,
+        // }}
+      />
+    
+  )
+}
+
+const NoTomogramView = (props) => {
+  const {renderCount} = props;
+  return (
+    <>
+      {/* <View style={NO_PATIENT_CONTAINER}> */}
+        {/* <View style={{
+          borderColor: 'red', 
+          borderWidth: 3, 
+          position: 'absolute', 
+          right: 0,
+          top: 0,}}>
+          <ImagePickerComponent />
+        </View> */}
+        {/* <HideWithKeyboard> */}            
+          <View style={INFO_IMAGE_CONTAINER}>
+            <AddTomogramSvg />
+          </View>
+        {/* </HideWithKeyboard> */}
+        <View style={INFO_TEXT_CONTAINER}>
+          <Text style={TITLE}>
+            There is no tomogram added.
+          </Text>
+          <Text style={[CONTENT, CENTER]}>
+            Once you add tomogram details, they'll appear here.
+          </Text>
+          <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
+        </View>
+      {/* </View> */}
+    </>
+  )
+}
 
 interface TextFieldProps extends TextInputProps {
   title: string
