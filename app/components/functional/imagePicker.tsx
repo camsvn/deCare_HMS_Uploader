@@ -33,7 +33,7 @@ export const ImagePickerComponent = () => {
   }
   
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
         {photo && (
           <Image
             source={{ uri: photo.uri }}
