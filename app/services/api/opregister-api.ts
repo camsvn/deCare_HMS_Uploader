@@ -23,7 +23,7 @@ export class PatientApi {
         if (problem) return problem
       }
 
-      const patient = response.data
+      const patient = response.data.data
 
       return { kind: "ok", patient }
     } catch (e) {
