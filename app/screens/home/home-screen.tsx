@@ -49,7 +49,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
         />
         <Screen style={homeScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
           <View style={homeScreenStyles.NO_PATIENT_CONTAINER}>
-            <HideWithKeyboard>
+            <HideWithKeyboard animate={true}>
               <View style={homeScreenStyles.INFO_IMAGE_CONTAINER}>
                 <BlankCanvasSvg />
               </View>
