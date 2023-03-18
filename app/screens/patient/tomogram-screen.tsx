@@ -22,110 +22,8 @@ import AddButtonSvg from './AddButtonSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 
-const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
-const CONTAINER: ViewStyle = {
-  // backgroundColor: color.transparent,
-  paddingHorizontal: spacing[4],
-}
-const TEXT: TextStyle = {
-  color: color.palette.white,
-  fontFamily: typography.primary,
-}
-const BOLD: TextStyle = { fontWeight: "bold" }
-const CENTER: TextStyle = {textAlign: "center"}
-const HEADER: TextStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[3] + spacing[1],
-  paddingHorizontal: 0,
-  backgroundColor: color.primary,
-  borderBottomLeftRadius: 5,
-  borderBottomRightRadius: 5
-}
-const HEADER_TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 28,
-  // lineHeight: 38,
-  textAlign: "center",
-  letterSpacing: 1.5
-}
-const TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  color: color.text,
-  fontSize: 20,
-  lineHeight: 65,
-}
-const CONTENT: TextStyle = {
-  ...TEXT,
-  color: color.dimText,
-  fontSize: 15,
-  lineHeight: 22
-}
-const CONTINUE: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.deepPurple,
-}
-const CONTINUE_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-}
-const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
-const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-}
-const NO_PATIENT_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
-const PATIENT_CONTAINER: ViewStyle = { flex: 1, marginTop: 30, marginBottom: 10}
-const INFO_IMAGE_CONTAINER: ViewStyle = { width: '75%', alignSelf: 'center', transform: [{translateX: -10}] }
-const INFO_TEXT_CONTAINER: ViewStyle = { 
-  marginHorizontal: spacing[5],
-  alignItems: 'center'
-}
-const OP_FORM: ViewStyle = { flexDirection: "row", marginBottom: spacing[2] }
-const SEARCH_INPUT_CONTAINER: ViewStyle = { flex: 1,
-  // borderWidth: 1.25,
-  // borderRadius: 6,
-  // borderColor: '#c5c5c5',
-  // elevation: 2
-}
-const SEARCH_INPUT_WRAPPER: ViewStyle = {
-  // elevation: 2,
-  borderWidth: 1.25,
-  borderRadius: 6,
-  borderColor: '#c5c5c5',
-  // position: 'relative',
-  // zIndex: 2
-}
-const SEARCH_INPUT_LABLE: TextStyle = {
-  position: 'absolute',
-  // elevation: 3,
-  zIndex: 2,
-  left: 10,
-  top: -8,
-  // width: 50,
-  // height: 500,
-  backgroundColor: 'white'
-}
-const SEARCH_INPUT: TextStyle = {
-  letterSpacing: 0.5,
-  flex: 1,
-  fontWeight: 'bold',
-  marginLeft: spacing[3],
-  color: "#696969"
-}
-const SUBMIT_BUTTON: ViewStyle = {
-  marginLeft: spacing[2],
-  width: 53,
-  borderRadius: 3,
-  borderWidth: 0.1,
-  borderColor: '#707070',
-  backgroundColor: color.goGreen,  
-  // elevation: 3
-}
+import * as tomogramScreenStyles from "./tomogram-screen.style";
+
 
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
@@ -154,21 +52,21 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
 
     return (
       <>
-      <View testID="WelcomeScreen" style={FULL}>
+      <View testID="WelcomeScreen" style={tomogramScreenStyles.FULL}>
         <Header
          leftIcon="cloudSync"
          rightIcon="checkMark" 
          leftIconSize={26}
          rightIconSize={24}
          headerTx="common.header" 
-         style={HEADER} 
-         titleStyle={HEADER_TITLE} 
+         style={tomogramScreenStyles.HEADER} 
+         titleStyle={tomogramScreenStyles.HEADER_TITLE} 
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
         <View style={{flexDirection: 'row'}}>
           <GradientBackground colors={["#E6E6E6", "#FFF"]} locations={[.5,1]} />
-          <Text style={[TITLE, {flex: 1, paddingLeft: spacing[4]}]}>
+          <Text style={[tomogramScreenStyles.TITLE, {flex: 1, paddingLeft: spacing[4]}]}>
             {opStore.name}
           </Text>
           <TouchableOpacity style={{position: 'relative', top: 30,right: 5, height:60, width: 60, borderRadius: 50}}>
@@ -178,8 +76,8 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
             <Icon icon="camera" fillColor={color.palette.mirage} style />
           </Button> */}
         </View>
-        <Screen style={CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={data ? PATIENT_CONTAINER : NO_PATIENT_CONTAINER}>
+        <Screen style={tomogramScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
+          <View style={data ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
             {data ? <TomogramListView data={data} setData={setData} /> : <NoTomogramView renderCount={renderCount}/>}
           {/* <NoPatientView renderCount={renderCount}/> */}
             {/* <View style={{
@@ -278,18 +176,18 @@ const NoTomogramView = (props) => {
           <ImagePickerComponent />
         </View> */}
         {/* <HideWithKeyboard> */}            
-          <View style={INFO_IMAGE_CONTAINER}>
+          <View style={tomogramScreenStyles.INFO_IMAGE_CONTAINER}>
             <AddTomogramSvg />
           </View>
         {/* </HideWithKeyboard> */}
-        <View style={INFO_TEXT_CONTAINER}>
-          <Text style={TITLE}>
+        <View style={tomogramScreenStyles.INFO_TEXT_CONTAINER}>
+          <Text style={tomogramScreenStyles.TITLE}>
             There is no tomogram added.
           </Text>
-          <Text style={[CONTENT, CENTER]}>
+          <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>
             Once you add tomogram details, they'll appear here.
           </Text>
-          <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
+          <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text>
         </View>
       {/* </View> */}
     </>
@@ -311,14 +209,14 @@ const OpSearch = (props: TextFieldProps) => {
   }
   
   return (
-    <View style={OP_FORM}>
+    <View style={tomogramScreenStyles.OP_FORM}>
       <TextField
         // blurWithoutKeyboard
         rightIcon = {"close"}
-        style={SEARCH_INPUT_WRAPPER}
-        containerStyle={SEARCH_INPUT_CONTAINER}
-        inputStyle={SEARCH_INPUT}
-        labelStyle={SEARCH_INPUT_LABLE}
+        style={tomogramScreenStyles.SEARCH_INPUT_WRAPPER}
+        containerStyle={tomogramScreenStyles.SEARCH_INPUT_CONTAINER}
+        inputStyle={tomogramScreenStyles.SEARCH_INPUT}
+        labelStyle={tomogramScreenStyles.SEARCH_INPUT_LABLE}
         placeholder="Enter OP Number"
         keyboardType="numeric"
         returnKeyType="search"
@@ -330,7 +228,7 @@ const OpSearch = (props: TextFieldProps) => {
         editable={false}
         onRightPress={onExit}
       />
-      {!isSearchBoxEmpty() && <Button style={SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+      {!isSearchBoxEmpty() && <Button style={tomogramScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
         <Icon icon="checkMark" fillColor={color.palette.mirage} />
       </Button> }
     </View>
