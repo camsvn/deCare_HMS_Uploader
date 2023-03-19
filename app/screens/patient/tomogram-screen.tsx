@@ -30,21 +30,20 @@ import * as tomogramScreenStyles from "./tomogram-screen.style";
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
 
-    // const { opid } = route.params;
-    const  opid  = '123';
+    const { opid } = route.params;
 
     const renderCount = useRenderCount();
     const { opStore }  = useStores()
     const [data, setData] = useState([
-      { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
-      { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
-      { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
-      { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
-      { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
-      { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
-      { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
-      { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
-      { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
+      // { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
+      // { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
+      // { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
+      // { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
+      // { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
+      // { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
+      // { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
+      // { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
+      // { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
     ]);
 
     const nextScreen = () => navigation.navigate("demo")
@@ -80,8 +79,8 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
           </Button> */}
         </View>
         <Screen style={tomogramScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={data ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
-            {data ? <TomogramListView data={data} setData={setData} /> : <NoTomogramView renderCount={renderCount}/>}
+          <View style={data.length > 0 ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
+            {data.length > 0 ? <TomogramListView data={data} setData={setData} /> : <NoTomogramView renderCount={renderCount}/>}
           {/* <NoPatientView renderCount={renderCount}/> */}
             {/* <View style={{
               borderColor: 'red', 
