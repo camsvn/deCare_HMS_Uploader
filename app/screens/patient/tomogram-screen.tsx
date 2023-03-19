@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet } from "react-native"
+import React, { FC, useState, useCallback } from "react"
+import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet, ScrollView } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -12,6 +12,7 @@ import {
   Icon,
   HideWithKeyboard,
   GradientBackground,
+  AutoImage as Image
 } from "../../components"
 import { ImagePickerComponent } from '../../components/functional'
 import { color, spacing, typography } from "../../theme"
@@ -25,10 +26,12 @@ import { useStores } from "../../models"
 import * as tomogramScreenStyles from "./tomogram-screen.style";
 
 
+
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
 
-    const { opid } = route.params;
+    // const { opid } = route.params;
+    const  opid  = '123';
 
     const renderCount = useRenderCount();
     const { opStore }  = useStores()
@@ -64,13 +67,13 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={tomogramScreenStyles.PATIENT_NAME_CONTAINER}>
           <GradientBackground colors={["#E6E6E6", "#FFF"]} locations={[.5,1]} />
-          <Text style={[tomogramScreenStyles.TITLE, {flex: 1, paddingLeft: spacing[4]}]}>
+          <Text style={[tomogramScreenStyles.TITLE, tomogramScreenStyles.TITLE_VIEW]}>
             {opStore.name}
           </Text>
-          <TouchableOpacity style={{position: 'relative', top: 30,right: 5, height:60, width: 60, borderRadius: 50}}>
-            <AddButtonSvg styleOveride={{height:55, width: 55}}/>
+          <TouchableOpacity style={tomogramScreenStyles.ADD_BUTTON_CONTAINER}>
+            <AddButtonSvg styleOveride={tomogramScreenStyles.ADD_BUTTON}/>
           </TouchableOpacity>
           {/* <Button style={[SUBMIT_BUTTON, {position: 'relative', right: 10, top: 35, borderRadius: 30, width:60, height: 60}]}>
             <Icon icon="camera" fillColor={color.palette.mirage} style />
@@ -103,7 +106,9 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
               <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
             </View> */}
           </View>
-          <OpSearch title={opid} navigation={navigation}/>
+          <HideWithKeyboard>
+            <OpSearch title={opid} navigation={navigation}/>
+          </HideWithKeyboard>
         </Screen>
         {/* <HideWithKeyboard>
           <SafeAreaView style={FOOTER}>
@@ -124,41 +129,98 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
   },
 )
 
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 15,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 20,
-  },
-});
+
+// const TomogramListView = (props) => {
+//   const {data, setData} = props;
+
+//   const updateDescription = (index, description) => {
+//     const newData = [...data];
+//     console.log(index, description)
+//     newData[index].description = description;
+//     setData(newData);
+//   }
+
+//   const Item = ({item, index, onChange}) => (
+//     <View style={styles.item}>
+//       <Text style={styles.title}>Description</Text>
+//       <TextField  inputStyle={{flex:1, height:80, borderRadius: 5,  marginHorizontal: spacing[0], fontSize:14, textAlignVertical: 'top'  }}  
+//       radius={5} 
+//       multiline={true}  
+//       blurOnSubmit={false}
+//       value={item.description}
+//       // onChangeText={(text) => onChange(index, text)}
+//       onChange={(e) => onChange(index, e.nativeEvent.text)}
+//       />
+//       {/* <Text style={styles.title}>{title}</Text> */}
+//     </View>
+//   );
+
+//   return (
+//     <FlatList
+//         data={data}
+//         renderItem={({item, index}) => <Item item={item} index={index} onChange={updateDescription}/>}
+//         keyExtractor={item => item.id}
+//         // style={{
+//         //   borderColor: 'red', 
+//         //   borderWidth: 3, 
+//         //   // position: 'absolute', 
+//         //   // right: 0,
+//         //   // top: 0,
+//         // }}
+//       />
+    
+//   )
+// }
 
 const TomogramListView = (props) => {
   const {data, setData} = props;
 
-  const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
+  //   const updateDescription = useCallback((index, description) => {
+  //   const newData = [...data];
+  //   console.log(index, description)
+  //   newData[index].description = description;
+  //   setData(newData);
+  //   // setData(data.map((item, i) => (i === index ? { ...item, description } : item)));
+  // }, [setData])
+
+  const updateDescription = (index, description) => {
+    const newData = [...data];
+    // console.log(index, description)
+    newData[index].description = description;
+    setData(newData);
+    // setData(data.map((item, i) => (i === index ? { ...item, description } : item)));
+  }
+
+  const renderItem = (item, index) => {
+    return (
+      <View key={item.id} style={tomogramScreenStyles.TLV_CONTAINER}>
+        <View style={tomogramScreenStyles.TLV_IMAGE_CONTAINER}>
+          <Image
+              source={require('../../../assets/images/no_image.png')}
+              style={tomogramScreenStyles.TLV_IMAGE_VIEW}
+            />
+        </View>
+        <View style={tomogramScreenStyles.TLV_DESCRIPTION_CONTAINER}>
+          <TextField
+            inputStyle={tomogramScreenStyles.TLV_DESCRIPTION_FIELD}
+            radius={5}
+            multiline={true}
+            value={item.description}
+            onChangeText={(text) => updateDescription(index, text)}
+            blurOnSubmit={false}
+            preset="secondary"
+            label="Description"
+            labelStyle={{color:color.palette.black}}
+          />
+        </View>
+      </View>
+    );
+  }
 
   return (
-    <FlatList
-        data={data}
-        renderItem={({item}) => <Item title={item.description} />}
-        keyExtractor={item => item.id}
-        // style={{
-        //   borderColor: 'red', 
-        //   borderWidth: 3, 
-        //   // position: 'absolute', 
-        //   // right: 0,
-        //   // top: 0,
-        // }}
-      />
-    
+    <ScrollView>
+      {data.map((item, index) => renderItem(item, index))}
+    </ScrollView>
   )
 }
 
