@@ -21,7 +21,7 @@ const TITLE: TextStyle = { textAlign: "center" }
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
 const LEFT: ViewStyle = { width: 32 }
 const LEFT_BUTTON: ViewStyle = { paddingHorizontal: 0, marginHorizontal: spacing[4] }
-const BUTTON: ViewStyle = { paddingHorizontal: 0, marginHorizontal: spacing[4] }
+const BUTTON: ViewStyle = { paddingHorizontal: 0, marginHorizontal: spacing[4], position: 'absolute', top: 18 }
 const RIGHT: ViewStyle = { width: 32 }
 const BORDER: ViewStyle = {borderWidth:2, borderColor: 'red'}
 
@@ -45,26 +45,40 @@ export function Header(props: HeaderProps) {
 
   return (
     <View style={[ROOT, style]}>
-      {leftIcon  && leftIcon !== 'unset' ? (
+      {/* {leftIcon  && leftIcon !== 'unset' ? (
         <Button preset="link" onPress={onLeftPress} type="highlight"
-        style={BUTTON}
+        style={[BUTTON, {left: 0}]}
         >
           <Icon icon={leftIcon as IconsType} width={leftIconSize} />
         </Button>
       ) : (
         <View style={LEFT} />
+      )} */}
+      {leftIcon  && leftIcon !== 'unset' && (
+        <Button preset="link" onPress={onLeftPress} type="highlight"
+        style={[BUTTON, {left: 0}]}
+        >
+          <Icon icon={leftIcon as IconsType} width={leftIconSize} />
+        </Button>
       )}
       <View style={TITLE_MIDDLE}>
         <Text style={[TITLE, titleStyle]} text={header} />
       </View>
-      {rightIcon && rightIcon !== "unset" ? (
+      {/* {rightIcon && rightIcon !== "unset" ? (
         <Button preset="link" onPress={onRightPress} type="highlight"
-        style={BUTTON}
+        style={[BUTTON, {right: 0}]}
         >
           <Icon icon={rightIcon as IconsType} width={rightIconSize}/>
         </Button>
       ) : (
         <View style={RIGHT} />
+      )} */}
+      {rightIcon && rightIcon !== "unset" && (
+        <Button preset="link" onPress={onRightPress} type="highlight"
+        style={[BUTTON, {right: 0}]}
+        >
+          <Icon icon={rightIcon as IconsType} width={rightIconSize}/>
+        </Button>
       )}
     </View>
   )
