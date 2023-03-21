@@ -11,6 +11,7 @@ export const PatientModel = types.model("Patient").props({
   id: types.maybe(types.string),
   opid: types.maybe(types.string),
   name: types.maybe(types.string),
+  loading: types.optional(types.boolean, false)
 })
 .extend(withEnvironment)
 // .actions((self) => ({
@@ -27,9 +28,11 @@ export const PatientModel = types.model("Patient").props({
 }))
 .actions((self) => ({
   getPatient: async (opid: string, callback: (err: any) => void) => {
+    self.loading = true
     const patientApi = new PatientApi(self.environment.api)
     const result = await patientApi.getOpById(opid)
     console.log("Amal", result)
+    self.loading = false
     if (result.kind === "ok") {
       // self.saveCharacters(result.patient)
       self.setPatient(result.patient)
