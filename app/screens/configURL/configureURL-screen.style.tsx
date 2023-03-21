@@ -23,22 +23,31 @@ export const TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
   color: color.text,
-  fontSize: 20,
+  fontSize: 18,
   lineHeight: 38,
 }
 
 export const CONTENT: TextStyle = {
   ...TEXT,
   color: color.dimText,
-  fontSize: 15,
+  fontSize: 14,
   lineHeight: 22,
 }
 
-export const URLLOGOVIEW_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
+export const MAINVIEW_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
+export const URLLOGOVIEW_CONTAINER: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  width: 250,
+  height: 250,
+  alignSelf: "center",
+}
 
-export const URLLOGO: ImageStyle = { width: "100%", height: 300 }
+// export const URLLOGO: ImageStyle = { width: "100%", height: 300 }
+export const URLLOGO: ImageStyle = { width: "100%", height: "100%" }
 
 export const INFO_TEXT_CONTAINER: ViewStyle = {
+  // flex: 1,
   marginHorizontal: spacing[5],
   alignItems: "center",
 }
@@ -65,5 +74,5 @@ export const URL_FIELD: TextStyle = {
   borderColor: color.palette.black,
   borderWidth: 0.9,
   marginVertical: spacing[3],
-  marginBottom: spacing[4]
+  marginBottom: spacing[4],
 }

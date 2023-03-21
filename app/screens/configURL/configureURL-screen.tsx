@@ -23,6 +23,8 @@ import { showMessage, hideMessage } from "react-native-flash-message"
 import * as configureURLScreenStyles from "./configureURL-screen.style";
 
 const installationURLImage = require("./installationurl.png")
+const installationURLImage1 = require("./installationurl1.png")
+const installationURLImage2 = require("./installationurl2.png")
 
 
 export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "configureURL">> = observer(
@@ -39,9 +41,9 @@ export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "config
     return (
       <View testID="ServerSetupScreen" style={configureURLScreenStyles.FULL}>
         <Screen style={configureURLScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={configureURLScreenStyles.URLLOGOVIEW_CONTAINER}>
-            <View>
-              <Image source={installationURLImage} style={configureURLScreenStyles.URLLOGO}/>
+          <View style={configureURLScreenStyles.MAINVIEW_CONTAINER}>
+            <View style={configureURLScreenStyles.URLLOGOVIEW_CONTAINER}>
+              <Image source={installationURLImage2} style={configureURLScreenStyles.URLLOGO}/>
             </View>
             <View style={configureURLScreenStyles.INFO_TEXT_CONTAINER}>
               <Text style={configureURLScreenStyles.TITLE}>
@@ -55,7 +57,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "config
                 radius={5}
                 // value={item.description}
                 // onChangeText={(text) => updateDescription(index, text)}
-                blurOnSubmit={false}
+                // blurOnSubmit={false}
                 preset="secondary"
                 labelStyle={{color:color.palette.black}}
               />
