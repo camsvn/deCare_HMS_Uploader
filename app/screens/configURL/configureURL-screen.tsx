@@ -40,7 +40,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "config
 
     return (
       <View testID="ServerSetupScreen" style={configureURLScreenStyles.FULL}>
-        <Screen style={configureURLScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
+        <Screen style={configureURLScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
           <View style={configureURLScreenStyles.MAINVIEW_CONTAINER}>
             <View style={configureURLScreenStyles.URLLOGOVIEW_CONTAINER}>
               <Image source={installationURLImage2} style={configureURLScreenStyles.URLLOGO}/>
@@ -61,8 +61,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "config
                 preset="secondary"
                 labelStyle={{color:color.palette.black}}
               />
-              <Button style={configureURLScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
-                {/* <Icon icon="checkMark" fillColor={color.palette.mirage} /> */}
+              <Button style={configureURLScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button')}>
                 <Text style={configureURLScreenStyles.TEXT}>Connect</Text>
             </Button>
             </View>

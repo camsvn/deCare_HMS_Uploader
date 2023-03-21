@@ -6,6 +6,7 @@ export const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
 export const BORDER: ViewStyle = { borderColor: color.errorRed, borderWidth: 3 }
 
 export const CONTAINER: ViewStyle = {
+  flex: 1,
   // backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
 }
