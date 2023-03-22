@@ -31,6 +31,12 @@ import * as configureURLScreenStyles from "./login-screen.style";
 export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> = observer(
   ({ navigation }) => {
 
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+
     const renderCount = useRenderCount();
 
     // const nextScreen = () => navigation.navigate("demo")
@@ -54,8 +60,9 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
               <TextField
                 inputStyle={configureURLScreenStyles.URL_FIELD}
                 radius={5}
-                label="Email"
-                // value={item.description}
+                label="Username"
+                value={username}
+                onChangeText={setUsername}
                 // onChangeText={(text) => updateDescription(index, text)}
                 // blurOnSubmit={false}
                 preset="secondary"
@@ -66,9 +73,10 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
                 radius={5}
                 label="Password"
                 // keyboardType="visible-password"
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
                 // rightIcon="camera"
-                // value={item.description}
+                value={password}
+                onChangeText={setPassword}
                 // onChangeText={(text) => updateDescription(index, text)}
                 // blurOnSubmit={false}
                 preset="secondary"
