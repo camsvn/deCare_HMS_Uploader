@@ -14,7 +14,7 @@ import {
   AutoImage as Image
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
-import { NavigatorParamList } from "../../navigators"
+import { NavigatorParamList, RootNavigatorParamList } from "../../navigators"
 
 import BlankCanvasSvg from './BlankCanvasSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
@@ -27,12 +27,12 @@ const installationURLImage1 = require("./installationurl1.png")
 const installationURLImage2 = require("./installationurl2.png")
 
 
-export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "configureURL">> = observer(
+export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "configureURL">> = observer(
   ({ navigation }) => {
 
     const renderCount = useRenderCount();
 
-    const nextScreen = () => navigation.navigate("demo")
+    // const nextScreen = () => navigation.navigate("demo")
 
     const onSubmitOP = () => {
       return ''
@@ -50,7 +50,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<NavigatorParamList, "config
                 Installation URL
               </Text>
               <Text style={[configureURLScreenStyles.CONTENT, configureURLScreenStyles.CENTER]}>
-                Input server URL of your self-hosted HMS installation.
+                Input server URL of your self-hosted DeCare-HMS installation.
               </Text>
               <TextField
                 inputStyle={configureURLScreenStyles.URL_FIELD}
