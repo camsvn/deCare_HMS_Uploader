@@ -9,7 +9,7 @@ import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewSt
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen, TomogramScreen } from "../screens"
+import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen, TomogramScreen, ConfigureURLScreen, LoginScreen } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
 import { HideWithKeyboard } from '../components'
@@ -36,30 +36,35 @@ export type NavigatorParamList = {
 }
 
 export type TabNavigatorParamList = {
-  Home1: undefined
+  Home: undefined
   Settings: undefined
+}
+
+export type RootNavigatorParamList = {
+  configureURL: undefined
+  login: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<NavigatorParamList>()
 
-const AppStack = () => {
+const   AppStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        animation: "slide_from_right"
+        animation: "slide_from_right",
       }}
       initialRouteName="home"
     >
-      <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="tomogram" component={TomogramScreen} />
+      <Stack.Screen name="home" component={HomeScreen} options={{animation: "fade"}}/>
+      <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} initialParams={{opid : '123'}}/>
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
     </Stack.Navigator>
-  )
+  ) 
 }
 
 const SettingsStack = createNativeStackNavigator();
@@ -91,7 +96,8 @@ function SettingsStackScreen() {
 }
 
 const FOOTER_CONTENT: ViewStyle = {
-  backgroundColor: "#20162D",
+  // backgroundColor: "#20162D",
+  backgroundColor: color.primary,
   height: 74,
   // alignItems: "center",
   flexDirection: "row"
@@ -107,7 +113,8 @@ const BUTTON_WRAPPER: ViewStyle = {
 }
 
 const BUTTON_WRAPPER_FOCUS: ViewStyle = {
-  backgroundColor: "#5D2555",
+  // backgroundColor: "#5D2555",
+  backgroundColor: color.opacity(0.5),
   borderRadius: 4
 }
 
@@ -190,14 +197,30 @@ const AppRootTab = () => {
   return (
     <Tab.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Home1"
+      initialRouteName="Home"
       tabBar={props => <MyTabBar {...props} />}
     >
-      <Tab.Screen name="Home1" component={AppStack} />
+      <Tab.Screen name="Home" component={AppStack} />
       <Tab.Screen name="Settings" component={SettingsStackScreen} />
     </Tab.Navigator>
   )
 }
+
+const RootStack = createNativeStackNavigator();
+
+function AppRootStack() {
+  return (
+    <RootStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="login"    
+    >
+      <RootStack.Screen name="configureURL" component={ConfigureURLScreen} />
+      <RootStack.Screen name="login" component={LoginScreen} />
+      <RootStack.Screen name="appHome" component={AppRootTab} />
+    </RootStack.Navigator>
+  );
+}
+
 
 interface NavigationProps extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
@@ -213,7 +236,8 @@ export const AppNavigator = (props: NavigationProps) => {
       {/* <StatusBar backgroundColor="#f3f3f3"/> */}
       <StatusBar backgroundColor={color.primary}/>
       {/* <AppStack /> */}
-      <AppRootTab />
+      {/* <AppRootTab /> */}
+      <AppRootStack />
       <FlashMessage position="top" />
     </NavigationContainer>
   )
