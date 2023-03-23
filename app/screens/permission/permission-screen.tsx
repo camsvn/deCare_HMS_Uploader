@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react"
-import { View, Linking, PermissionsAndroid, AppState, EventSubscription } from "react-native"
+import { View, Linking, PermissionsAndroid, AppState } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -13,8 +13,6 @@ import { NavigatorParamList } from "../../navigators"
 
 import { showMessage, hideMessage } from "react-native-flash-message"
 import * as permissionScreenStyles from "./permission-screen.style";
-import { useFocusEffect } from '@react-navigation/native';
-import { async } from "validate.js"
 
 
 const permissionDescription = `It looks like you have turned off permissions required for this feature. It can be enabled under Phone Settings > Apps > HMS > Permissions`
@@ -30,6 +28,7 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
       if (nextAppState === 'active') {
         console.log("AppState is in Foreground")
         checkPermission();
+        getTitle();
       }
     };
 
@@ -43,16 +42,22 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
       };
     }, []);
 
+    const getGrantedArr = async () => {
+      const grantedArr = await Promise.all(
+        permissions.map(async (permission) => {
+          const isGranted = await PermissionsAndroid.check(permission);
+          return isGranted;
+        })
+      );
+      return grantedArr;
+    }
+
     const checkPermission = async () => {
-      let granted = true
-      permissions.forEach(async (permission) => {
-        const isGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
-        if (!isGranted)
-          granted = false
-      })
-      // const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
-      if (granted){
-        goBack()
+      const grantedArr = await getGrantedArr()    
+      const granted = grantedArr.every((isGranted) => isGranted);
+    
+      if (granted) {
+        goBack();
       }
     }    
 
@@ -76,24 +81,20 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
 
     const getTitle = async () => {
       let index = -1
-      for (let i = 0; i < permissions.length; i++) {
-        const permission = permissions[i]
-        const granted = await PermissionsAndroid.check(permission)
-        if(!granted) {
+      const grantedArr = await getGrantedArr()
+
+      for (let i = 0; i < grantedArr.length; i++) {
+        const isGranted = grantedArr[i]
+        if(isGranted === false) {
           index = i
           break
         }
       }
+
       if (index !== -1) {
         setPermissionName(permissionNames[index])
       }  
     }
-
-    // useEffect(() => {
-    //   (async () => {
-    //     await getTitle()
-    //   })()
-    // }, [])
     
 
     return (
