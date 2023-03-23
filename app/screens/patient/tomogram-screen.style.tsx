@@ -66,15 +66,18 @@ export const FOOTER_CONTENT: ViewStyle = {
 }
 export const ADD_BUTTON_CONTAINER: ViewStyle = {
   position: 'relative',
-  top: 30,
+  top: 25,
   right: 5,
   height:60,
   width: 60,
-  borderRadius: 50
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 50,
+  // transform: [{ rotate: '45deg' }]
 }
 export const ADD_BUTTON: ViewStyle = {
-  height:55,
-  width: 55
+  height:50,
+  width: 50
 }
 export const NO_PATIENT_CONTAINER: ViewStyle = { flex: 1, justifyContent: "center" }
 export const PATIENT_CONTAINER: ViewStyle = { flex: 1, marginTop: 30, marginBottom: 10}
