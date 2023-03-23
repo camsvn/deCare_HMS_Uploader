@@ -60,15 +60,15 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     const renderCount = useRenderCount();
     const { opStore }  = useStores()
     const [data, setData] = useState([
-      // { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
-      // { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
-      // { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
-      // { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
-      // { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
-      // { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
-      // { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
-      // { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
-      // { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
+      { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
+      { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
+      { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
+      { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
+      { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
+      { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
+      { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
+      { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
+      { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
     ]);
 
     const nextScreen = () => navigation.navigate("demo")
@@ -121,7 +121,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
       <>
       <View testID="WelcomeScreen" style={tomogramScreenStyles.FULL}>
         <Header
-         leftIcon="cloudSync"
+        //  leftIcon="cloudSync"
          rightIcon="checkMark" 
          leftIconSize={26}
          rightIconSize={24}
@@ -267,6 +267,11 @@ const TomogramListView = (props) => {
   const renderItem = (item, index) => {
     return (
       <View key={item.id} style={tomogramScreenStyles.TLV_CONTAINER}>
+        <View style={{position: "absolute", right:3, top: 5}}>
+          <TouchableOpacity>
+            <Icon  icon="delete" fillColor={color.errorRed} height={20} width={20} />
+          </TouchableOpacity>
+        </View>
         <View style={tomogramScreenStyles.TLV_IMAGE_CONTAINER}>
           <Image
               source={require('../../../assets/images/no_image.png')}
