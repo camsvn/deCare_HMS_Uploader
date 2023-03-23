@@ -24,15 +24,18 @@ export const PatientModel = types.model("Patient").props({
     self.id = String(patient.id)
     self.opid = String(patient.opid)
     self.name = patient.name
+  },
+  setLoading(state) {
+    self.loading = state
   }
 }))
 .actions((self) => ({
   getPatient: async (opid: string, callback: (err: any) => void) => {
-    self.loading = true
+    self.setLoading(true)
     const patientApi = new PatientApi(self.environment.api)
     const result = await patientApi.getOpById(opid)
     console.log("Amal", result)
-    self.loading = false
+    self.setLoading(false)
     if (result.kind === "ok") {
       // self.saveCharacters(result.patient)
       self.setPatient(result.patient)
