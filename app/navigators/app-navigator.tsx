@@ -5,11 +5,21 @@
  * and a "main" flow which the user will use once logged in.
  */
 import React from "react"
-import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
+import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewStyle, TextStyle, Permission } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { WelcomeScreen, DemoScreen, DemoListScreen, HomeScreen, TomogramScreen, ConfigureURLScreen, LoginScreen } from "../screens"
+import { 
+  WelcomeScreen,
+  DemoScreen,
+  DemoListScreen,
+  HomeScreen,
+  TomogramScreen,
+  ConfigureURLScreen,
+  LoginScreen,
+  SettingScreen,
+  PermissionScreen 
+} from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
 import { HideWithKeyboard } from '../components'
@@ -33,6 +43,8 @@ export type NavigatorParamList = {
   welcome: undefined
   demo: undefined
   demoList: undefined
+  settings: undefined
+  permission: {permissionNames: Array<string>, permissions: Array<Permission>}
 }
 
 export type TabNavigatorParamList = {
@@ -56,10 +68,11 @@ const   AppStack = () => {
         gestureEnabled: false,
         animation: "slide_from_right",
       }}
-      initialRouteName="home"
+      initialRouteName="tomogram"
     >
       <Stack.Screen name="home" component={HomeScreen} options={{animation: "fade"}}/>
       <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} initialParams={{opid : '123'}}/>
+      <Stack.Screen name="permission" component={PermissionScreen} options={{animation: "fade"}} />
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
@@ -87,7 +100,7 @@ function SettingsStackScreen() {
       screenOptions={{ headerShown: false }}
       initialRouteName="SettingsRoot"    
     >
-      <SettingsStack.Screen name="SettingsRoot" component={SettingsScreen} />
+      <SettingsStack.Screen name="SettingsRoot" component={SettingScreen} />
       <SettingsStack.Screen name="welcome" component={WelcomeScreen} />
       <SettingsStack.Screen name="demo" component={DemoScreen} />
       <SettingsStack.Screen name="demoList" component={DemoListScreen} />
@@ -212,7 +225,7 @@ function AppRootStack() {
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="login"    
+      initialRouteName="appHome"    
     >
       <RootStack.Screen name="configureURL" component={ConfigureURLScreen} />
       <RootStack.Screen name="login" component={LoginScreen} />

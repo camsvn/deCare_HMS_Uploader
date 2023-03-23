@@ -28,6 +28,7 @@ import { useStores } from "../../models"
 import * as tomogramScreenStyles from "./tomogram-screen.style";
 
 import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker'
+import { requestPermission } from "../../utils/permission"
 
 
 
@@ -50,7 +51,29 @@ import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOpt
 //   }
 // }
 
+// async function requestCameraPermission() {
+//   try {
+//     const granted = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.CAMERA
+//     );
+//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//       return true
+//       // User granted camera permission
+//       // Do something here, like navigate to the camera screen
+//     } else {
+//       return false
+//       // User denied camera permission or pressed cancel
+//       // Navigate to fallback screen here
+//     }
+//   } catch (err) {
+//     console.warn(err);
+//   }
+// }
 
+async function requestPermissions() {
+  const permissions = [PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+  return await requestPermission(permissions)
+}
 
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
@@ -81,36 +104,49 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
 
     const [photo, setPhoto] = useState<Asset>()
 
-  const handleChoosePhoto = () => {
-    handleCloseBottomSheet()
-    const options: ImageLibraryOptions = {
-      // noData: true,
-      mediaType: "photo",
-      // selectionLimit: 3
-    }
-    launchImageLibrary(options, response => {
-      if (response.assets?.length) {
-        setPhoto(response.assets[0])
-      }
-    })
-  }
+    const [hasPermission, setPermission] = useState(false);
 
-  const handleClickPhoto = () => {
-    handleCloseBottomSheet()
-    const options: CameraOptions = {
-      // noData: true,
-      mediaType: "photo",
-      // saveToPhotos: true
-    }
-    launchCamera(options, response => {
-      if (response.assets?.length) {
-        setPhoto(response.assets[0])
+    const handleChoosePhoto = () => {
+      handleCloseBottomSheet()
+      const options: ImageLibraryOptions = {
+        // noData: true,
+        mediaType: "photo",
+        // selectionLimit: 3
       }
-    })
-  }
+
+      launchImageLibrary(options, response => {
+        if (response.assets?.length) {
+          setPhoto(response.assets[0])
+        }
+      })
+    }
+
+    const handleClickPhoto = () => {
+      handleCloseBottomSheet()
+      const options: CameraOptions = {
+        // noData: true,
+        mediaType: "photo",
+        // saveToPhotos: true
+      }
+      launchCamera(options, response => {
+        if (response.assets?.length) {
+          setPhoto(response.assets[0])
+        }
+      })
+    }
 
     const handleOpenBottomSheet = () => {
-      setVisible(true);
+      (async () => {
+        const permissions = [PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+
+        const permissionResult = await requestPermission(permissions);
+        setPermission(permissionResult);
+        if (permissionResult)
+          setVisible(true);
+        else {
+          navigation.navigate('permission', {permissionNames: ["Camera", "Files and media"], permissions: permissions})
+        }
+      })()
     };
 
     const handleCloseBottomSheet = () => {
@@ -141,9 +177,9 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
           </TouchableOpacity>
           <BottomSheet visible={visible} onClose={handleCloseBottomSheet}>
             <View style={{marginHorizontal: spacing[4]}}>
-              <Button text="Camera" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleClickPhoto}/>
+              <Button text="Choose from Gallery" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleChoosePhoto}/>
               <Divider color={color.dim} thickness={1.5}/>
-              <Button text="Gallery" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleChoosePhoto}/>
+              <Button text="Take Photo" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleClickPhoto}/>
               <Divider color={color.dim} thickness={1} />
               <Button text="Cancel" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleCloseBottomSheet}/>              
             </View>
