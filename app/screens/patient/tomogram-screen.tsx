@@ -31,50 +31,6 @@ import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOpt
 import { requestPermission } from "../../utils/permission"
 
 
-
-// async function requestFileSystemPermission() {
-//   try {
-//     const granted = await PermissionsAndroid.request(
-//       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-//       {
-//         title: 'App File System Permission',
-//         message: 'App needs access to your file system',
-//       },
-//     );
-//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//       console.log('File system permission granted');
-//     } else {
-//       console.log('File system permission denied');
-//     }
-//   } catch (err) {
-//     console.warn(err);
-//   }
-// }
-
-// async function requestCameraPermission() {
-//   try {
-//     const granted = await PermissionsAndroid.request(
-//       PermissionsAndroid.PERMISSIONS.CAMERA
-//     );
-//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//       return true
-//       // User granted camera permission
-//       // Do something here, like navigate to the camera screen
-//     } else {
-//       return false
-//       // User denied camera permission or pressed cancel
-//       // Navigate to fallback screen here
-//     }
-//   } catch (err) {
-//     console.warn(err);
-//   }
-// }
-
-async function requestPermissions() {
-  const permissions = [PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
-  return await requestPermission(permissions)
-}
-
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
 
@@ -239,65 +195,13 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
 )
 
 
-// const TomogramListView = (props) => {
-//   const {data, setData} = props;
-
-//   const updateDescription = (index, description) => {
-//     const newData = [...data];
-//     console.log(index, description)
-//     newData[index].description = description;
-//     setData(newData);
-//   }
-
-//   const Item = ({item, index, onChange}) => (
-//     <View style={styles.item}>
-//       <Text style={styles.title}>Description</Text>
-//       <TextField  inputStyle={{flex:1, height:80, borderRadius: 5,  marginHorizontal: spacing[0], fontSize:14, textAlignVertical: 'top'  }}  
-//       radius={5} 
-//       multiline={true}  
-//       blurOnSubmit={false}
-//       value={item.description}
-//       // onChangeText={(text) => onChange(index, text)}
-//       onChange={(e) => onChange(index, e.nativeEvent.text)}
-//       />
-//       {/* <Text style={styles.title}>{title}</Text> */}
-//     </View>
-//   );
-
-//   return (
-//     <FlatList
-//         data={data}
-//         renderItem={({item, index}) => <Item item={item} index={index} onChange={updateDescription}/>}
-//         keyExtractor={item => item.id}
-//         // style={{
-//         //   borderColor: 'red', 
-//         //   borderWidth: 3, 
-//         //   // position: 'absolute', 
-//         //   // right: 0,
-//         //   // top: 0,
-//         // }}
-//       />
-    
-//   )
-// }
-
 const TomogramListView = (props) => {
   const {data, setData} = props;
 
-  //   const updateDescription = useCallback((index, description) => {
-  //   const newData = [...data];
-  //   console.log(index, description)
-  //   newData[index].description = description;
-  //   setData(newData);
-  //   // setData(data.map((item, i) => (i === index ? { ...item, description } : item)));
-  // }, [setData])
-
   const updateDescription = (index, description) => {
     const newData = [...data];
-    // console.log(index, description)
     newData[index].description = description;
     setData(newData);
-    // setData(data.map((item, i) => (i === index ? { ...item, description } : item)));
   }
 
   const renderItem = (item, index) => {
@@ -341,31 +245,19 @@ const TomogramListView = (props) => {
 const NoTomogramView = (props) => {
   const {renderCount} = props;
   return (
-    <>
-      {/* <View style={NO_PATIENT_CONTAINER}> */}
-        {/* <View style={{
-          borderColor: 'red', 
-          borderWidth: 3, 
-          position: 'absolute', 
-          right: 0,
-          top: 0,}}>
-          <ImagePickerComponent />
-        </View> */}
-        {/* <HideWithKeyboard> */}            
-          <View style={tomogramScreenStyles.INFO_IMAGE_CONTAINER}>
-            <AddTomogramSvg />
-          </View>
-        {/* </HideWithKeyboard> */}
-        <View style={tomogramScreenStyles.INFO_TEXT_CONTAINER}>
-          <Text style={tomogramScreenStyles.TITLE}>
-            There is no tomogram added.
-          </Text>
-          <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>
-            Once you add tomogram details, they'll appear here.
-          </Text>
-          <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text>
-        </View>
-      {/* </View> */}
+    <>          
+      <View style={tomogramScreenStyles.INFO_IMAGE_CONTAINER}>
+        <AddTomogramSvg />
+      </View>
+      <View style={tomogramScreenStyles.INFO_TEXT_CONTAINER}>
+        <Text style={tomogramScreenStyles.TITLE}>
+          There is no tomogram added.
+        </Text>
+        <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>
+          Once you add tomogram details, they'll appear here.
+        </Text>
+        <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text>
+      </View>
     </>
   )
 }
