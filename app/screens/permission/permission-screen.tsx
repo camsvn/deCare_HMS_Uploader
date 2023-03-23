@@ -1,5 +1,5 @@
-import React, { FC } from "react"
-import { View, Linking } from "react-native"
+import React, { FC, useEffect, useState } from "react"
+import { View, Linking, PermissionsAndroid, AppState, EventSubscription } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -13,11 +13,41 @@ import { NavigatorParamList } from "../../navigators"
 
 import { showMessage, hideMessage } from "react-native-flash-message"
 import * as permissionScreenStyles from "./permission-screen.style";
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const permissionDescription = `It looks like you have turned off permissions required for this feature. It can be enabled under Phone Settings > Apps > HMS > Permissions`
 
 export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permission">> = observer(
-  ({ navigation }) => {
+  ({ navigation, route }) => {
+
+    const {permission} = route.params
+
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'active') {
+        console.log("AppState is in Foreground")
+        checkPermission();
+      }
+    };
+
+    useEffect(() => {
+      const subscription = AppState.addEventListener('change', handleAppStateChange);
+      return () => {
+        subscription.remove()
+      };
+    }, []);
+
+    const checkPermission = async () => {
+      const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
+      if (granted){
+        goBack()
+      }
+    }
+
+    useFocusEffect(() => {
+      checkPermission()
+    })
+    
 
     const goBack = () => {
       if (navigation.canGoBack()) {
@@ -46,7 +76,7 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
         </View>
         <Screen style={permissionScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
           <View style={permissionScreenStyles.MAINVIEW_CONTAINER}>
-            <Text style={permissionScreenStyles.TITLE}>Grant Permission to access Camera</Text>
+            <Text style={permissionScreenStyles.TITLE}>{`Grant Permission to access ${permission}`}</Text>
             <Text style={[permissionScreenStyles.CONTENT, {marginTop: spacing[3]}]}>{permissionDescription}</Text>
             <Button type="highlight" text="Grant Permission" style={{marginTop: spacing[4], backgroundColor: color.errorRed}} textStyle={{fontSize:14}} onPress={handlePermission}/>
           </View>
