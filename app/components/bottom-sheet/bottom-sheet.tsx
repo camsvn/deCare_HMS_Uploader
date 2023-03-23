@@ -26,7 +26,7 @@ const MAIN_CONTAINER: ViewStyle = {
   left: 0,
   right: 0,
   backgroundColor: 'white',
-  marginHorizontal: spacing[2],
+  // marginHorizontal: spacing[2],
   // height: 200,
   borderTopLeftRadius: 5,
   borderTopRightRadius: 5
