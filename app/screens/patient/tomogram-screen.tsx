@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet, ScrollView } from "react-native"
+import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet, ScrollView, PermissionsAndroid } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -12,7 +12,9 @@ import {
   Icon,
   HideWithKeyboard,
   GradientBackground,
-  AutoImage as Image
+  AutoImage as Image,
+  BottomSheet,
+  Divider
 } from "../../components"
 import { ImagePickerComponent } from '../../components/functional'
 import { color, spacing, typography } from "../../theme"
@@ -24,6 +26,29 @@ import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 
 import * as tomogramScreenStyles from "./tomogram-screen.style";
+
+import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker'
+
+
+
+// async function requestFileSystemPermission() {
+//   try {
+//     const granted = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+//       {
+//         title: 'App File System Permission',
+//         message: 'App needs access to your file system',
+//       },
+//     );
+//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//       console.log('File system permission granted');
+//     } else {
+//       console.log('File system permission denied');
+//     }
+//   } catch (err) {
+//     console.warn(err);
+//   }
+// }
 
 
 
@@ -52,6 +77,46 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
       return ''
     }
 
+    const [visible, setVisible] = useState(false);
+
+    const [photo, setPhoto] = useState<Asset>()
+
+  const handleChoosePhoto = () => {
+    handleCloseBottomSheet()
+    const options: ImageLibraryOptions = {
+      // noData: true,
+      mediaType: "photo",
+      // selectionLimit: 3
+    }
+    launchImageLibrary(options, response => {
+      if (response.assets?.length) {
+        setPhoto(response.assets[0])
+      }
+    })
+  }
+
+  const handleClickPhoto = () => {
+    handleCloseBottomSheet()
+    const options: CameraOptions = {
+      // noData: true,
+      mediaType: "photo",
+      // saveToPhotos: true
+    }
+    launchCamera(options, response => {
+      if (response.assets?.length) {
+        setPhoto(response.assets[0])
+      }
+    })
+  }
+
+    const handleOpenBottomSheet = () => {
+      setVisible(true);
+    };
+
+    const handleCloseBottomSheet = () => {
+      setVisible(false);
+    };
+
     return (
       <>
       <View testID="WelcomeScreen" style={tomogramScreenStyles.FULL}>
@@ -71,9 +136,18 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
           <Text style={[tomogramScreenStyles.TITLE, tomogramScreenStyles.TITLE_VIEW]}>
             {opStore.name}
           </Text>
-          <TouchableOpacity style={tomogramScreenStyles.ADD_BUTTON_CONTAINER}>
+          <TouchableOpacity style={tomogramScreenStyles.ADD_BUTTON_CONTAINER} onPress={handleOpenBottomSheet}>
             <AddButtonSvg styleOveride={tomogramScreenStyles.ADD_BUTTON}/>
           </TouchableOpacity>
+          <BottomSheet visible={visible} onClose={handleCloseBottomSheet}>
+            <View style={{marginHorizontal: spacing[4]}}>
+              <Button text="Camera" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleClickPhoto}/>
+              <Divider color={color.dim} thickness={1.5}/>
+              <Button text="Gallery" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleChoosePhoto}/>
+              <Divider color={color.dim} thickness={1} />
+              <Button text="Cancel" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleCloseBottomSheet}/>              
+            </View>
+          </BottomSheet>
           {/* <Button style={[SUBMIT_BUTTON, {position: 'relative', right: 10, top: 35, borderRadius: 30, width:60, height: 60}]}>
             <Icon icon="camera" fillColor={color.palette.mirage} style />
           </Button> */}
