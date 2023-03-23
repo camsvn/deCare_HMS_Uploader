@@ -18,7 +18,8 @@ export const vIcons = {
   removeCircle: require("./removeCircle").default,
   camera: require("./camera").default,
   arrow: require("./arrow").default,
-  logout: require("./logout").default
+  logout: require("./logout").default,
+  delete: require("./delete").default
   // cloudSync: CloudSync,
 }
 
