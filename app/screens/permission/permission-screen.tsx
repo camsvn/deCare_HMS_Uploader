@@ -14,6 +14,7 @@ import { NavigatorParamList } from "../../navigators"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import * as permissionScreenStyles from "./permission-screen.style";
 import { useFocusEffect } from '@react-navigation/native';
+import { async } from "validate.js"
 
 
 const permissionDescription = `It looks like you have turned off permissions required for this feature. It can be enabled under Phone Settings > Apps > HMS > Permissions`
@@ -21,7 +22,9 @@ const permissionDescription = `It looks like you have turned off permissions req
 export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permission">> = observer(
   ({ navigation, route }) => {
 
-    const {permission} = route.params
+    const {permissionNames, permissions} = route.params
+
+    const [permissionName, setPermissionName] = useState('')
 
     const handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'active') {
@@ -31,6 +34,9 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
     };
 
     useEffect(() => {
+      (async () => {
+        await getTitle()
+      })()
       const subscription = AppState.addEventListener('change', handleAppStateChange);
       return () => {
         subscription.remove()
@@ -38,16 +44,17 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
     }, []);
 
     const checkPermission = async () => {
-      const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
+      let granted = true
+      permissions.forEach(async (permission) => {
+        const isGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
+        if (!isGranted)
+          granted = false
+      })
+      // const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
       if (granted){
         goBack()
       }
-    }
-
-    useFocusEffect(() => {
-      checkPermission()
-    })
-    
+    }    
 
     const goBack = () => {
       if (navigation.canGoBack()) {
@@ -67,6 +74,28 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
       Linking.openSettings()
     }
 
+    const getTitle = async () => {
+      let index = -1
+      for (let i = 0; i < permissions.length; i++) {
+        const permission = permissions[i]
+        const granted = await PermissionsAndroid.check(permission)
+        if(!granted) {
+          index = i
+          break
+        }
+      }
+      if (index !== -1) {
+        setPermissionName(permissionNames[index])
+      }  
+    }
+
+    // useEffect(() => {
+    //   (async () => {
+    //     await getTitle()
+    //   })()
+    // }, [])
+    
+
     return (
       <View testID="PermissionScreen" style={permissionScreenStyles.FULL}>
         <View style={[{position: "absolute", top: 20, zIndex: 1}]}>
@@ -76,7 +105,7 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
         </View>
         <Screen style={permissionScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
           <View style={permissionScreenStyles.MAINVIEW_CONTAINER}>
-            <Text style={permissionScreenStyles.TITLE}>{`Grant Permission to access ${permission}`}</Text>
+            <Text style={permissionScreenStyles.TITLE}>{`Grant Permission to access ${permissionName}`}</Text>
             <Text style={[permissionScreenStyles.CONTENT, {marginTop: spacing[3]}]}>{permissionDescription}</Text>
             <Button type="highlight" text="Grant Permission" style={{marginTop: spacing[4], backgroundColor: color.errorRed}} textStyle={{fontSize:14}} onPress={handlePermission}/>
           </View>
