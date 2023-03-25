@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, TouchableOpacity, FlatList, StyleSheet, ScrollView, PermissionsAndroid } from "react-native"
+import { View, TextInputProps, TouchableOpacity, ScrollView, PermissionsAndroid } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -16,7 +16,6 @@ import {
   BottomSheet,
   Divider
 } from "../../components"
-import { ImagePickerComponent } from '../../components/functional'
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
@@ -29,7 +28,11 @@ import * as tomogramScreenStyles from "./tomogram-screen.style";
 
 import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker'
 import { requestPermission } from "../../utils/permission"
+import { TomogramStoreModel, TomogramStore, Tomogram } from "../../models/tomogram/tomogram"
+import { async } from "validate.js"
 
+
+const tomogramStore = TomogramStoreModel.create({})
 
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
@@ -38,41 +41,32 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
 
     const renderCount = useRenderCount();
     const { opStore }  = useStores()
-    const [data, setData] = useState([
-      { id: 1, tomogram: 'default_tomogram_uri', description: 'default_description1' },
-      { id: 2, tomogram: 'default_tomogram_uri', description: 'default_description2' },
-      { id: 3, tomogram: 'default_tomogram_uri', description: 'default_description3' },
-      { id: 4, tomogram: 'default_tomogram_uri', description: 'default_description4' },
-      { id: 5, tomogram: 'default_tomogram_uri', description: 'default_description5' },
-      { id: 6, tomogram: 'default_tomogram_uri', description: 'default_description6' },
-      { id: 7, tomogram: 'default_tomogram_uri', description: 'default_description7' },
-      { id: 8, tomogram: 'default_tomogram_uri', description: 'default_description8' },
-      { id: 9, tomogram: 'default_tomogram_uri', description: 'default_description9' },
-    ]);
 
     const nextScreen = () => navigation.navigate("demo")
 
-    const onSubmitOP = () => {
+    const onSubmitOP = async () => {
+      await tomogramStore.removeAllTomograms()
+      
       return ''
     }
 
     const [visible, setVisible] = useState(false);
 
-    const [photo, setPhoto] = useState<Asset>()
-
     const [hasPermission, setPermission] = useState(false);
 
     const handleChoosePhoto = () => {
       handleCloseBottomSheet()
+
       const options: ImageLibraryOptions = {
-        // noData: true,
         mediaType: "photo",
-        // selectionLimit: 3
+        selectionLimit: 2
       }
 
       launchImageLibrary(options, response => {
-        if (response.assets?.length) {
-          setPhoto(response.assets[0])
+        if (response.assets) {
+          response.assets.forEach((asset) => {
+            tomogramStore.addTomogram(asset.uri as string)
+          })
         }
       })
     }
@@ -80,13 +74,13 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     const handleClickPhoto = () => {
       handleCloseBottomSheet()
       const options: CameraOptions = {
-        // noData: true,
         mediaType: "photo",
         // saveToPhotos: true
       }
       launchCamera(options, response => {
         if (response.assets?.length) {
-          setPhoto(response.assets[0])
+          tomogramStore.addTomogram(response.assets[0].uri as string)
+
         }
       })
     }
@@ -113,7 +107,6 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
       <>
       <View testID="WelcomeScreen" style={tomogramScreenStyles.FULL}>
         <Header
-        //  leftIcon="cloudSync"
          rightIcon="checkMark" 
          leftIconSize={26}
          rightIconSize={24}
@@ -121,7 +114,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
          style={tomogramScreenStyles.HEADER} 
          titleStyle={tomogramScreenStyles.HEADER_TITLE} 
          onLeftPress={()=>console.log("Header Left Pressed")}
-         onRightPress={()=>console.log("Header Right Pressed")}
+         onRightPress={()=>onSubmitOP()}
         />
         <View style={tomogramScreenStyles.PATIENT_NAME_CONTAINER}>
           <GradientBackground colors={["#E6E6E6", "#FFF"]} locations={[.5,1]} />
@@ -140,81 +133,38 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
               <Button text="Cancel" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleCloseBottomSheet}/>              
             </View>
           </BottomSheet>
-          {/* <Button style={[SUBMIT_BUTTON, {position: 'relative', right: 10, top: 35, borderRadius: 30, width:60, height: 60}]}>
-            <Icon icon="camera" fillColor={color.palette.mirage} style />
-          </Button> */}
         </View>
         <Screen style={tomogramScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={data.length > 0 ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
-            {data.length > 0 ? <TomogramListView data={data} setData={setData} /> : <NoTomogramView renderCount={renderCount}/>}
-          {/* <NoPatientView renderCount={renderCount}/> */}
-            {/* <View style={{
-              borderColor: 'red', 
-              borderWidth: 3, 
-              position: 'absolute', 
-              right: 0,
-              top: 0,}}>
-              <ImagePickerComponent />
-            </View> */}
-            {/* <HideWithKeyboard> */}            
-              {/* <View style={INFO_IMAGE_CONTAINER}>
-                <AddTomogramSvg />
-              </View> */}
-            {/* </HideWithKeyboard> */}
-            {/* <View style={INFO_TEXT_CONTAINER}>
-              <Text style={TITLE}>
-                There is no tomogram added.
-              </Text>
-              <Text style={[CONTENT, CENTER]}>
-                Once you add tomogram details, they'll appear here.
-              </Text>
-              <Text style={[CONTENT, CENTER]}>Render {renderCount}</Text>
-            </View> */}
+            <View style={tomogramStore.tomograms.length > 0 ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
+              {tomogramStore.tomograms.length > 0 ? <TomogramListView1 store={tomogramStore} /> : <NoTomogramView renderCount={renderCount}/>}
           </View>
           <HideWithKeyboard>
             <OpSearch title={opid} navigation={navigation}/>
           </HideWithKeyboard>
         </Screen>
-        {/* <HideWithKeyboard>
-          <SafeAreaView style={FOOTER}>
-            <View style={FOOTER_CONTENT}>
-              <Button
-                testID="next-screen-button"
-                style={CONTINUE}
-                textStyle={CONTINUE_TEXT}
-                tx="welcomeScreen.continue"
-                onPress={nextScreen}
-              />
-            </View>
-          </SafeAreaView>
-        </HideWithKeyboard> */}
       </View>
       </>
     )
   },
 )
 
+interface TomogramScreenProps {
+  store: TomogramStore;
+}
 
-const TomogramListView = (props) => {
-  const {data, setData} = props;
-
-  const updateDescription = (index, description) => {
-    const newData = [...data];
-    newData[index].description = description;
-    setData(newData);
-  }
-
-  const renderItem = (item, index) => {
+const TomogramListView1 = ({store} : TomogramScreenProps) => {
+  
+  const renderItem = (item: Tomogram) => {
     return (
       <View key={item.id} style={tomogramScreenStyles.TLV_CONTAINER}>
         <View style={{position: "absolute", right:3, top: 5}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={ (e) => tomogramStore.removeTomogram(item.id)}>
             <Icon  icon="delete" fillColor={color.errorRed} height={20} width={20} />
           </TouchableOpacity>
         </View>
         <View style={tomogramScreenStyles.TLV_IMAGE_CONTAINER}>
           <Image
-              source={require('../../../assets/images/no_image.png')}
+              source={{uri: tomogramStore.getTomogram(item.id)}}
               style={tomogramScreenStyles.TLV_IMAGE_VIEW}
             />
         </View>
@@ -224,7 +174,7 @@ const TomogramListView = (props) => {
             radius={5}
             multiline={true}
             value={item.description}
-            onChangeText={(text) => updateDescription(index, text)}
+            onChangeText={(text) => tomogramStore.updateTomogramDescription(item.id, text)}
             blurOnSubmit={false}
             preset="secondary"
             label="Description"
@@ -237,7 +187,7 @@ const TomogramListView = (props) => {
 
   return (
     <ScrollView>
-      {data.map((item, index) => renderItem(item, index))}
+      {store.tomograms.map((item) => renderItem(item))}
     </ScrollView>
   )
 }
@@ -272,7 +222,9 @@ const OpSearch = (props: TextFieldProps) => {
   const {title, navigation} = props;
   const isSearchBoxEmpty = () => text === ''
 
-  const onExit = () => {
+  const onExit = async () => {
+    await tomogramStore.removeAllTomograms()
+    console.log ("Removed Tomos")
     navigation.goBack();
   }
   
