@@ -28,7 +28,7 @@ export const TomogramStoreModel = types
     get allTomograms() {
       return self.tomograms.map(tomogram => tomogram.tomogram)
     },
-    getTomogramById: (id: number) => {
+    getTomogram: (id: number) => {
       return self.tomograms.find(tomogram => tomogram.id === id)?.tomogram
     }
   }))
@@ -37,12 +37,16 @@ export const TomogramStoreModel = types
       self.tomograms.replace(tomogramSnapshots)
     },
     addTomogram: (tomogram: string) => {
-      const tomogramSnapshot =  TomogramModel.create({tomogram})
-      self.tomograms.push(tomogramSnapshot)
+      // Generate unique id for each tomogram
+      const timestamp = Date.now();
+      const random = Math.floor(Math.random() * 10000);
+      const id = parseInt(`${timestamp}${random}`.slice(0, 10));
+      // Add tomogram to store
+      self.tomograms.push({id, tomogram})
     },
     removeTomogram(id: number) {
-      const tomogram = self.getTomogramById(id)
-      unlinkTmpFiles([tomogram])
+      const cachedTomogram = self.getTomogram(id)
+      unlinkTmpFiles([cachedTomogram])
       const index = self.tomograms.findIndex(tomogram => tomogram.id === id);
       if (index !== -1) {
         self.tomograms.splice(index, 1);
@@ -54,10 +58,10 @@ export const TomogramStoreModel = types
         tomogram.description = description;
       }
     },
-    clearTomograms: () => {
-      const tomograms = self.allTomograms
-      unlinkTmpFiles(tomograms)
+    removeAllTomograms: async () => {
+      const cachedTomograms = self.allTomograms
       self.tomograms.clear()
+      await unlinkTmpFiles(cachedTomograms)
     }
   }))
 
