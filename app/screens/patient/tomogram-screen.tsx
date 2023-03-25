@@ -225,14 +225,14 @@ const OpSearch = (props: TextFieldProps) => {
   const onExit = async () => {
     await tomogramStore.removeAllTomograms()
     console.log ("Removed Tomos")
-    navigation.goBack();
+    navigation.canGoBack() && navigation.goBack();
   }
   
   return (
     <View style={tomogramScreenStyles.OP_FORM}>
       <TextField
         // blurWithoutKeyboard
-        rightIcon = {"close"}
+        rightIcon = {navigation.canGoBack() ? "close" : "unset"}
         style={tomogramScreenStyles.SEARCH_INPUT_WRAPPER}
         containerStyle={tomogramScreenStyles.SEARCH_INPUT_CONTAINER}
         inputStyle={tomogramScreenStyles.SEARCH_INPUT}
