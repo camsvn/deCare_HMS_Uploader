@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { unlinkTmpFiles } from "../../utils/common";
 
 /**
  * Tomogram model.
@@ -23,6 +24,14 @@ export const TomogramStoreModel = types
   .props({
     tomograms: types.optional(types.array(TomogramModel), []),
   })
+  .views((self) => ({
+    get allTomograms() {
+      return self.tomograms.map(tomogram => tomogram.tomogram)
+    },
+    getTomogramById: (id: number) => {
+      return self.tomograms.find(tomogram => tomogram.id === id)?.tomogram
+    }
+  }))
   .actions((self) => ({
     saveTomograms: (tomogramSnapshots: TomogramSnapshot[]) => {
       self.tomograms.replace(tomogramSnapshots)
@@ -31,17 +40,24 @@ export const TomogramStoreModel = types
       const tomogramSnapshot =  TomogramModel.create({tomogram})
       self.tomograms.push(tomogramSnapshot)
     },
-    removeTomogram(id) {
+    removeTomogram(id: number) {
+      const tomogram = self.getTomogramById(id)
+      unlinkTmpFiles([tomogram])
       const index = self.tomograms.findIndex(tomogram => tomogram.id === id);
       if (index !== -1) {
         self.tomograms.splice(index, 1);
       }
     },
-    updateTomogramDescription(id, description) {
+    updateTomogramDescription(id: number, description: string) {
       const tomogram = self.tomograms.find(tomogram => tomogram.id === id);
       if (tomogram) {
         tomogram.description = description;
       }
+    },
+    clearTomograms: () => {
+      const tomograms = self.allTomograms
+      unlinkTmpFiles(tomograms)
+      self.tomograms.clear()
     }
   }))
 
