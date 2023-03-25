@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 
-export const unlinkTmpFiles = (tempFilePaths: []) => {
+export const unlinkTmpFiles = (tempFilePaths: Array<string>) => {
   // Promise.all(tempFilePaths.map(tempFilePath => RNFS.unlink(tempFilePath)))
   // .then(() => {
   //   console.log('All temporary files deleted successfully');
