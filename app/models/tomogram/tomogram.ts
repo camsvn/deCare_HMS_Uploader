@@ -40,13 +40,13 @@ export const TomogramStoreModel = types
       // Generate unique id for each tomogram
       const timestamp = Date.now();
       const random = Math.floor(Math.random() * 10000);
-      const id = parseInt(`${timestamp}${random}`.slice(0, 10));
-      // Add tomogram to store
+      const padRandom = String(random).padStart(4, "0");
+      const id = parseInt(`${timestamp}${padRandom}`.slice(-6));
       self.tomograms.push({id, tomogram})
     },
     removeTomogram(id: number) {
       const cachedTomogram = self.getTomogram(id)
-      unlinkTmpFiles([cachedTomogram])
+      cachedTomogram.length && unlinkTmpFiles([cachedTomogram])
       const index = self.tomograms.findIndex(tomogram => tomogram.id === id);
       if (index !== -1) {
         self.tomograms.splice(index, 1);
@@ -61,7 +61,7 @@ export const TomogramStoreModel = types
     removeAllTomograms: async () => {
       const cachedTomograms = self.allTomograms
       self.tomograms.clear()
-      await unlinkTmpFiles(cachedTomograms)
+      cachedTomograms.length && await unlinkTmpFiles(cachedTomograms)
     }
   }))
 
