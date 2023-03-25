@@ -3,7 +3,6 @@ import RNFS from 'react-native-fs';
 export const unlinkTmpFiles = async (tempFilePaths: Array<string>) => {
   try {
     await Promise.all(tempFilePaths.map(tempFilePath => {
-      console.log("File Name", tempFilePath)
       return RNFS.unlink(tempFilePath)
     }))
 
