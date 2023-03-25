@@ -165,3 +165,14 @@ export const TLV_DESCRIPTION_FIELD: TextStyle = {
   fontSize:11,
   textAlignVertical: 'top'
 }
+
+export const TLV_DELETE_CONTAINER: ViewStyle = {
+  position: "absolute", 
+  right:3,
+  top: 5
+}
+
+export const BOTTOM_SHEET_BUTTON: TextStyle = {
+  paddingVertical: spacing[4],
+  letterSpacing: 0.25
+}

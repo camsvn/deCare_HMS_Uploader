@@ -107,7 +107,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
       <>
       <View testID="WelcomeScreen" style={tomogramScreenStyles.FULL}>
         <Header
-         rightIcon="checkMark" 
+         rightIcon={tomogramStore.tomograms.length ? "checkMark" : "unset"} 
          leftIconSize={26}
          rightIconSize={24}
          headerTx="common.header" 
@@ -126,11 +126,11 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
           </TouchableOpacity>
           <BottomSheet visible={visible} onClose={handleCloseBottomSheet}>
             <View style={{marginHorizontal: spacing[4]}}>
-              <Button text="Choose from Gallery" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleChoosePhoto}/>
+              <Button text="Choose from Gallery" textStyle={tomogramScreenStyles.BOTTOM_SHEET_BUTTON} preset="link" onPress={handleChoosePhoto}/>
               <Divider color={color.dim} thickness={1.5}/>
-              <Button text="Take Photo" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleClickPhoto}/>
+              <Button text="Take Photo" textStyle={tomogramScreenStyles.BOTTOM_SHEET_BUTTON} preset="link" onPress={handleClickPhoto}/>
               <Divider color={color.dim} thickness={1} />
-              <Button text="Cancel" textStyle={{paddingVertical: spacing[4], letterSpacing: 0.25}} preset="link" onPress={handleCloseBottomSheet}/>              
+              <Button text="Cancel" textStyle={tomogramScreenStyles.BOTTOM_SHEET_BUTTON} preset="link" onPress={handleCloseBottomSheet}/>              
             </View>
           </BottomSheet>
         </View>
@@ -157,7 +157,7 @@ const TomogramListView1 = ({store} : TomogramScreenProps) => {
   const renderItem = (item: Tomogram) => {
     return (
       <View key={item.id} style={tomogramScreenStyles.TLV_CONTAINER}>
-        <View style={{position: "absolute", right:3, top: 5}}>
+        <View style={tomogramScreenStyles.TLV_DELETE_CONTAINER}>
           <TouchableOpacity onPress={ (e) => tomogramStore.removeTomogram(item.id)}>
             <Icon  icon="delete" fillColor={color.errorRed} height={20} width={20} />
           </TouchableOpacity>
@@ -206,7 +206,7 @@ const NoTomogramView = (props) => {
         <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>
           Once you add tomogram details, they'll appear here.
         </Text>
-        <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text>
+        {/* <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text> */}
       </View>
     </>
   )
