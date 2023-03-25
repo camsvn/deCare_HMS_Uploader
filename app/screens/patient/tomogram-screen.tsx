@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from "react"
+import React, { FC, useState } from "react"
 import { View, TextInputProps, TouchableOpacity, ScrollView, PermissionsAndroid } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
@@ -8,7 +8,6 @@ import {
   Screen,
   Text,
   TextField,
-  SearchTextField,
   Icon,
   HideWithKeyboard,
   GradientBackground,
@@ -16,7 +15,7 @@ import {
   BottomSheet,
   Divider
 } from "../../components"
-import { color, spacing, typography } from "../../theme"
+import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import AddTomogramSvg from './AddTomogramSvg'
@@ -26,10 +25,9 @@ import { useStores } from "../../models"
 
 import * as tomogramScreenStyles from "./tomogram-screen.style";
 
-import { launchCamera, launchImageLibrary, Asset, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary, ImageLibraryOptions, CameraOptions } from 'react-native-image-picker'
 import { requestPermission } from "../../utils/permission"
 import { TomogramStoreModel, TomogramStore, Tomogram } from "../../models/tomogram/tomogram"
-import { async } from "validate.js"
 
 
 const tomogramStore = TomogramStoreModel.create({})
