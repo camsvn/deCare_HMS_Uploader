@@ -1,7 +1,4 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { PatientApi } from "../../services/api/opregister-api"
-import { withApiState } from "../extensions/with-api-state"
-import { withEnvironment } from "../extensions/with-environment"
 
 /**
  * Tomogram model.
