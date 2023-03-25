@@ -6,7 +6,7 @@ export const unlinkTmpFiles = async (tempFilePaths: Array<string>) => {
       return RNFS.unlink(tempFilePath)
     }))
 
-    console.log('All temporary files deleted successfully');
+    console.log(`${tempFilePaths.length} temporary file(s) deleted successfully`);
   } catch(error) {
     console.log('Error deleting temporary files: ', error);
   };
