@@ -10,21 +10,18 @@ export const RecentSearchesModel = types.model("RecentSearches").props({
 .actions((self) => ({
   deletePatientIfExist: (id: number) => {
     const index = self.searches.findIndex((p) => p.id === id);
-      if (index !== -1) {
-        self.searches.splice(index, 1);
-      }
+    if (index !== -1) {
+      self.searches.splice(index, 1);
+    }
   },
   clearAll() {
     self.searches.clear()
   }
 }))
 .actions((self) => ({
-  addPatient: (patient: Patient) => {
-    console.log("RS", patient)
-    console.log("Remove Patient if exist in Recent List");    
-    self.deletePatientIfExist(patient.opid)
-    self.searches.unshift(patient)
-    console.log("Cap Search List");    
+  addPatient: (patient: Patient) => {    
+    self.deletePatientIfExist(patient.id)
+    self.searches.unshift(patient)   
     // Cap the list at 10
     if (self.searches.length > 10) {
       self.searches.pop()
