@@ -1,43 +1,35 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
-// import { CharacterModel, CharacterSnapshot } from "../character/character"
-// import { PatientModel, PatientSnapshot, Patient } from "../patient/patient"
-// import { CharacterApi } from "../../services/api/character-api"
+import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { PatientApi } from "../../services/api/opregister-api"
-import { withEnvironment } from "../extensions/with-environment"
+import { withApiState, withEnvironment, withRootStore } from "../extensions"
+
 /**
  * DeCare Patient Model
  */
 export const PatientModel = types.model("Patient").props({
-  id: types.maybe(types.string),
-  opid: types.maybe(types.string),
-  name: types.maybe(types.string),
-  loading: types.optional(types.boolean, false)
+  id: types.maybe(types.number),
+  opid: types.maybe(types.number),
+  name: types.maybe(types.string)
 })
 .extend(withEnvironment)
-// .actions((self) => ({
-//   saveCharacters: (characterSnapshots: PatientSnapshot[]) => {
-//     console.log(self.name)
-//   },
-// }))
+.extend(withApiState)
+.extend(withRootStore)
 .actions((self) => ({
-  setPatient(patient) {
-    self.id = String(patient.id)
-    self.opid = String(patient.opid)
+  setPatient: flow(function* (patient) {
+    self.id = patient.id
+    self.opid = patient.opid
     self.name = patient.name
-  },
-  setLoading(state) {
-    self.loading = state
-  }
+    console.log("Got patient", patient)   
+    self.rootStore.recentSearchesStore.addPatient(patient)
+  }),
 }))
 .actions((self) => ({
   getPatient: async (opid: string, callback: (err: any) => void) => {
-    self.setLoading(true)
+    self._setLoading(true)
     const patientApi = new PatientApi(self.environment.api)
     const result = await patientApi.getOpById(opid)
     console.log("Amal", result)
-    self.setLoading(false)
+    self._setLoading(false)
     if (result.kind === "ok") {
-      // self.saveCharacters(result.patient)
       self.setPatient(result.patient)
       callback(null)
     } else {
