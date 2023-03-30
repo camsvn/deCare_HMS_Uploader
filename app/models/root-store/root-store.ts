@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { CharacterStoreModel } from "../character-store/character-store"
-import { PatientModel } from '../patient/patient'
+import { PatientModel, Patient } from '../patient/patient'
+import { RecentSearchesModel, RecentSearches } from '../recentSearch/recentSearch'
 
 /**
  * A RootStore model.
@@ -9,6 +10,7 @@ import { PatientModel } from '../patient/patient'
 export const RootStoreModel = types.model("RootStore").props({
   characterStore: types.optional(CharacterStoreModel, {} as any),
   opStore: types.optional(PatientModel, {} as any),
+  recentSearchesStore: types.optional(RecentSearchesModel, {} as any),
 })
 
 /**
