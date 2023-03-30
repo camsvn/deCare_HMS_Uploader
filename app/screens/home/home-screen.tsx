@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps } from "react-native"
+import React, { FC, useEffect, useState } from "react"
+import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, ScrollView, TouchableOpacity } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -11,6 +11,7 @@ import {
   SearchTextField,
   Icon,
   HideWithKeyboard,
+  Divider,
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
@@ -20,10 +21,38 @@ import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import homeScreenStyles from "./home-screen.style";
+import * as storage from "../../utils/storage";
 
+const OP_LIST_STORAGE_KEY = "opList"
 
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = observer(
   ({ navigation }) => {
+
+    const { searches, clearAll, deletePatientIfExist } = useStores().recentSearchesStore
+
+    // const loadData = async () => {
+    //   console.log("Load Data")
+    //   const opList = (await storage.load(OP_LIST_STORAGE_KEY)) || []
+    //   console.log("Loaded Data", opList)
+    //   setData(opList)
+    // }
+
+    // const [data, setData] = useState([])
+    // useEffect(() => {
+    //   // const loadData = async () => {
+    //   //     console.log("Load Data")
+    //   //     const opList = await storage.load(OP_LIST_STORAGE_KEY)
+    //   //     console.log("Loaded Data", opList)
+    //   //     setData(opList)
+    //   // }
+    //   loadData()
+    // }, [])
+
+    // const clearRecentSearches = () => {
+    //   console.log("clear")
+    //   storage.remove(OP_LIST_STORAGE_KEY)
+    // }
+    
 
     const renderCount = useRenderCount();
 
@@ -48,37 +77,58 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
          onRightPress={()=>console.log("Header Right Pressed")}
         />
         <Screen style={homeScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
-          <View style={homeScreenStyles.NO_PATIENT_CONTAINER}>
-            <HideWithKeyboard animate={true}>
-              <View style={homeScreenStyles.INFO_IMAGE_CONTAINER}>
-                <BlankCanvasSvg />
+          {/* <View style={homeScreenStyles.NO_PATIENT_CONTAINER}> */}
+            { searches.length ? (
+              <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
+                <View style={{height: 50, backgroundColor: color.palette.white}}>
+                  <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end"}}>
+                    <Text style={[homeScreenStyles.TITLE, {marginTop: spacing[2]}]}>Recent Searches:</Text>
+                    <Button style={[
+                      {margin: spacing[1], paddingHorizontal: 0}
+                      ]}
+                      textStyle={[
+                        homeScreenStyles.CONTENT,
+                        {color: color.primary}
+                        ]}
+                      text="clear all"
+                      preset="link"
+                      onPress={clearAll}
+                    />
+                  </View>
+                  <Divider/>
+                </View>
+                {searches.map((op) => (
+                    <View key={op.id} style={{flexDirection: "row", marginVertical: 10}}>
+                      <Button text={`${op.name}, ${op.opid}`} textStyle={{fontSize: 16}} style={{height:40, flex:2.5, backgroundColor: color.palette.offWhite, borderWidth: 1, borderColor: color.palette.black, borderRightWidth: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0}} preset="link"/>
+                      <TouchableOpacity style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}} onPress={() => deletePatientIfExist(op.id)}>
+                        <Icon  icon="delete" fillColor={color.palette.white} height={20} width={20} />
+                      </TouchableOpacity>
+                    </View>
+                ))}
+              </ScrollView>
+            ) :
+              (
+              <View style={homeScreenStyles.NO_PATIENT_CONTAINER}>
+                <HideWithKeyboard animate={true}>
+                  <View style={homeScreenStyles.INFO_IMAGE_CONTAINER}>
+                    <BlankCanvasSvg />
+                  </View>
+                </HideWithKeyboard>
+                <View style={homeScreenStyles.INFO_TEXT_CONTAINER}>
+                  <Text style={homeScreenStyles.TITLE}>
+                    There is no patient selected.
+                  </Text>
+                  <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>
+                    Once you choose a patient, they'll appear here.
+                  </Text>
+                  <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>Render {renderCount}</Text>
+                </View>
               </View>
-            </HideWithKeyboard>
-            <View style={homeScreenStyles.INFO_TEXT_CONTAINER}>
-              <Text style={homeScreenStyles.TITLE}>
-                There is no patient selected.
-              </Text>
-              <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>
-                Once you choose a patient, they'll appear here.
-              </Text>
-              <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>Render {renderCount}</Text>
-            </View>
-          </View>
+              )
+            }
+          {/* </View> */}
           <OpSearch navigation={navigation}/>
         </Screen>
-        {/* <HideWithKeyboard>
-          <SafeAreaView style={FOOTER}>
-            <View style={FOOTER_CONTENT}>
-              <Button
-                testID="next-screen-button"
-                style={CONTINUE}
-                textStyle={CONTINUE_TEXT}
-                tx="welcomeScreen.continue"
-                onPress={nextScreen}
-              />
-            </View>
-          </SafeAreaView>
-        </HideWithKeyboard> */}
       </View>
       </>
     )
@@ -101,11 +151,11 @@ const OpSearch = (props: TextFieldProps) => {
   const onSubmit = () => {
     console.log(text)
     getPatient(text, (err) => {
-      console.log("executing callback")
+      // console.log("executing callback")
       if (!err) {
         navigation.navigate('tomogram', {opid: text});
         onChangeText('');
-        console.log(opStore)
+        // console.log(opStore)
         return
       }
       showMessage({
