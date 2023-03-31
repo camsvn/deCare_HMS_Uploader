@@ -39,11 +39,8 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
 
     const onClickOP = (opid: number) => {
       getPatient(opid, (err) => {
-        // console.log("executing callback")
         if (!err) {
           navigation.navigate('tomogram', {opid});
-          // onChangeText('');
-          // console.log(opStore)
           return
         }
         showMessage({
@@ -90,10 +87,17 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
                 </View>
                 {searches.map((op) => (
                     <View key={op.id} style={{flexDirection: "row", marginVertical: 10}}>
-                      <Button text={`${op.name}, ${op.opid}`} textStyle={{fontSize: 16}} style={{height:40, flex:2.5, backgroundColor: color.palette.offWhite, borderWidth: 1, borderColor: color.palette.black, borderRightWidth: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0}} preset="link"/>
+                      <Button 
+                        text={`${op.name}, ${op.opid}`}
+                        textStyle={{fontSize: 16}}
+                        style={{height:40, flex:2.5, backgroundColor: color.palette.offWhite, borderWidth: 1, borderColor: color.palette.black, borderRightWidth: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                        preset="link"
+                        onPress={() => onClickOP(op.opid)}
+                      />
                       <TouchableOpacity
-                      onPressIn={() => onClickOP(op.opid)} 
-                      style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}} onPress={() => deletePatientIfExist(op.id)}>
+                        style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}}
+                        onPress={() => deletePatientIfExist(op.id)}
+                      >
                         <Icon  icon="delete" fillColor={color.palette.white} height={20} width={20} />
                       </TouchableOpacity>
                     </View>
