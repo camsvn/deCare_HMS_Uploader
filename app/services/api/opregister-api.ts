@@ -10,7 +10,7 @@ export class PatientApi {
     this.api = api
   }
 
-  async getOpById(opid: string): Promise<GetPatientResult> {
+  async getOpById(opid: number): Promise<GetPatientResult> {
     try {
       // make the api call
       const response: ApiResponse<any> = await this.api.apisauce.get(

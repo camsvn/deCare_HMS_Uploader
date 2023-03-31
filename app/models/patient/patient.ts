@@ -23,7 +23,7 @@ export const PatientModel = types.model("Patient").props({
   }),
 }))
 .actions((self) => ({
-  getPatient: async (opid: string, callback: (err: any) => void) => {
+  getPatient: async (opid: number, callback: (err: any) => void) => {
     self._setLoading(true)
     const patientApi = new PatientApi(self.environment.api)
     const result = await patientApi.getOpById(opid)

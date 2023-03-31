@@ -28,38 +28,29 @@ const OP_LIST_STORAGE_KEY = "opList"
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = observer(
   ({ navigation }) => {
 
-    const { searches, clearAll, deletePatientIfExist } = useStores().recentSearchesStore
-
-    // const loadData = async () => {
-    //   console.log("Load Data")
-    //   const opList = (await storage.load(OP_LIST_STORAGE_KEY)) || []
-    //   console.log("Loaded Data", opList)
-    //   setData(opList)
-    // }
-
-    // const [data, setData] = useState([])
-    // useEffect(() => {
-    //   // const loadData = async () => {
-    //   //     console.log("Load Data")
-    //   //     const opList = await storage.load(OP_LIST_STORAGE_KEY)
-    //   //     console.log("Loaded Data", opList)
-    //   //     setData(opList)
-    //   // }
-    //   loadData()
-    // }, [])
-
-    // const clearRecentSearches = () => {
-    //   console.log("clear")
-    //   storage.remove(OP_LIST_STORAGE_KEY)
-    // }
+    const {opStore, recentSearchesStore} = useStores()
+    const { searches, clearAll, deletePatientIfExist } = recentSearchesStore
+    const { getPatient } = opStore
     
 
     const renderCount = useRenderCount();
 
     const nextScreen = () => navigation.navigate("demo")
 
-    const onSubmitOP = () => {
-      return ''
+    const onClickOP = (opid: number) => {
+      getPatient(opid, (err) => {
+        // console.log("executing callback")
+        if (!err) {
+          navigation.navigate('tomogram', {opid});
+          // onChangeText('');
+          // console.log(opStore)
+          return
+        }
+        showMessage({
+          message: `Patient: ${err}`,
+          type: "danger"
+        })
+      })
     }
 
     return (
@@ -100,7 +91,9 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
                 {searches.map((op) => (
                     <View key={op.id} style={{flexDirection: "row", marginVertical: 10}}>
                       <Button text={`${op.name}, ${op.opid}`} textStyle={{fontSize: 16}} style={{height:40, flex:2.5, backgroundColor: color.palette.offWhite, borderWidth: 1, borderColor: color.palette.black, borderRightWidth: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0}} preset="link"/>
-                      <TouchableOpacity style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}} onPress={() => deletePatientIfExist(op.id)}>
+                      <TouchableOpacity
+                      onPressIn={() => onClickOP(op.opid)} 
+                      style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}} onPress={() => deletePatientIfExist(op.id)}>
                         <Icon  icon="delete" fillColor={color.palette.white} height={20} width={20} />
                       </TouchableOpacity>
                     </View>
@@ -150,10 +143,10 @@ const OpSearch = (props: TextFieldProps) => {
 
   const onSubmit = () => {
     console.log(text)
-    getPatient(text, (err) => {
+    getPatient(Number(text), (err) => {
       // console.log("executing callback")
       if (!err) {
-        navigation.navigate('tomogram', {opid: text});
+        navigation.navigate('tomogram', {opid: Number(text)});
         onChangeText('');
         // console.log(opStore)
         return

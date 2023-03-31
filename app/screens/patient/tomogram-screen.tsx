@@ -1,3 +1,4 @@
+/* eslint-disable react-native/split-platform-components */
 import React, { FC, useState } from "react"
 import { View, TextInputProps, TouchableOpacity, ScrollView, PermissionsAndroid } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
@@ -211,7 +212,7 @@ const NoTomogramView = (props) => {
 }
 
 interface TextFieldProps extends TextInputProps {
-  title: string
+  title: number
   navigation: StackNavigationProp<NavigatorParamList, 'tomogram'>
 }
 
@@ -242,7 +243,7 @@ const OpSearch = (props: TextFieldProps) => {
         maxLength={7}
         radius={6}
         iconSize={16}
-        value={title}
+        value={String(title)}
         editable={false}
         onRightPress={onExit}
       />

@@ -39,7 +39,7 @@ import FlashMessage from "react-native-flash-message";
  */
 export type NavigatorParamList = {
   home: undefined
-  tomogram: {opid: string}
+  tomogram: {opid: number}
   welcome: undefined
   demo: undefined
   demoList: undefined
@@ -68,7 +68,7 @@ const   AppStack = () => {
         gestureEnabled: false,
         animation: "slide_from_right",
       }}
-      initialRouteName="tomogram"
+      initialRouteName="home"
     >
       <Stack.Screen name="home" component={HomeScreen} options={{animation: "fade"}}/>
       <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} initialParams={{opid : '123'}}/>
