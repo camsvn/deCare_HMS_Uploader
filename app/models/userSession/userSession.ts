@@ -48,6 +48,10 @@ export const UserSessionModel = types.model("userSession").props({
     }),
     fetchAccessToken: () => {
       console.log("Fetch Token")
+    },
+    clear: () => {
+      self.accessToken = null
+      self.refreshToken = null
     }
   }))
 
