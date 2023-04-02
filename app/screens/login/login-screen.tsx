@@ -22,11 +22,28 @@ import * as loginScreenStyles from "./login-screen.style";
 export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> = observer(
   ({ navigation }) => {
 
+    const {userSession} = useStores()
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
 
     const toggleShowPassword = () => setShowPassword(!showPassword);
+
+    const handleLogin = () => {
+      userSession.fetchTokens(username, password, (err) => {
+        if (!err) {
+          setUsername('')
+          setPassword('')
+          navigation.navigate("appHome");
+          return
+        }
+        showMessage({
+          message: `Login: ${err}`,
+          type: "danger"
+        })
+      })
+    }
 
     return (
       <View testID="LoginScreen" style={loginScreenStyles.FULL}>
@@ -65,7 +82,7 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
                 labelStyle={{color:color.palette.black}}
                 iconStyle={loginScreenStyles.SHOW_PASSWORD_ICON}
               />
-              <Button style={loginScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button')}>
+              <Button style={loginScreenStyles.SUBMIT_BUTTON} onPress={handleLogin}>
                 <Text style={loginScreenStyles.TEXT}>Sign In</Text>
             </Button>
             </View>
