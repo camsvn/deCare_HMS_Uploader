@@ -53,14 +53,33 @@ export const SUBMIT_BUTTON: ViewStyle = {
   backgroundColor: color.primary,
 }
 
+export const TEXT_FIELD_WRAPPER: ViewStyle = {
+  // height: 30,
+  width: "100%",
+  // borderRadius: 5,
+  // marginHorizontal: spacing[0],
+  // borderColor: color.error,
+  // borderWidth: 2,
+  // marginVertical: spacing[3],
+  // marginBottom: spacing[4]
+}
+
 export const TEXT_FIELD: TextStyle = {
   height: 30,
   width: "100%",
+  // flex: 1,
   borderRadius: 5,
   marginHorizontal: spacing[0],
   textAlignVertical: "top",
   borderColor: color.palette.black,
   borderWidth: 0.9,
-  marginVertical: spacing[3],
+  marginTop: spacing[3],
   marginBottom: spacing[4],
+}
+
+export const SHOW_PASSWORD_ICON: ViewStyle = {
+  position: "absolute",
+  right: 0,
+  top: "15%",
+  height: 45
 }

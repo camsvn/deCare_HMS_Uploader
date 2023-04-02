@@ -41,6 +41,7 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
             </View>
             <View style={loginScreenStyles.FORM_CONTAINER}>
               <TextField
+                containerStyle={loginScreenStyles.TEXT_FIELD_WRAPPER}
                 inputStyle={loginScreenStyles.TEXT_FIELD}
                 radius={5}
                 label="Username"
@@ -50,15 +51,19 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
                 labelStyle={{color:color.palette.black}}
               />
               <TextField
+                containerStyle={loginScreenStyles.TEXT_FIELD_WRAPPER}
                 inputStyle={loginScreenStyles.TEXT_FIELD}
                 radius={5}
                 label="Password"
                 secureTextEntry={!showPassword}
-                // rightIcon="camera"
+                rightIcon={showPassword ? "eyePassswordShow" : "eyePassswordHide"}
+                iconSize={22}
+                onRightPress={toggleShowPassword}
                 value={password}
                 onChangeText={setPassword}
                 preset="secondary"
                 labelStyle={{color:color.palette.black}}
+                iconStyle={loginScreenStyles.SHOW_PASSWORD_ICON}
               />
               <Button style={loginScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button')}>
                 <Text style={loginScreenStyles.TEXT}>Sign In</Text>
