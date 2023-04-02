@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import { View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
@@ -7,19 +7,15 @@ import {
   Header,
   Screen,
   Text,
-  TextField,
   Divider,
   Icon
 } from "../../components"
-import { color, spacing, typography } from "../../theme"
+import { color} from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
-import LogoSvg from './LogoSvg'
-import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import * as settingScreenStyles from "./settings-screen.style";
-import { l } from "i18n-js"
 
 
 
@@ -32,6 +28,12 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
       userSession.clear()
       console.log("Trying to logout")
       navigation.navigate("login")
+    }
+
+    const handleChangeURL = () => {
+      userSession.clear()
+      console.log("Switch to Change URL Screen")
+      navigation.navigate("configureURL")
     }
 
     return (
@@ -47,6 +49,7 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
           <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
             <Button type="opacity" preset="link" 
               style={settingScreenStyles.BUTTON_CONTAINER} 
+              onPress={handleChangeURL}
             >
               <View style={settingScreenStyles.BUTTON_SPACING_CONTENT}>
                 <Text style={settingScreenStyles.PRIMARY_CONTENT}>Change InstallationURL</Text>
