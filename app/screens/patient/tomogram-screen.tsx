@@ -135,7 +135,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
         </View>
         <Screen style={tomogramScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
             <View style={tomogramStore.tomograms.length > 0 ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
-              {tomogramStore.tomograms.length > 0 ? <TomogramListView1 store={tomogramStore} /> : <NoTomogramView renderCount={renderCount}/>}
+              {tomogramStore.tomograms.length > 0 ? <TomogramListView store={tomogramStore} /> : <NoTomogramView renderCount={renderCount}/>}
           </View>
           <HideWithKeyboard>
             <OpSearch title={opid} navigation={navigation}/>
@@ -151,7 +151,7 @@ interface TomogramScreenProps {
   store: TomogramStore;
 }
 
-const TomogramListView1 = ({store} : TomogramScreenProps) => {
+const TomogramListView = observer(({store} : TomogramScreenProps) => {
   
   const renderItem = (item: Tomogram) => {
     return (
@@ -189,7 +189,7 @@ const TomogramListView1 = ({store} : TomogramScreenProps) => {
       {store.tomograms.map((item) => renderItem(item))}
     </ScrollView>
   )
-}
+})
 
 const NoTomogramView = (props) => {
   const {renderCount} = props;
