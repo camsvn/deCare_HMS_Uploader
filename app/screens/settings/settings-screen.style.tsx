@@ -51,6 +51,10 @@ export const CONTENT: TextStyle = {
   // lineHeight: 22
 }
 
+export const PRIMARY_CONTENT: TextStyle = {
+  fontSize: 18
+}
+
 export const MAINVIEW_CONTAINER: ViewStyle = { flex: 1, marginHorizontal: spacing[3] }
 export const LOGOVIEW_CONTAINER: ViewStyle = {
   flex: 1,
@@ -88,4 +92,29 @@ export const TEXT_FIELD: TextStyle = {
   borderWidth: 0.9,
   marginVertical: spacing[3],
   marginBottom: spacing[4],
+}
+
+export const BUTTON_CONTAINER: ViewStyle = {
+  paddingHorizontal: 0,
+  flexDirection: "row",
+  alignItems: "center"
+}
+
+export const LOGOUT_BUTTON_CONTAINER: ViewStyle = {
+  ...BUTTON_CONTAINER,
+  justifyContent: "flex-start"
+}
+
+export const LOGOUT_TEXT: TextStyle = {
+  paddingVertical: spacing[4]
+}
+
+export const LOGOUT_ICON: ViewStyle = {
+  transform: [{ rotate: '180deg' }],
+  marginLeft: 5
+}
+
+export const BUTTON_SPACING_CONTENT: ViewStyle = {
+  paddingVertical: spacing[4],
+  flex: 1
 }

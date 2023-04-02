@@ -18,7 +18,7 @@ import LogoSvg from './LogoSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 import { showMessage, hideMessage } from "react-native-flash-message"
-import * as loginScreenStyles from "./settings-screen.style";
+import * as settingScreenStyles from "./settings-screen.style";
 import { l } from "i18n-js"
 
 
@@ -26,34 +26,31 @@ import { l } from "i18n-js"
 export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">> = observer(
   ({ navigation }) => {
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [showPassword, setShowPassword] = useState(false)
+    const {userSession} = useStores()
 
-    const toggleShowPassword = () => setShowPassword(!showPassword);
+    const handleLogout = () => {
+      userSession.clear()
+      console.log("Trying to logout")
+      navigation.navigate("login")
+    }
 
     return (
-      <View testID="SettingScreen" style={loginScreenStyles.FULL}>
+      <View testID="SettingScreen" style={settingScreenStyles.FULL}>
         <Header
-        //  leftIcon="cloudSync"
-        //  rightIcon="checkMark" 
-        //  leftIconSize={26}
-        //  rightIconSize={24}
          headerTx="common.header" 
-         style={loginScreenStyles.HEADER} 
-         titleStyle={loginScreenStyles.HEADER_TITLE} 
+         style={settingScreenStyles.HEADER} 
+         titleStyle={settingScreenStyles.HEADER_TITLE} 
          onLeftPress={()=>console.log("Header Left Pressed")}
          onRightPress={()=>console.log("Header Right Pressed")}
         />
-        <Screen style={loginScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
-          <View style={loginScreenStyles.MAINVIEW_CONTAINER}>
+        <Screen style={settingScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
+          <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
             <Button type="opacity" preset="link" 
-              style={[{paddingHorizontal: 0, flexDirection: "row", alignItems: "center"}]} 
+              style={settingScreenStyles.BUTTON_CONTAINER} 
             >
-              <View style={[{paddingVertical: spacing[4], flex: 1}]}>
-                {/* <Text style={[{fontSize: 18, paddingVertical: spacing[4], flex: 1}]}>Change InstallationURL</Text> */}
-                <Text style={[{fontSize: 18}]}>Change InstallationURL</Text>
-                <Text style={[loginScreenStyles.CONTENT]}>Re-configure the connection URL of your self-hosted DeCare HMS. This process will log you out of the app.</Text>
+              <View style={settingScreenStyles.BUTTON_SPACING_CONTENT}>
+                <Text style={settingScreenStyles.PRIMARY_CONTENT}>Change InstallationURL</Text>
+                <Text style={settingScreenStyles.CONTENT}>Re-configure the connection URL of your self-hosted DeCare HMS. This process will log you out of the app.</Text>
               </View>
               <Icon icon="arrow" containerStyle={{ transform: [{ rotate: '90deg' }] }} fillColor={color.primary}/>
             </Button>
@@ -61,19 +58,20 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
             <Divider color={color.primary} />
 
             <Button type="opacity" preset="link" 
-              style={[{paddingHorizontal: 0, flexDirection: "row", alignItems: "center"}]} 
+              style={settingScreenStyles.BUTTON_CONTAINER} 
             >
-              <Text style={[{fontSize: 18, paddingVertical: spacing[4], flex: 1}]}>About</Text>
+              <Text style={[settingScreenStyles.PRIMARY_CONTENT, settingScreenStyles.BUTTON_SPACING_CONTENT]}>About</Text>
               <Icon icon="arrow" containerStyle={{ transform: [{ rotate: '90deg' }] }} fillColor={color.primary}/>
             </Button>
 
             <Divider color={color.primary}/>
 
             <Button type="opacity" preset="link" 
-              style={[{paddingHorizontal: 0, flexDirection: "row", alignItems: "center", justifyContent: "flex-start"}]} 
+              style={settingScreenStyles.LOGOUT_BUTTON_CONTAINER} 
+              onPress={handleLogout}
             >
-              <Text style={[{fontSize: 18, paddingVertical: spacing[4]}]}>Logout</Text>
-              <Icon icon="logout" containerStyle={{ transform: [{ rotate: '180deg' }], marginLeft: 5 }} fillColor={color.errorRed}/>
+              <Text style={[settingScreenStyles.PRIMARY_CONTENT ,settingScreenStyles.LOGOUT_TEXT]}>Logout</Text>
+              <Icon icon="logout" containerStyle={ settingScreenStyles.LOGOUT_ICON } fillColor={color.errorRed}/>
             </Button>
           </View>
         </Screen>
