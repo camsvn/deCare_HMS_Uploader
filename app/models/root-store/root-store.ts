@@ -3,6 +3,7 @@ import { CharacterStoreModel } from "../character-store/character-store"
 import { PatientModel, Patient } from '../patient/patient'
 import { RecentSearchesModel, RecentSearches } from '../recentSearch/recentSearch'
 import { UserSessionModel, UserSession } from '../userSession/userSession'
+import { AppConfigModel } from '../appConfig/appConfig'
 
 /**
  * A RootStore model.
@@ -13,6 +14,7 @@ export const RootStoreModel = types.model("RootStore").props({
   opStore: types.optional(PatientModel, {} as any),
   recentSearchesStore: types.optional(RecentSearchesModel, {} as any),
   userSession: types.optional(UserSessionModel, {} as any),
+  appConfig: types.optional(AppConfigModel, {} as any)
 })
 
 /**
