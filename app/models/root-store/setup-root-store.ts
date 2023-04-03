@@ -15,8 +15,8 @@ const ROOT_STATE_STORAGE_KEY = "root"
  * of the models that get created later. This is how we loosly couple things
  * like events between models.
  */
-export async function createEnvironment() {
-  const env = new Environment()
+export async function createEnvironment(url: string | undefined = undefined) {
+  const env = new Environment(url)
   await env.setup()
   return env
 }
@@ -24,12 +24,12 @@ export async function createEnvironment() {
 /**
  * Setup the root state.
  */
-export async function setupRootStore() {
+export async function setupRootStore(url: string | undefined = undefined) {
   let rootStore: RootStore
   let data: any
 
   // prepare the environment that will be associated with the RootStore.
-  const env = await createEnvironment()
+  const env = await createEnvironment(url)
   try {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
