@@ -19,6 +19,44 @@ import * as configureURLScreenStyles from "./configureURL-screen.style";
 const { API_URL } = require("../../config/env")
 const installationURLImage = require("./installationurl2.png")
 
+/**
+ * The regular expression regex matches the following pattern:
+ *
+ *  • `^` matches the beginning of the string.
+ * 
+ *  • `(https?:\/\/)?` matches the optional "http://" or "https://" protocol.
+ * 
+ *  • `(` starts a capturing group for the domain name.
+ * 
+ *  • `(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?` matches "localhost" or an IP address with an optional port number (1-5 digits).
+ * 
+ *  • `|` separates the alternatives.
+ * 
+ *  • `(www\.)?[\w-]+\.[a-z]{2,}` matches a domain name with an optional "www." prefix and a top-level domain name with at least two letters.
+ * 
+ *  • `)` ends the capturing group for the domain name.
+ * 
+ *  • `(\/\S*)?` matches an optional path after the domain name.
+ * 
+ *  • `$` matches the end of the string.
+ * 
+ *  • `i` makes the regular expression case-insensitive.
+ * 
+ * Example:
+ * 
+ *    `console.log(isValidUrl("https://www.example.com"));`  // true
+ * 
+ *    `console.log(isValidUrl("http://localhost:8080"));`    // true
+ * 
+ *    `console.log(isValidUrl("http://127.0.0.1:3000/"));`   // true
+ * @param url 
+ * @returns 
+ */
+function isValidUrl(url: string) {
+  const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w-]+\.[a-z]{2,})(\/\S*)?$/i;
+  return regex.test(url);
+}
+
 
 export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "configureURL">> = observer(
   ({ navigation }) => {
@@ -29,6 +67,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
     // const nextScreen = () => navigation.navigate("demo")
 
     const handleConnect = async () => {
+      isValidUrl(configURL) ?
       await appConfig.checkConnection(configURL, (err) => {
         if (!err) {
           navigation.navigate('login');
@@ -38,6 +77,10 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
           message: `Host: ${err}`,
           type: "danger"
         })
+      }) :
+      showMessage({
+        message: "Invalid URL: Please provide a valid URL",
+        type: "warning"
       })
     }
 
