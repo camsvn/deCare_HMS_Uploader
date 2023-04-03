@@ -8,6 +8,11 @@ export interface User {
   name: string
 }
 
+export interface HealthCheck {
+  message: string
+  uptime: number
+}
+
 export type GetUsersResult = { kind: "ok"; users: User[] } | GeneralApiProblem
 export type GetUserResult = { kind: "ok"; user: User } | GeneralApiProblem
 
@@ -17,3 +22,4 @@ export type GetCharacterResult = { kind: "ok"; character: Character } | GeneralA
 export type GetPatientResult = { kind: "ok"; patient: Patient } | GeneralApiProblem
 
 export type GetUserSessionResult = { kind: "ok"; tokens: UserSession } | GeneralApiProblem
+export type GetHealthCheckResult = { kind: "ok"; healthCheck: HealthCheck } | GeneralApiProblem
