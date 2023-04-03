@@ -20,6 +20,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
 import { View, Text } from "react-native"
+import { reaction } from 'mobx'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -44,6 +45,30 @@ function App() {
       await initFonts() // expo
       setupRootStore().then(setRootStore)
     })()
+    
+    // initialize the RootStore and set the state when the component mounts
+    // const initialize = async () => {
+    //   await initFonts() // expo
+    //   const store = await setupRootStore()
+    //   setRootStore(store)
+    // }
+    // initialize()
+
+    // create a reaction to watch for changes in rootStore.appConfig.configURL
+    const dispose = reaction(
+      () => rootStore?.appConfig.configURL,
+      async () => {
+        // re-initialize the RootStore and update the state with the new instance
+        console.log("Reaction :: Config URL changed")
+        const newStore = await setupRootStore(rootStore?.appConfig.configURL)
+        setRootStore(newStore)
+      }
+    )
+
+    // clean up the reaction when the component unmounts
+    return () => {
+      dispose()
+    }
   }, [])
 
   // Before we show the app, we have to wait for our state to be ready.
