@@ -43,10 +43,15 @@ export const AppConfigModel = types
     }
     })
 
+    function reset () {
+      self.configURL = ''
+    }
+
     return {
       setConfigURL,
       set,
       checkConnection,
+      reset
     }
   })
 
