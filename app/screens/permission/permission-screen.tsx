@@ -1,3 +1,4 @@
+/* eslint-disable react-native/split-platform-components */
 import React, { FC, useEffect, useState } from "react"
 import { View, Linking, PermissionsAndroid, AppState } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -8,10 +9,10 @@ import {
   Text,
   Icon
 } from "../../components"
-import { color, spacing, typography } from "../../theme"
+import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
-import { showMessage, hideMessage } from "react-native-flash-message"
+import { showMessage } from "react-native-flash-message"
 import * as permissionScreenStyles from "./permission-screen.style";
 
 
@@ -99,7 +100,7 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
 
     return (
       <View testID="PermissionScreen" style={permissionScreenStyles.FULL}>
-        <View style={[{position: "absolute", top: 20, zIndex: 1}]}>
+        <View style={permissionScreenStyles.HEADER_VIEW}>
           <Button onPress={() => goBack()} preset="link" type="highlight">
             <Icon icon="back" width={30} height={30}/>
           </Button>
@@ -108,7 +109,7 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
           <View style={permissionScreenStyles.MAINVIEW_CONTAINER}>
             <Text style={permissionScreenStyles.TITLE}>{`Grant Permission to access ${permissionName}`}</Text>
             <Text style={[permissionScreenStyles.CONTENT, {marginTop: spacing[3]}]}>{permissionDescription}</Text>
-            <Button type="highlight" text="Grant Permission" style={{marginTop: spacing[4], backgroundColor: color.errorRed}} textStyle={{fontSize:14}} onPress={handlePermission}/>
+            <Button type="highlight" text="Grant Permission" style={{marginTop: spacing[4], backgroundColor: color.errorRed}} textStyle={permissionScreenStyles.CONTENT_TEXT} onPress={handlePermission}/>
           </View>
         </Screen>
       </View>

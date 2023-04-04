@@ -90,3 +90,13 @@ export const TEXT_FIELD: TextStyle = {
   marginVertical: spacing[3],
   marginBottom: spacing[4],
 }
+
+export const HEADER_VIEW: ViewStyle = { 
+  position: "absolute", 
+  top: 20, 
+  zIndex: 1
+}
+
+export const CONTENT_TEXT: TextStyle = {
+  fontSize:14
+}
