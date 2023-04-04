@@ -4,11 +4,11 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React, { useEffect } from "react"
-import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewStyle, TextStyle, Permission } from "react-native"
+import React from "react"
+import { useColorScheme, StatusBar, Permission } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   HomeScreen,
   TomogramScreen,
@@ -17,9 +17,9 @@ import {
   SettingScreen,
   PermissionScreen 
 } from "../screens"
+import { MyTabBar } from "./tabBar";
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
-import { HideWithKeyboard } from '../components'
 import FlashMessage from "react-native-flash-message";
 import { useStores } from "../models";
 import { observer } from "mobx-react-lite";
@@ -62,8 +62,11 @@ export type RootNavigatorParamList = {
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<NavigatorParamList>()
+const SettingsStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator<TabNavigatorParamList>();
+const RootStack = createNativeStackNavigator<RootNavigatorParamList>();
 
-const   AppStack = () => {
+const AppStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -83,20 +86,6 @@ const   AppStack = () => {
   ) 
 }
 
-const SettingsStack = createNativeStackNavigator();
-
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings screen</Text>
-      <Button
-        title="Go to Demo"
-        onPress={() => navigation.navigate('welcome')}
-      />
-    </View>
-  );
-}
-
 function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator
@@ -111,104 +100,6 @@ function SettingsStackScreen() {
   );
 }
 
-const FOOTER_CONTENT: ViewStyle = {
-  // backgroundColor: "#20162D",
-  backgroundColor: color.primary,
-  height: 74,
-  // alignItems: "center",
-  flexDirection: "row"
-}
-
-const BUTTON_WRAPPER: ViewStyle = {
-  flex: 1,
-  marginVertical: 18,
-  marginHorizontal: 32,
-  // height: 44,
-  alignItems: "center",
-  justifyContent: "center",
-}
-
-const BUTTON_WRAPPER_FOCUS: ViewStyle = {
-  // backgroundColor: "#5D2555",
-  backgroundColor: color.opacity(0.5),
-  borderRadius: 4
-}
-
-const TAB_TITLE: TextStyle = {
-  color: 'white'
-}
-
-const DIVIDER: ViewStyle = {
- borderWidth: 0.5,
- borderColor: 'white',
- height: 44,
- alignSelf: "center"
-}
-
-function MyTabBar({ state, descriptors, navigation } : BottomTabBarProps) {
-  return (
-    <HideWithKeyboard>
-    <View style={FOOTER_CONTENT}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({ name: route.name, merge: true, params: {} });
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return (
-          <View key={index} style={{flex: 1, flexDirection: 'row'}}>
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={[BUTTON_WRAPPER, isFocused && BUTTON_WRAPPER_FOCUS]}
-            >
-              <Text style={TAB_TITLE}>
-                {label}
-              </Text>
-            </TouchableOpacity>
-            {index !== state.routes.length-1 ? 
-            <View
-              style={DIVIDER}
-            /> : null}
-          </View>
-        );
-      })}
-    </View>
-    </HideWithKeyboard>
-  );
-}
-
-const Tab = createBottomTabNavigator<TabNavigatorParamList>();
-
 const AppRootTab = () => {
   return (
     <Tab.Navigator
@@ -221,8 +112,6 @@ const AppRootTab = () => {
     </Tab.Navigator>
   )
 }
-
-const RootStack = createNativeStackNavigator<RootNavigatorParamList>();
 
 interface AppRootStackProps {
   initialRoute?: keyof RootNavigatorParamList
