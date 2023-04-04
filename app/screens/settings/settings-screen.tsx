@@ -25,7 +25,7 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalConfirmFunction, setModalConfirmFunction] = useState(null);
 
-    const {userSession} = useStores()
+    const {userSession, appConfig} = useStores()
 
     const handleLogout = () => {
       userSession.clear()
@@ -34,6 +34,7 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
     }
 
     const handleChangeURL = () => {
+      appConfig.reset()
       userSession.clear()
       navigation.navigate("configureURL")
     }
