@@ -4,15 +4,12 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React from "react"
+import React, { useEffect } from "react"
 import { useColorScheme, StatusBar, Button, Text, View, TouchableOpacity, ViewStyle, TextStyle, Permission } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
-  WelcomeScreen,
-  DemoScreen,
-  DemoListScreen,
   HomeScreen,
   TomogramScreen,
   ConfigureURLScreen,
@@ -24,6 +21,9 @@ import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 import { color } from "../theme"
 import { HideWithKeyboard } from '../components'
 import FlashMessage from "react-native-flash-message";
+import { useStores } from "../models";
+import { observer } from "mobx-react-lite";
+
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -40,6 +40,8 @@ import FlashMessage from "react-native-flash-message";
 export type NavigatorParamList = {
   home: undefined
   tomogram: {opid: number}
+  login: undefined
+  configureURL: undefined
   welcome: undefined
   demo: undefined
   demoList: undefined
@@ -55,6 +57,7 @@ export type TabNavigatorParamList = {
 export type RootNavigatorParamList = {
   configureURL: undefined
   login: undefined
+  appHome: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -73,9 +76,9 @@ const   AppStack = () => {
       <Stack.Screen name="home" component={HomeScreen} options={{animation: "fade"}}/>
       <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} initialParams={{opid : '123'}}/>
       <Stack.Screen name="permission" component={PermissionScreen} options={{animation: "fade"}} />
-      <Stack.Screen name="welcome" component={WelcomeScreen} />
+      {/* <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
-      <Stack.Screen name="demoList" component={DemoListScreen} />
+      <Stack.Screen name="demoList" component={DemoListScreen} /> */}
     </Stack.Navigator>
   ) 
 }
@@ -101,9 +104,9 @@ function SettingsStackScreen() {
       initialRouteName="SettingsRoot"    
     >
       <SettingsStack.Screen name="SettingsRoot" component={SettingScreen} />
-      <SettingsStack.Screen name="welcome" component={WelcomeScreen} />
+      {/* <SettingsStack.Screen name="welcome" component={WelcomeScreen} />
       <SettingsStack.Screen name="demo" component={DemoScreen} />
-      <SettingsStack.Screen name="demoList" component={DemoListScreen} />
+      <SettingsStack.Screen name="demoList" component={DemoListScreen} /> */}
     </SettingsStack.Navigator>
   );
 }
@@ -219,13 +222,17 @@ const AppRootTab = () => {
   )
 }
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootNavigatorParamList>();
 
-function AppRootStack() {
+interface AppRootStackProps {
+  initialRoute?: keyof RootNavigatorParamList
+}
+
+function AppRootStack({initialRoute = "configureURL"}:AppRootStackProps) {
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="appHome"    
+      initialRouteName={initialRoute}   
     >
       <RootStack.Screen name="configureURL" component={ConfigureURLScreen} />
       <RootStack.Screen name="login" component={LoginScreen} />
@@ -235,26 +242,33 @@ function AppRootStack() {
 }
 
 
-interface NavigationProps extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+interface NavigationProps extends Partial<React.ComponentProps<typeof NavigationContainer>> {
+  isSessionRestored: boolean
+}
 
-export const AppNavigator = (props: NavigationProps) => {
+export const AppNavigator = observer((props: NavigationProps) => {
+  const { appConfig } = useStores()
   const colorScheme = useColorScheme()
   useBackButtonHandler(canExit)
+  
   return (
     <NavigationContainer
       ref={navigationRef}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
       {...props}
     >
-      {/* <StatusBar backgroundColor="#f3f3f3"/> */}
-      <StatusBar backgroundColor={color.primary}/>
-      {/* <AppStack /> */}
-      {/* <AppRootTab /> */}
-      <AppRootStack />
+      <StatusBar backgroundColor={color.primary} />
+      {props.isSessionRestored ? (
+        <AppRootStack initialRoute="appHome" />
+      ) : appConfig.configURL ? (
+        <AppRootStack initialRoute="login" />
+      ) : (
+        <AppRootStack />
+      )}
       <FlashMessage position="top" />
     </NavigationContainer>
   )
-}
+})
 
 AppNavigator.displayName = "AppNavigator"
 
@@ -267,5 +281,5 @@ AppNavigator.displayName = "AppNavigator"
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ["home"]
+const exitRoutes = ["home", "login", "configureURL"]
 export const canExit = (routeName: string) => exitRoutes.includes(routeName)

@@ -21,6 +21,7 @@ import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
 import { View, Text } from "react-native"
 import { reaction } from 'mobx'
+import { Buffer } from 'buffer';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -33,6 +34,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  */
 function App() {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
+  const [isSessionRestored, setSessionRestored] = useState<boolean>(false)
   const {
     initialNavigationState,
     onNavigationStateChange,
@@ -41,9 +43,37 @@ function App() {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
+    function restoreSession(store: RootStore) {
+      const refreshToken = store?.userSession.refreshToken
+
+      if(!refreshToken) {
+        console.log("No Refresh Token Found")
+        return
+      }
+
+      console.log("Refresh Token Found")
+      const base64Url = refreshToken.split('.')[1]; // Extract the payload of the token
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Replace URL-safe characters
+      // const payload = JSON.parse(window.atob(base64)); // Decode the payload and parse the JSON string
+      const payload = JSON.parse(Buffer.from(base64, 'base64').toString('ascii')); // Decode the payload and parse the JSON string
+
+      const exp = payload.exp; // Extract the expiration time from the payload
+
+      const isTokenValid = exp > (Date.now() / 1000); // Check if expiration time is greater than current Unix timestamp
+
+      if (!isTokenValid) {
+        setSessionRestored(false)
+        return
+      }
+      setSessionRestored(true)
+    }
+
     ;(async () => {
       await initFonts() // expo
-      setupRootStore().then(setRootStore)
+      setupRootStore().then((store) => {
+        restoreSession(store)
+        setRootStore(store)
+      })
     })()
     
     // initialize the RootStore and set the state when the component mounts
@@ -86,6 +116,7 @@ function App() {
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <ErrorBoundary catchErrors={"always"}>
             <AppNavigator
+              isSessionRestored = {isSessionRestored}
               initialState={initialNavigationState}
               onStateChange={onNavigationStateChange}
             />
