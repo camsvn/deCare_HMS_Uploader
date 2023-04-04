@@ -6,6 +6,7 @@ import {
   NavigationAction,
   createNavigationContainerRef,
 } from "@react-navigation/native"
+import { showMessage, hideMessage } from "react-native-flash-message"
 
 /* eslint-disable */
 export const RootNavigation = {
@@ -40,6 +41,7 @@ export function getActiveRouteName(state: NavigationState | PartialState<Navigat
  */
 export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
   const canExitRef = useRef(canExit)
+  const backPressCountRef = useRef(0)
 
   useEffect(() => {
     canExitRef.current = canExit
@@ -58,8 +60,20 @@ export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
       // are we allowed to exit?
       if (canExitRef.current(routeName)) {
         // exit and let the system know we've handled the event
-        BackHandler.exitApp()
-        return true
+        if (backPressCountRef.current === 1) {
+          BackHandler.exitApp()
+          return true
+        } else {
+          showMessage({
+            message: "App: Press back again to exit",
+            type: "warning"
+          })
+          backPressCountRef.current = 1
+          setTimeout(() => {
+            backPressCountRef.current = 0
+          }, 3000) // reset the count after 3 seconds
+          return true
+        }
       }
 
       // we can't exit, so let's turn this into a back action
