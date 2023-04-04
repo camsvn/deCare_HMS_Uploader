@@ -1,8 +1,8 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { CharacterStoreModel } from "../character-store/character-store"
-import { PatientModel, Patient } from '../patient/patient'
-import { RecentSearchesModel, RecentSearches } from '../recentSearch/recentSearch'
-import { UserSessionModel, UserSession } from '../userSession/userSession'
+import { PatientModel } from '../patient/patient'
+import { RecentSearchesModel } from '../recentSearch/recentSearch'
+import { UserSessionModel } from '../userSession/userSession'
 import { AppConfigModel } from '../appConfig/appConfig'
 
 /**
