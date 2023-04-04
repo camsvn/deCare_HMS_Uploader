@@ -39,7 +39,7 @@ export const UserSessionModel = types.model("userSession").props({
       self._setLoading(false)
       if (result.kind === "ok") {
         self.accessToken = result.tokens.accessToken
-        self.accessToken = result.tokens.refreshToken
+        self.refreshToken = result.tokens.refreshToken
         callback(null)
       } else {
         callback(result.kind)
