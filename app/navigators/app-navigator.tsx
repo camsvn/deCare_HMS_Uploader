@@ -77,7 +77,7 @@ const AppStack = () => {
       initialRouteName="home"
     >
       <Stack.Screen name="home" component={HomeScreen} options={{animation: "fade"}}/>
-      <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} initialParams={{opid : '123'}}/>
+      <Stack.Screen name="tomogram" component={TomogramScreen} options={{animation: "fade"}} />
       <Stack.Screen name="permission" component={PermissionScreen} options={{animation: "fade"}} />
       {/* <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
