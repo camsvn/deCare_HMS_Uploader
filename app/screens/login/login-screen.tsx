@@ -12,9 +12,8 @@ import { color, spacing, typography } from "../../theme"
 import { RootNavigatorParamList } from "../../navigators"
 
 import LogoSvg from './LogoSvg'
-import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import { showMessage } from "react-native-flash-message"
 import * as loginScreenStyles from "./login-screen.style";
 
 

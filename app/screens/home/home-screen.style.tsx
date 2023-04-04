@@ -105,6 +105,52 @@ const SUBMIT_BUTTON: ViewStyle = {
   // elevation: 3
 }
 
+const LIST_MAIN_VIEW: ViewStyle = {
+  height: 50, 
+  backgroundColor: color.palette.white
+}
+
+const LIST_HEADER_CONTAINER: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+}
+
+const LIST_CLEAR_BUTTON: ViewStyle = {
+  margin: spacing[1],
+  paddingHorizontal: 0
+}
+
+const LIST_CONTAINER: ViewStyle = {
+  flexDirection: "row", 
+  marginVertical: 10
+}
+
+const LIST_BUTTON_VIEW: ViewStyle = {
+  height: 40,
+  flex: 2.5,
+  backgroundColor: color.palette.offWhite,
+  borderWidth: 1,
+  borderColor: color.palette.black,
+  borderRightWidth: 0,
+  borderTopRightRadius: 0,
+  borderBottomRightRadius: 0,
+}
+
+const BUTTON_TEXT: TextStyle = {
+  fontSize: 16
+}
+
+const DELETE_LIST: ViewStyle = {
+  borderWidth: 1,
+  borderColor: color.palette.black,
+  justifyContent: "center",
+  backgroundColor: color.errorRed,
+  borderTopRightRadius: 3,
+  borderBottomRightRadius: 3,
+  padding: spacing[2],
+}
+
 export default {
   FULL,
   CONTAINER,
@@ -126,6 +172,13 @@ export default {
   SEARCH_INPUT_WRAPPER,
   SEARCH_INPUT,
   SUBMIT_BUTTON,
+  LIST_MAIN_VIEW,
+  LIST_HEADER_CONTAINER,
+  LIST_CLEAR_BUTTON,
+  LIST_CONTAINER,
+  LIST_BUTTON_VIEW,
+  DELETE_LIST,
+  BUTTON_TEXT
 }
 
 

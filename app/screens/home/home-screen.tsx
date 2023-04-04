@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react"
-import { View, ViewStyle, TextStyle, SafeAreaView, TextInputProps, ScrollView, TouchableOpacity } from "react-native"
+import React, { FC, useState } from "react"
+import { View, TextInputProps, ScrollView, TouchableOpacity } from "react-native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -7,23 +7,19 @@ import {
   Header,
   Screen,
   Text,
-  TextField,
   SearchTextField,
   Icon,
   HideWithKeyboard,
   Divider,
 } from "../../components"
-import { color, spacing, typography } from "../../theme"
+import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import BlankCanvasSvg from './BlankCanvasSvg'
 import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import { showMessage } from "react-native-flash-message"
 import homeScreenStyles from "./home-screen.style";
-import * as storage from "../../utils/storage";
-
-const OP_LIST_STORAGE_KEY = "opList"
 
 export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = observer(
   ({ navigation }) => {
@@ -34,8 +30,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
     
 
     const renderCount = useRenderCount();
-
-    const nextScreen = () => navigation.navigate("demo")
 
     const onClickOP = (opid: number) => {
       getPatient(opid, (err) => {
@@ -54,10 +48,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
       <>
       <View testID="WelcomeScreen" style={homeScreenStyles.FULL}>
         <Header
-        //  leftIcon="cloudSync"
-        //  rightIcon="checkMark" 
-        //  leftIconSize={26}
-        //  rightIconSize={24}
          headerTx="common.header" 
          style={homeScreenStyles.HEADER} 
          titleStyle={homeScreenStyles.HEADER_TITLE} 
@@ -68,12 +58,10 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
           {/* <View style={homeScreenStyles.NO_PATIENT_CONTAINER}> */}
             { searches.length ? (
               <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-                <View style={{height: 50, backgroundColor: color.palette.white}}>
-                  <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end"}}>
+                <View style={homeScreenStyles.LIST_MAIN_VIEW}>
+                  <View style={homeScreenStyles.LIST_HEADER_CONTAINER}>
                     <Text style={[homeScreenStyles.TITLE, {marginTop: spacing[2]}]}>Recent Searches:</Text>
-                    <Button style={[
-                      {margin: spacing[1], paddingHorizontal: 0}
-                      ]}
+                    <Button style={homeScreenStyles.LIST_CLEAR_BUTTON}
                       textStyle={[
                         homeScreenStyles.CONTENT,
                         {color: color.primary}
@@ -86,16 +74,16 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
                   <Divider/>
                 </View>
                 {searches.map((op) => (
-                    <View key={op.id} style={{flexDirection: "row", marginVertical: 10}}>
+                    <View key={op.id} style={homeScreenStyles.LIST_CONTAINER}>
                       <Button 
                         text={`${op.name}, ${op.opid}`}
-                        textStyle={{fontSize: 16}}
-                        style={{height:40, flex:2.5, backgroundColor: color.palette.offWhite, borderWidth: 1, borderColor: color.palette.black, borderRightWidth: 0, borderTopRightRadius: 0, borderBottomRightRadius: 0}}
+                        textStyle={homeScreenStyles.BUTTON_TEXT}
+                        style={homeScreenStyles.LIST_BUTTON_VIEW}
                         preset="link"
                         onPress={() => onClickOP(op.opid)}
                       />
                       <TouchableOpacity
-                        style={{borderWidth: 1, borderColor: color.palette.black, justifyContent: "center", backgroundColor: color.errorRed, borderTopRightRadius: 3, borderBottomRightRadius: 3, padding: spacing[2]}}
+                        style={homeScreenStyles.DELETE_LIST}
                         onPress={() => deletePatientIfExist(op.id)}
                       >
                         <Icon  icon="delete" fillColor={color.palette.white} height={20} width={20} />
@@ -123,7 +111,6 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
               </View>
               )
             }
-          {/* </View> */}
           <OpSearch navigation={navigation}/>
         </Screen>
       </View>
