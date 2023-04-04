@@ -84,7 +84,12 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
               />
               <Button style={loginScreenStyles.SUBMIT_BUTTON} onPress={handleLogin}>
                 <Text style={loginScreenStyles.TEXT}>Sign In</Text>
-            </Button>
+              </Button>
+              <Button 
+                text="| Change URL |" 
+                preset="link"
+                onPress={() => navigation.navigate("configureURL")} 
+                textStyle={loginScreenStyles.CONFIG_URL_LINK}/>
             </View>
           </View>
         </Screen>

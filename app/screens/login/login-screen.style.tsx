@@ -83,3 +83,9 @@ export const SHOW_PASSWORD_ICON: ViewStyle = {
   top: "15%",
   height: 45
 }
+
+export const CONFIG_URL_LINK: TextStyle = {
+  color: color.dim,
+  fontSize: 14,
+  marginTop: spacing[4]
+}
