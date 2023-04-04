@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
@@ -14,26 +14,33 @@ import { color} from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import { useStores } from "../../models"
-import { showMessage, hideMessage } from "react-native-flash-message"
 import * as settingScreenStyles from "./settings-screen.style";
+import { Modal } from "../../components/modal/modal"
 
 
 
 export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">> = observer(
   ({ navigation }) => {
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalConfirmFunction, setModalConfirmFunction] = useState(null);
+
     const {userSession} = useStores()
 
     const handleLogout = () => {
       userSession.clear()
-      console.log("Trying to logout")
+      setIsModalVisible(false)
       navigation.navigate("login")
     }
 
     const handleChangeURL = () => {
       userSession.clear()
-      console.log("Switch to Change URL Screen")
       navigation.navigate("configureURL")
+    }
+
+    const handleModalClick = (reference: () => void) => {
+      setModalConfirmFunction(reference)
+      setIsModalVisible(true)
     }
 
     return (
@@ -46,10 +53,11 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
          onRightPress={()=>console.log("Header Right Pressed")}
         />
         <Screen style={settingScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
+        <Modal visible={isModalVisible} onConfirm={() => modalConfirmFunction()} onCancel={() => setIsModalVisible(false)} />
           <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
             <Button type="opacity" preset="link" 
               style={settingScreenStyles.BUTTON_CONTAINER} 
-              onPress={handleChangeURL}
+              onPress={() => handleModalClick(() => handleChangeURL)}
             >
               <View style={settingScreenStyles.BUTTON_SPACING_CONTENT}>
                 <Text style={settingScreenStyles.PRIMARY_CONTENT}>Change InstallationURL</Text>
@@ -71,7 +79,8 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
 
             <Button type="opacity" preset="link" 
               style={settingScreenStyles.LOGOUT_BUTTON_CONTAINER} 
-              onPress={handleLogout}
+              // onPress={handleLogout}
+              onPress={() => handleModalClick(() => handleLogout)}
             >
               <Text style={[settingScreenStyles.PRIMARY_CONTENT ,settingScreenStyles.LOGOUT_TEXT]}>Logout</Text>
               <Icon icon="logout" containerStyle={ settingScreenStyles.LOGOUT_ICON } fillColor={color.errorRed}/>
