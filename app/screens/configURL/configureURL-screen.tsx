@@ -13,11 +13,11 @@ import { color } from "../../theme"
 import { RootNavigatorParamList } from "../../navigators"
 
 import { useStores } from "../../models"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import { showMessage } from "react-native-flash-message"
 import * as configureURLScreenStyles from "./configureURL-screen.style";
 
 const { API_URL } = require("../../config/env")
-const installationURLImage = require("./installationurl2.png")
+const installationURLImage = require("./installationurl.png")
 
 /**
  * The regular expression regex matches the following pattern:
