@@ -21,7 +21,6 @@ import { NavigatorParamList } from "../../navigators"
 
 import AddTomogramSvg from './AddTomogramSvg'
 import AddButtonSvg from './AddButtonSvg'
-import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 
 import * as tomogramScreenStyles from "./tomogram-screen.style";
@@ -37,11 +36,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
   ({ navigation, route }) => {
 
     const { opid } = route.params;
-
-    const renderCount = useRenderCount();
     const { opStore }  = useStores()
-
-    const nextScreen = () => navigation.navigate("demo")
 
     const onSubmitOP = async () => {
       await tomogramStore.removeAllTomograms()
@@ -135,7 +130,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
         </View>
         <Screen style={tomogramScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
             <View style={tomogramStore.tomograms.length > 0 ? tomogramScreenStyles.PATIENT_CONTAINER : tomogramScreenStyles.NO_PATIENT_CONTAINER}>
-              {tomogramStore.tomograms.length > 0 ? <TomogramListView store={tomogramStore} /> : <NoTomogramView renderCount={renderCount}/>}
+              {tomogramStore.tomograms.length > 0 ? <TomogramListView store={tomogramStore} /> : <NoTomogramView />}
           </View>
           <HideWithKeyboard>
             <OpSearch title={opid} navigation={navigation}/>
@@ -191,8 +186,7 @@ const TomogramListView = observer(({store} : TomogramScreenProps) => {
   )
 })
 
-const NoTomogramView = (props) => {
-  const {renderCount} = props;
+const NoTomogramView = () => {
   return (
     <>          
       <View style={tomogramScreenStyles.INFO_IMAGE_CONTAINER}>
