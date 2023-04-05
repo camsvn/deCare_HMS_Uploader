@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/android:api-28
+    environment:
+      TERM: xtermn
     working_directory: ~/repo
     steps:
       - checkout
