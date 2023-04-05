@@ -7,13 +7,13 @@ jobs:
       TERM: xtermn
     working_directory: ~/repo
     steps:
-      - checkout
       # Install Node.js
       - run:
-          name: Installl Node.js
+          name: Install Node.js
           command: |
             curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
             sudo apt-get install -y nodejs
+      - checkout
       - run:
           name: Install dependencies
           command: |
