@@ -134,11 +134,12 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.hmsuploader"
+        applicationId "com.decare.hmsuploader"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        archivesBaseName = "decare-hmsuploader"
     }
     splits {
         abi {
@@ -171,6 +172,22 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // add the code from below line.
+            applicationVariants.all{
+                // this method is use to rename your all apk weather
+                // it may be signed or unsigned(debug apk)
+                variant ->
+                    variant.outputs.each{
+                        // on below line we are setting a name to our apk
+                        output->
+                            // on below line we are creating a new name for our apk.
+                            def newName = output.outputFile.name
+                            // on below line we are replacing -release with version name.
+                            newName = newName.replace("-release", "-v" + defaultConfig.versionName)
+                            // at last we are setting our apk name to it.
+                            output.outputFileName  = newName
+                    }
+            }
         }
     }
 
