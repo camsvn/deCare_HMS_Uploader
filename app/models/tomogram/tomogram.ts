@@ -1,5 +1,7 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotOut, getEnv, types } from "mobx-state-tree"
 import { unlinkTmpFiles } from "../../utils/common";
+import { withApiState } from "../extensions";
+import { TomogramApi } from "../../services/api/tomogram-api";
 
 /**
  * Tomogram model.
@@ -13,7 +15,7 @@ const TomogramModel = types.model("Tomogram", {
 type TomogramType = Instance<typeof TomogramModel>
 export interface Tomogram extends TomogramType {}
 type TomogramSnapshotType = SnapshotOut<typeof TomogramModel>
-interface TomogramSnapshot extends TomogramSnapshotType {}
+export interface TomogramSnapshot extends TomogramSnapshotType {}
 export const createTomogramDefaultModel = () => types.optional(TomogramModel, {})
 
 /**
@@ -24,6 +26,15 @@ export const TomogramStoreModel = types
   .props({
     tomograms: types.optional(types.array(TomogramModel), []),
   })
+  .extend(withApiState)
+  .views((self) => ({
+    get api() {
+      return getEnv(self).api
+    }
+  }))
+  .volatile(self => ({
+    tomogramApi: new TomogramApi(self.api)
+  }))
   .views((self) => ({
     get allTomograms() {
       return self.tomograms.map(tomogram => tomogram.tomogram)
@@ -62,6 +73,20 @@ export const TomogramStoreModel = types
       const cachedTomograms = self.allTomograms
       self.tomograms.clear()
       cachedTomograms.length && await unlinkTmpFiles(cachedTomograms)
+    }
+  }))
+  .actions((self) => ({
+    uploadTomograms: async function (opid: number, callback: (err: any) => void) {
+      self._setLoading(true)
+      const result = await self.tomogramApi.uploadTomograms(opid, self.tomograms)
+      self._setLoading(false)
+      if (result.kind === "ok") {
+        self.removeAllTomograms()
+        callback(null)
+      } else {
+        callback(result.kind)
+        __DEV__ && console.tron.log(result.kind)
+      }
     }
   }))
 

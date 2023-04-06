@@ -13,6 +13,13 @@ export interface HealthCheck {
   uptime: number
 }
 
+export interface UploadTomogram {
+  id: number,
+  masterid: number,
+  tomogrampartid: number,
+  narration: string
+}
+
 export type GetUsersResult = { kind: "ok"; users: User[] } | GeneralApiProblem
 export type GetUserResult = { kind: "ok"; user: User } | GeneralApiProblem
 
@@ -23,3 +30,4 @@ export type GetPatientResult = { kind: "ok"; patient: Patient } | GeneralApiProb
 
 export type GetUserSessionResult = { kind: "ok"; tokens: UserSession } | GeneralApiProblem
 export type GetHealthCheckResult = { kind: "ok"; healthCheck: HealthCheck } | GeneralApiProblem
+export type GetUploadTomogramResult = { kind: "ok"; tomograms: UploadTomogram[] } | GeneralApiProblem
