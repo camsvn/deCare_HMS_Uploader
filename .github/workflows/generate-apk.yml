@@ -34,6 +34,7 @@ jobs:
 
     - name: Generate env.prod.js
       run: |
+        ls &&
         echo "module.exports = {" > .app/config/env.prod.js
         echo "  API_URL: '${{ secrets.DEFAULT_API_URL }}'," >> .app/config/env.prod.js
         echo "}" >> .app/config/env.prod.js
