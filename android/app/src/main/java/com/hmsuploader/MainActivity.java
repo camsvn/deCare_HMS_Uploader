@@ -1,4 +1,4 @@
-package com.hmsuploader;
+package com.decare.hmsuploader;
 
 import com.facebook.react.ReactActivity;
 

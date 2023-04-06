@@ -1,4 +1,4 @@
-package com.hmsuploader;
+package com.decare.hmsuploader;
 
 import android.app.Application;
 import android.content.Context;
