@@ -62,7 +62,7 @@ jobs:
 
     - name: Build Android App Bundle
       run: |
-        cd android && ./gradlew assembleRelease --no-daemon
+        cd android && ./gradlew app:assembleRelease --no-daemon
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
