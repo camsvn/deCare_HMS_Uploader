@@ -57,21 +57,26 @@ jobs:
     - name: Make Gradlew Executable
       run: cd android && chmod +x ./gradlew
 
-    # - name: clean Gradle
-    #   run: cd android && ./gradlew clean
+    - name: clean Gradle
+      run: cd android && ./gradlew clean
 
     - name: Build Android App Bundle
       run: |
         cd android && ./gradlew app:assembleRelease --no-daemon
 
+    # - name: Set Artifact Name
+    #   run: echo "::set-output name=artifact_name::$(find android/app/build/outputs/apk/release/ -name '*.apk' -printf '%f\n')"
+
     - name: Set Artifact Name
-      run: echo "::set-output name=artifact_name::$(find android/app/build/outputs/apk/release/ -name '*.apk' -printf '%f\n')"
+      id: set_name
+      run: echo "ARTIFACT_NAME=$(find android/app/build/outputs/apk/release/ -name '*.apk' -printf '%f\n')" >> $GITHUB_ENV
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         # name: app-release.apk
-        name: ${{ steps.set_name.outputs.artifact_name }}
+        # name: ${{ steps.set_name.outputs.artifact_name }}
+        name: ${{ env.ARTIFACT_NAME }}
         path: android/app/build/outputs/apk/release/
 
     - name: Distribute app via Firebase App Distribution
@@ -86,7 +91,7 @@ jobs:
         encoded_notes=$(curl -Gso /dev/null -w %{url_effective} --data-urlencode "${notes}" "" | cut -c 3-)
         echo $encoded_notes
         firebase \
-          appdistribution:distribute android/app/build/outputs/apk/release/${{ steps.set_name.outputs.artifact_name }} \
+          appdistribution:distribute android/app/build/outputs/apk/release/${{ env.ARTIFACT_NAME }} \
           --app $firebaseAppId \
           --release-notes "$encoded_notes" \
           --groups "$firebaseGroups" \
