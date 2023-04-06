@@ -1,0 +1,74 @@
+name: APK Beta Distribution
+
+on:
+  push:
+    branches:
+      - build
+
+jobs:
+  beta-distribution:
+    runs-on: ubuntu-latest
+    name: Beta Distribution
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@master
+    # - uses: c-hive/gha-yarn-cache@v1
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+
+
+    - name: Install node modules
+      run: |
+        npm install
+
+    - name: Cache Gradle Wrapper
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-caches-
+
+    - name: Make Gradlew Executable
+      run: cd android && chmod +x ./gradlew
+
+    - name: Build Android App Bundle
+      run: |
+        cd android && ./gradlew assembleRelease --no-daemon
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: android/app/build/outputs/apk/release/
+
+    - name: Distribute app via Firebase App Distribution
+      env:
+          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
+          firebaseGroups: ${{ secrets.FIREBASE_GROUPS }}
+          firebaseAppId: ${{ secrets.FIREBASE_APP_ID }}
+          notes: ${{ github.event.head_commit.message }}
+      run: |
+        yarn global add firebase-tools
+        export PATH="$(yarn global bin):$PATH"
+        firebase \
+          appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk \
+          --app $firebaseAppId \
+          --release-notes "$notes" \
+          --groups "$firebaseGroups" \
+          --token "$firebaseToken"
