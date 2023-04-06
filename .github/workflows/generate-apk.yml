@@ -16,6 +16,8 @@ jobs:
     
     - name: Setup Node.js
       uses: actions/setup-node@master
+      with:
+        node-version: '16.x'
     # - uses: c-hive/gha-yarn-cache@v1
 
     - name: Cache dependencies
