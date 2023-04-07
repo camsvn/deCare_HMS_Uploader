@@ -62,7 +62,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
   ({ navigation }) => {
 
     const { appConfig } = useStores()
-    const [configURL, setConfigURL] = useState<string>(API_URL || '')
+    const [configURL, setConfigURL] = useState<string>(appConfig.configURL)
 
     // const nextScreen = () => navigation.navigate("demo")
 
@@ -102,6 +102,7 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
                 inputStyle={configureURLScreenStyles.URL_FIELD}
                 radius={5}
                 value={configURL}
+                placeholder={ 'Eg: '+ (API_URL || 'http://your-hms-server-url.com')}
                 // onChangeText={(text) => appConfig.set("configURL", text)}
                 onChangeText={setConfigURL}
                 preset="secondary"

@@ -76,4 +76,6 @@ export const URL_FIELD: TextStyle = {
   borderWidth: 0.9,
   marginVertical: spacing[3],
   marginBottom: spacing[4],
+  fontSize: 16,
+  paddingLeft: spacing[3]
 }
