@@ -168,7 +168,7 @@ const OpSearch = (props: TextFieldProps) => {
         onRightPress={() => onChangeText('')}
       />
       {!isSearchBoxEmpty() && <Button style={homeScreenStyles.SUBMIT_BUTTON} onPress={onSubmit}>
-        <Icon icon="checkMark" fillColor={color.palette.mirage} />
+        <Icon icon="checkMark" fillColor={color.palette.white} />
       </Button> }
     </View>
   )

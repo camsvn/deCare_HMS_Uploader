@@ -98,11 +98,11 @@ const SEARCH_INPUT: TextStyle = {
 const SUBMIT_BUTTON: ViewStyle = {
   marginLeft: spacing[2],
   width: 53,
-  borderRadius: 3,
-  borderWidth: 0.1,
-  borderColor: '#707070',
-  backgroundColor: color.goGreen,  
-  // elevation: 3
+  borderRadius: 6,
+  borderWidth: 0.5,
+  borderColor: color.palette.offWhite,
+  backgroundColor: color.primary,  
+  elevation: 2
 }
 
 const LIST_MAIN_VIEW: ViewStyle = {
