@@ -31,7 +31,6 @@ export const UserSessionModel = types.model("userSession").props({
     // },
     fetchTokens: flow(function* (username: string, password: string, callback: (err: any) => void) {
       self._setLoading(true)
-      console.log("API", self.environment.api)
       const fetchTokens = self.userSessionApi.fetchTokens
       type fetchTokensType = ReturnType<typeof fetchTokens> extends Promise<infer R> ? R : ReturnType<typeof fetchTokens>;
       const result: fetchTokensType = yield self.userSessionApi.fetchTokens(username, password)

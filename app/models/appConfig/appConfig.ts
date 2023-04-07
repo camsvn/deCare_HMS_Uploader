@@ -35,7 +35,7 @@ export const AppConfigModel = types
       const result: GetHealthCheckResult = yield userSessionApi.healthCheck(url)
       self._setLoading(false)
     if (result.kind === "ok" && result.healthCheck.uptime) {
-      self.configURL = url
+      self.environment.changeUrl(url + '/api')
       callback(null)
     } else {
       callback(result.kind)

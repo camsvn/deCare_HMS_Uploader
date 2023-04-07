@@ -33,6 +33,10 @@ export class Environment {
     await this.api.setup()
   }
 
+  changeUrl(newUrl: string) {
+    this.api.apisauce.setBaseURL(newUrl)
+  }
+
   /**
    * Reactotron is only available in dev.
    */
