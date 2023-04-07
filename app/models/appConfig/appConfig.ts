@@ -1,7 +1,8 @@
-import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, addDisposer, cast, flow, types } from "mobx-state-tree"
 import { withApiState, withEnvironment } from "../extensions"
 import {UserSessionApi} from '../../services/api/userSession-api'
-import { GetHealthCheckResult } from "../../services/api"
+import { Api, GetHealthCheckResult } from "../../services/api"
+import { reaction } from "mobx"
 
 /**
  * HMS appConfig model.
@@ -27,6 +28,18 @@ export const AppConfigModel = types
       self.configURL = text
     }
 
+    function afterCreate() {
+      const dispose = reaction(
+        () => self.configURL,
+        (newValue, oldValue) => {
+          const newApi = new Api(newValue)
+          self.environment.changeUrl(newApi.config.url)
+        }
+      );
+  
+      addDisposer(self, dispose);
+    }
+
     const checkConnection = flow(function* (url: string, callback: (err: any) => void) {
       self._setLoading(true)
       const userSessionApi = new UserSessionApi(self.environment.api)
@@ -35,7 +48,7 @@ export const AppConfigModel = types
       const result: GetHealthCheckResult = yield userSessionApi.healthCheck(url)
       self._setLoading(false)
     if (result.kind === "ok" && result.healthCheck.uptime) {
-      self.environment.changeUrl(url + '/api')
+      setConfigURL(url)
       callback(null)
     } else {
       callback(result.kind)
@@ -51,7 +64,8 @@ export const AppConfigModel = types
       setConfigURL,
       set,
       checkConnection,
-      reset
+      reset,
+      afterCreate
     }
   })
 
