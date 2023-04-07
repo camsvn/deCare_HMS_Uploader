@@ -90,7 +90,6 @@ jobs:
         export PATH="$(yarn global bin):$PATH"
         encoded_notes=$(curl -Gso /dev/null -w %{url_effective} --data-urlencode "${notes}" "" | cut -c 3-)
         echo $encoded_notes
-        cat android/app/build/outputs/apk/release/output-metadata.json
         firebase \
           appdistribution:distribute android/app/build/outputs/apk/release/${{ env.ARTIFACT_NAME }} \
           --app $firebaseAppId \
