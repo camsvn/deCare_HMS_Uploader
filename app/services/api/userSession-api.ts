@@ -13,10 +13,7 @@ export class UserSessionApi {
   }
 
   private _setupNewApi(configURL: string) {
-    this.newApi = new Api({
-      url: configURL + '/api',
-      timeout: 10000,
-    })
+    this.newApi = new Api(configURL)
     this.newApi.setup()
   }
 
@@ -50,7 +47,6 @@ export class UserSessionApi {
   async healthCheck(configURL: string): Promise<GetHealthCheckResult> {
     try {
       this._setupNewApi(configURL)
-      console.log(this.newApi)
       // make the api call
       const response: ApiResponse<any> = await this.newApi.apisauce.get(
         `/auth/healthcheck`

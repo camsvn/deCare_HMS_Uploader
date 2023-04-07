@@ -22,8 +22,8 @@ export class Api {
    *
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
-    this.config = config
+  constructor(url?: string) {
+    this.config = DEFAULT_API_CONFIG(url)
   }
 
   /**

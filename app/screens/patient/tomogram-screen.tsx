@@ -44,11 +44,7 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     const { opStore, appConfig }  = useStores()    
 
     useEffect(() => {
-      const apiConfig: ApiConfig = {
-        url: appConfig.configURL + '/api',
-        timeout: 10000
-      }
-      const api = new Api(apiConfig)
+      const api = new Api(appConfig.configURL)
       api.setup()
       setTomogramStore(TomogramStoreModel.create({}, {'api': api}))
     }, [appConfig.configURL]);

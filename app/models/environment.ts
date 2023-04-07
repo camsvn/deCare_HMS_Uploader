@@ -1,5 +1,4 @@
 import { Api } from "../services/api"
-import { ApiConfig } from "../services/api/api-config"
 
 let ReactotronDev
 if (__DEV__) {
@@ -18,11 +17,7 @@ export class Environment {
       // dev-only services
       this.reactotron = new ReactotronDev()
     }
-    const apiConfig: ApiConfig = {
-      url,
-      timeout: 10000
-    }
-    this.api = url ? new Api(apiConfig) : new Api()
+    this.api = url ? new Api(url) : new Api()
   }
 
   async setup() {

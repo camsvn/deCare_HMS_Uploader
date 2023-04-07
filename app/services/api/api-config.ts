@@ -22,7 +22,22 @@ export interface ApiConfig {
 /**
  * The default configuration for the app.
  */
-export const DEFAULT_API_CONFIG: ApiConfig = {
-  url: `${API_URL}/api` || "https://jsonplaceholder.typicode.com",
-  timeout: 10000,
+export const DEFAULT_API_CONFIG = (url?: string): ApiConfig => {
+  const apiPrefix = 'api'
+  const getURL = (url?: string) => {
+    const baseURL = url || API_URL || "https://jsonplaceholder.typicode.com"
+    return `${baseURL}/${apiPrefix}`
+  }
+
+  // const defaultConfig = {
+  //   url: `${API_URL}/api` || "https://jsonplaceholder.typicode.com",
+  //   timeout: 10000,
+  // }
+
+  const defaultConfig = {
+    url: getURL(url),
+    timeout: 10000,
+  }
+
+  return defaultConfig
 }
