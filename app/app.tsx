@@ -20,7 +20,6 @@ import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
 import { View, Text } from "react-native"
-import { reaction } from 'mobx'
 import { Buffer } from 'buffer';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
@@ -68,6 +67,7 @@ function App() {
       setSessionRestored(true)
     }
 
+    // initialize the RootStore and set the state when the component mounts
     ;(async () => {
       await initFonts() // expo
       setupRootStore().then((store) => {
@@ -83,23 +83,9 @@ function App() {
     //   setRootStore(store)
     // }
     // initialize()
-
-    // create a reaction to watch for changes in rootStore.appConfig.configURL
-    const dispose = reaction(
-      () => rootStore?.appConfig.configURL,
-      async () => {
-        // re-initialize the RootStore and update the state with the new instance
-        console.log("Reaction :: Config URL changed")
-        const newStore = await setupRootStore(rootStore?.appConfig.configURL)
-        setRootStore(newStore)
-      }
-    )
-
-    // clean up the reaction when the component unmounts
-    return () => {
-      dispose()
-    }
   }, [])
+
+
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
@@ -117,7 +103,7 @@ function App() {
           <ErrorBoundary catchErrors={"always"}>
             <AppNavigator
               isSessionRestored = {isSessionRestored}
-              initialState={initialNavigationState}
+              // initialState={initialNavigationState}
               onStateChange={onNavigationStateChange}
             />
           </ErrorBoundary>
