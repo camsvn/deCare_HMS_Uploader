@@ -50,9 +50,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
         <Header
          headerTx="common.header" 
          style={homeScreenStyles.HEADER} 
-         titleStyle={homeScreenStyles.HEADER_TITLE} 
-         onLeftPress={()=>console.log("Header Left Pressed")}
-         onRightPress={()=>console.log("Header Right Pressed")}
+         titleStyle={homeScreenStyles.HEADER_TITLE}
         />
         <Screen style={homeScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
           {/* <View style={homeScreenStyles.NO_PATIENT_CONTAINER}> */}
@@ -133,13 +131,10 @@ const OpSearch = (props: TextFieldProps) => {
   const isSearchBoxEmpty = () => text === ''
 
   const onSubmit = () => {
-    console.log(text)
     getPatient(Number(text), (err) => {
-      // console.log("executing callback")
       if (!err) {
         navigation.navigate('tomogram', {opid: Number(text)});
         onChangeText('');
-        // console.log(opStore)
         return
       }
       showMessage({

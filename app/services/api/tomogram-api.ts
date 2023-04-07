@@ -38,7 +38,6 @@ export class TomogramApi {
 
       // the typical ways to die when calling an api
       if (!response.ok ) {
-        console.log(response)
         const problem = getGeneralApiProblem(response)
         if (problem) return problem
       }
@@ -48,7 +47,6 @@ export class TomogramApi {
       return { kind: "ok", tomograms: tomogramsResponse }
     } catch (e) {
       __DEV__ && console.tron.log(e.message)
-      console.log(e.message)
       return { kind: "bad-data" }
     }
   }

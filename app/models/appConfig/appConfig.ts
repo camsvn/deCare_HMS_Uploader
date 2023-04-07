@@ -43,8 +43,6 @@ export const AppConfigModel = types
     const checkConnection = flow(function* (url: string, callback: (err: any) => void) {
       self._setLoading(true)
       const userSessionApi = new UserSessionApi(self.environment.api)
-      console.log(userSessionApi)
-      // const result: GetHealthCheckResult = yield userSessionApi.healthCheck(self.configURL)
       const result: GetHealthCheckResult = yield userSessionApi.healthCheck(url)
       self._setLoading(false)
     if (result.kind === "ok" && result.healthCheck.uptime) {

@@ -38,7 +38,6 @@ export class UserSessionApi {
 
       return { kind: "ok", tokens }
     } catch (e) {
-      console.log(e)
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }
@@ -54,7 +53,6 @@ export class UserSessionApi {
 
       // the typical ways to die when calling an api
       if (!response.ok) {
-        console.log("ERROR :: ", response)
         const problem = getGeneralApiProblem(response)
         if (problem) return problem
       }
@@ -63,7 +61,6 @@ export class UserSessionApi {
 
       return { kind: "ok", healthCheck }
     } catch (e) {
-      console.log(e)
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }

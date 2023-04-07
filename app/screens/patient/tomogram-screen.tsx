@@ -85,7 +85,6 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
       launchImageLibrary(options, response => {
         if (response.assets) {
           response.assets.forEach((asset) => {
-            console.log(asset)
             tomogramStore.addTomogram(asset.uri as string)
           })
         }
@@ -135,7 +134,6 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
               headerTx="common.header"
               style={tomogramScreenStyles.HEADER}
               titleStyle={tomogramScreenStyles.HEADER_TITLE}
-              onLeftPress={() => console.log("Header Left Pressed")}
               onRightPress={() => onSubmitOP()}
             />
             <View style={tomogramScreenStyles.PATIENT_NAME_CONTAINER}>
@@ -279,7 +277,6 @@ const OpSearch = (props: TextFieldProps) => {
 
   const onExit = async () => {
     await store.removeAllTomograms()
-    console.log ("Removed Tomos")
     navigation.canGoBack() && navigation.goBack();
   }
   
@@ -303,7 +300,7 @@ const OpSearch = (props: TextFieldProps) => {
         editable={false}
         onRightPress={onExit}
       />
-      {!isSearchBoxEmpty() && <Button style={tomogramScreenStyles.SUBMIT_BUTTON} onPress={() => console.log('Submit Button',text)}>
+      {!isSearchBoxEmpty() && <Button style={tomogramScreenStyles.SUBMIT_BUTTON}>
         <Icon icon="checkMark" fillColor={color.palette.mirage} />
       </Button> }
     </View>

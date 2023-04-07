@@ -46,11 +46,11 @@ function App() {
       const refreshToken = store?.userSession.refreshToken
 
       if(!refreshToken) {
-        console.log("No Refresh Token Found")
+        // console.log("No Refresh Token Found")
         return
       }
 
-      console.log("Refresh Token Found")
+      // console.log("Refresh Token Found")
       const base64Url = refreshToken.split('.')[1]; // Extract the payload of the token
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Replace URL-safe characters
       // const payload = JSON.parse(window.atob(base64)); // Decode the payload and parse the JSON string

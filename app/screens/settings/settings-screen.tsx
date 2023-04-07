@@ -49,9 +49,7 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
         <Header
          headerTx="common.header" 
          style={settingScreenStyles.HEADER} 
-         titleStyle={settingScreenStyles.HEADER_TITLE} 
-         onLeftPress={()=>console.log("Header Left Pressed")}
-         onRightPress={()=>console.log("Header Right Pressed")}
+         titleStyle={settingScreenStyles.HEADER_TITLE}
         />
         <Screen style={settingScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
         <Modal visible={isModalVisible} onConfirm={() => modalConfirmFunction()} onCancel={() => setIsModalVisible(false)} />

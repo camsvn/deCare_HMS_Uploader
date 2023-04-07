@@ -27,7 +27,6 @@ export const PermissionScreen: FC<StackScreenProps<NavigatorParamList, "permissi
 
     const handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'active') {
-        console.log("AppState is in Foreground")
         checkPermission();
         getTitle();
       }

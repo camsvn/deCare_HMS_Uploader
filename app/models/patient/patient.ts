@@ -18,7 +18,6 @@ export const PatientModel = types.model("Patient").props({
     self.id = patient.id
     self.opid = patient.opid
     self.name = patient.name
-    console.log("Got patient", patient)   
     self.rootStore.recentSearchesStore.addPatient(patient)
   }),
 }))
@@ -27,7 +26,6 @@ export const PatientModel = types.model("Patient").props({
     self._setLoading(true)
     const patientApi = new PatientApi(self.environment.api)
     const result = await patientApi.getOpById(opid)
-    console.log("Amal", result)
     self._setLoading(false)
     if (result.kind === "ok") {
       self.setPatient(result.patient)
