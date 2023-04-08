@@ -77,11 +77,15 @@ export const TomogramStoreModel = types
     }
   }))
   .actions((self) => ({
-    uploadTomograms: async function (opid: number, callback: (err: any) => void) {
+    uploadTomograms: async function (opid: number, overrideLoadingState: boolean, callback: (err: any) => void) {
       self._setLoading(true)
       const result = await self.tomogramApi.uploadTomograms(opid, self.tomograms)
-      self._setLoading(false)
+      !overrideLoadingState && self._setLoading(false)
       if (result.kind === "ok") {
+        if (overrideLoadingState) {
+          callback(null)
+          return
+        }
         self.removeAllTomograms()
         callback(null)
       } else {

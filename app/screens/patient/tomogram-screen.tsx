@@ -38,7 +38,7 @@ import { ApiConfig } from "../../services/api/api-config"
 export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">> = observer(
   ({ navigation, route }) => {
 
-    const [tomogramStore, setTomogramStore] = useState(null)
+    const [tomogramStore, setTomogramStore] = useState<TomogramStore>(null)
 
     const { opid } = route.params;
     const { opStore, appConfig }  = useStores()    
@@ -46,7 +46,8 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     useEffect(() => {
       const api = new Api(appConfig.configURL)
       api.setup()
-      setTomogramStore(TomogramStoreModel.create({}, {'api': api}))
+      const newTomogramStore = TomogramStoreModel.create({}, {'api': api})
+      setTomogramStore(newTomogramStore)
     }, [appConfig.configURL]);
 
     const onSubmitOP = async () => {
@@ -54,19 +55,23 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
         message: "Tomogram: Uploading, Please wait.",
         type: "info"
       })
-      tomogramStore.uploadTomograms( opid , (err) => {
+      tomogramStore.uploadTomograms( opid, true, (err) => {
         if (!err) {
           showMessage({
             message: "Tomogram: Uploaded",
             type: "success"
           })
-          navigation.navigate("home")
-          return
+          setTimeout(() => {
+            tomogramStore._setLoading(false)
+            tomogramStore.removeAllTomograms()
+            navigation.navigate("home")            
+          }, 500);
+        } else {
+          showMessage({
+            message: `Tomogram Upload: ${err}`,
+            type: "danger"
+          })
         }
-        showMessage({
-          message: `Tomogram Upload: ${err}`,
-          type: "danger"
-        })
       })
     }
 
