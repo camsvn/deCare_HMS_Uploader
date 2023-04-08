@@ -2,6 +2,7 @@ import { Instance, SnapshotOut, getEnv, types } from "mobx-state-tree"
 import { unlinkTmpFiles } from "../../utils/common";
 import { withApiState } from "../extensions";
 import { TomogramApi } from "../../services/api/tomogram-api";
+import { Api } from "../../services/api";
 
 /**
  * Tomogram model.
@@ -29,7 +30,7 @@ export const TomogramStoreModel = types
   .extend(withApiState)
   .views((self) => ({
     get api() {
-      return getEnv(self).api
+      return getEnv(self).api as Api
     }
   }))
   .volatile(self => ({
