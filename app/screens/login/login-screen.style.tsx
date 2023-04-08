@@ -67,6 +67,8 @@ export const TEXT_FIELD_WRAPPER: ViewStyle = {
 export const TEXT_FIELD: TextStyle = {
   height: 30,
   width: "100%",
+  fontSize: 16,
+  paddingLeft: spacing[2],
   // flex: 1,
   borderRadius: 5,
   marginHorizontal: spacing[0],
