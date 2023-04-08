@@ -57,7 +57,8 @@ export type TabNavigatorParamList = {
 export type RootNavigatorParamList = {
   configureURL: undefined
   login: undefined
-  appHome: undefined
+  appHome: undefined,
+  home: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -148,7 +149,7 @@ export const AppNavigator = observer((props: NavigationProps) => {
     >
       <StatusBar backgroundColor={color.primary} />
       {props.isSessionRestored ? (
-        <AppRootStack initialRoute="appHome" />
+        <AppRootStack initialRoute="home" />
       ) : appConfig.configURL ? (
         <AppRootStack initialRoute="login" />
       ) : (
