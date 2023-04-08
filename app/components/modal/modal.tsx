@@ -23,14 +23,16 @@ const MODAL_WRAPPER_VIEW: ViewStyle = {
   padding: 20, 
   borderRadius: 10, 
   alignItems: 'center', 
+  justifyContent: "center",
   // width: "70%"
-  width: 275
+  width: 350,
+  height: 125
 }
 
 const INFO_TEXT: TextStyle = { 
-  fontSize: 18, 
+  fontSize: 22, 
   fontWeight: 'bold', 
-  marginBottom: 20
+  marginBottom: 15
 }
 
 const BUTTON_VIEW: ViewStyle = { 
@@ -39,8 +41,14 @@ const BUTTON_VIEW: ViewStyle = {
   width: "100%"
 }
 
+const BUTTON_CONTAINER: ViewStyle = {
+  backgroundColor: color.primary, 
+  width: 127, 
+  height: 45
+}
+
 const BUTTON_TEXT: TextStyle = {
-  fontSize: 12
+  fontSize: 14
 }
 
 
@@ -51,8 +59,8 @@ export function Modal({ visible, onConfirm, onCancel }: ModalProps) {
         <View style={MODAL_WRAPPER_VIEW}>
           <Text style={INFO_TEXT}>Are you sure?</Text>
           <View style={BUTTON_VIEW}>
-            <Button text="Cancel" onPress={onCancel} style={{backgroundColor: color.primary}} type="highlight" textStyle={BUTTON_TEXT}/>
-            <Button text="Confirm" onPress={onConfirm} style={{backgroundColor: color.primary}} type="highlight" textStyle={BUTTON_TEXT}/>
+            <Button text="No, I'm Not" onPress={onCancel} style={BUTTON_CONTAINER} type="highlight" textStyle={BUTTON_TEXT}/>
+            <Button text="Yes, I am" onPress={onConfirm} style={BUTTON_CONTAINER} type="highlight" textStyle={BUTTON_TEXT}/>
           </View>
         </View>
       </View>
