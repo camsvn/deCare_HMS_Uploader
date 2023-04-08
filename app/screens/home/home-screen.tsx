@@ -16,7 +16,7 @@ import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
 import BlankCanvasSvg from './BlankCanvasSvg'
-import { useRenderCount } from "../../utils/hooks/useRenderCount"
+// import { useRenderCount } from "../../utils/hooks/useRenderCount"
 import { useStores } from "../../models"
 import { showMessage } from "react-native-flash-message"
 import homeScreenStyles from "./home-screen.style";
@@ -29,7 +29,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
     const { getPatient } = opStore
     
 
-    const renderCount = useRenderCount();
+    // const renderCount = useRenderCount();
 
     const onClickOP = (opid: number) => {
       getPatient(opid, (err) => {
@@ -104,7 +104,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
                   <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>
                     Once you choose a patient, they'll appear here.
                   </Text>
-                  <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>Render {renderCount}</Text>
+                  {/* <Text style={[homeScreenStyles.CONTENT, homeScreenStyles.CENTER]}>Render {renderCount}</Text> */}
                 </View>
               </View>
               )
