@@ -51,7 +51,7 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
         <Header
          leftIcon="arrowLeft"
          headerTx="common.header" 
-         leftIconStyle={{zIndex: 1, top:20}}
+         leftIconStyle={{zIndex: 1, top:21}}
          leftIconSize={20}
          style={settingScreenStyles.HEADER} 
          titleStyle={settingScreenStyles.HEADER_TITLE}
@@ -81,12 +81,12 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
             <Divider color={color.primary} style={settingScreenStyles.MARGIN_BOTTOM}/>            
             <Text tx="aboutScreen.contentParaFinale" style={[settingScreenStyles.CONTENT, {marginVertical: spacing[2]}]} />
             
-            <Text style={[settingScreenStyles.CONTENT]}>
+            <Text style={settingScreenStyles.CONTENT}>
               call us at {' '}
               <Text text="+91 80863 58930" style={[settingScreenStyles.CONTENT, { textDecorationLine: 'underline' }]} onPress={handlePhonePress}/>
             </Text>
             <Text text="or" />
-            <Text style={[settingScreenStyles.CONTENT]}>
+            <Text style={settingScreenStyles.CONTENT}>
               visit our {' '}
               <Text text="website (decare.team)" style={[settingScreenStyles.CONTENT, { textDecorationLine: 'underline' }]} onPress={handleWebsitePress}/>
             </Text>

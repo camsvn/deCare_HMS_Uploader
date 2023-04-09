@@ -57,7 +57,7 @@ export const CONTENT: TextStyle = {
   // color: color.dimText,
   color: color.primary,
   fontSize: 14,
-  letterSpacing: 0.3,
+  letterSpacing: 0.5,
   lineHeight: 20
   // lineHeight: 22
 }
@@ -65,7 +65,8 @@ export const CONTENT: TextStyle = {
 export const PRIMARY_CONTENT: TextStyle = {
   fontSize: 22,
   fontWeight: "bold",
-  marginTop: spacing[3]
+  marginTop: spacing[3],
+  letterSpacing: 0.3
 }
 
 export const MAINVIEW_CONTAINER: ViewStyle = { marginHorizontal: spacing[0] }
