@@ -3,6 +3,13 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
+// Load the .env file
+def envFile = file("../.env")
+def env = new Properties()
+if (envFile.exists()) {
+    env.load(new FileInputStream(envFile))
+}
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -156,6 +163,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            // storeFile file(env['UPLOAD_STORE_FILE'])
+            // storePassword env['UPLOAD_STORE_PASSWORD']
+            // keyAlias env['UPLOAD_KEY_ALIAS']
+            // keyPassword env['UPLOAD_KEY_PASSWORD']
+            if (envFile.exists() && env.containsKey('UPLOAD_STORE_FILE')) {
+                storeFile file(env['UPLOAD_STORE_FILE'])
+                storePassword env['UPLOAD_STORE_PASSWORD']
+                keyAlias env['UPLOAD_KEY_ALIAS']
+                keyPassword env['UPLOAD_KEY_PASSWORD']
+            } else {
+                // Use debug config if the .env file doesn't exist
+                signingConfig signingConfigs.debug
+            }
+        }
     }
     buildTypes {
         debug {
@@ -169,7 +191,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            enableProguardInReleaseBuilds = true
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             // add the code from below line.
