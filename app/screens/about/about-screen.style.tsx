@@ -16,7 +16,7 @@ export const TEXT: TextStyle = {
 }
 
 export const BOLD: TextStyle = { fontWeight: "bold" }
-export const MARGIN_BOTTOM: TextStyle = { marginBottom: spacing[2] }
+export const MARGIN_BOTTOM: TextStyle = { marginBottom: spacing[3] }
 
 export const CENTER: TextStyle = { textAlign: "center" }
 

@@ -66,19 +66,19 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
           <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
 
             <Text style={settingScreenStyles.PRIMARY_CONTENT}>Terms of Sevice</Text>
-            <Divider color={color.primary} style={settingScreenStyles.MARGIN_BOTTOM}/>            
-            <Text tx="aboutScreen.contentParaLicense" style={[settingScreenStyles.CONTENT, {marginVertical: spacing[2]}]} />
+            <Divider color={color.primary} />            
+            <Text tx="aboutScreen.contentParaLicense" style={[settingScreenStyles.CONTENT, {marginTop: spacing[2]}]} />
             
             
             <Text style={settingScreenStyles.PRIMARY_CONTENT}>About Us</Text>
-            <Divider color={color.primary} style={settingScreenStyles.MARGIN_BOTTOM}/>
-            <Text tx="aboutScreen.contentParaIntro" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} />
+            <Divider color={color.primary} />
+            <Text tx="aboutScreen.contentParaIntro" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM, {marginTop: spacing[2]}]} />
             <Text tx="aboutScreen.contentParaTwo" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} />
             <Text tx="aboutScreen.contentParaThree" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} />
             {/* <Text tx="aboutScreen.contentParaFinale" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} /> */}
 
             <Text style={settingScreenStyles.PRIMARY_CONTENT}>Contact Us</Text>
-            <Divider color={color.primary} style={settingScreenStyles.MARGIN_BOTTOM}/>            
+            <Divider color={color.primary} />            
             <Text tx="aboutScreen.contentParaFinale" style={[settingScreenStyles.CONTENT, {marginVertical: spacing[2]}]} />
             
             <Text style={settingScreenStyles.CONTENT}>
