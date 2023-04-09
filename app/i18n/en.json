@@ -3,7 +3,8 @@
     "ok": "OK!",
     "cancel": "Cancel",
     "back": "Back",
-    "header": "DeCare HMS"
+    "header": "DeCare HMS",
+    "aboutHeader": "About"
   },
   "errors": {
     "invalidEmail": "Invalid email address."
@@ -32,6 +33,14 @@
   },
   "demoListScreen": {
     "title": "Demo List"
+  },
+  "aboutScreen": {
+    "contentParaIntro": "Decare Software Solution is a company that specializes in developing innovative and user-friendly software solutions for the health care sector. We have a team of experienced and qualified software engineers, designers, and testers who are passionate about creating products that can improve the quality and efficiency of health care services.",
+    "contentParaTwo": "Our mobile app, DecareHMS, is one of our flagship products that aims to help clinics diagnose and treat skin diseases more effectively. DecareHMS is a simple and convenient app that allows clinics to upload skin disease images to their DeCare's Hospital ERP software with just a few clicks. The app also integrates seamlessly with the ERP software (that manage their patient records, inventory, billing, appointments, etc in one place). The app provides an easy-to-use interface for doctors to review the images and make accurate diagnoses.",
+    "contentParaThree": "DecareHMS is designed to be compatible with all major mobile platforms and devices. The app is secure, fast, and easy to use. With DecareHMS, clinics can save time and money, enhance their reputation, and provide better care for their patients.",
+    "contentParaLicense": "DecareHMS is licensed to Naha Skin Care Clinic as a part of the DeCare's Hospital ERP software, and its support is tied to the support license for the ERP. Support for DeCareHMS app is available only as long as the ERP's support license is active.",
+    "contentParaCopyright": "DecareHMS is copyrighted © 2023 by Decare Software Solution. All rights reserved.",
+    "contentParaFinale": "If you want to learn more about our company or products, please visit our website or contact us. We would be happy to answer any questions you may have."
   },
   "errorScreen": {
     "title": "Something went wrong!",
