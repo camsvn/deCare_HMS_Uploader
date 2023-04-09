@@ -36,6 +36,8 @@ export function Header(props: HeaderProps) {
     leftIcon,
     leftIconSize,
     rightIconSize,
+    leftIconStyle,
+    rightIconStyle,
     headerText,
     headerTx,
     style,
@@ -56,7 +58,7 @@ export function Header(props: HeaderProps) {
       )} */}
       {leftIcon  && leftIcon !== 'unset' && (
         <Button preset="link" onPress={onLeftPress} type="highlight"
-        style={[BUTTON, {left: 0}]}
+        style={[BUTTON, {left: 0}, leftIconStyle]}
         >
           <Icon icon={leftIcon as IconsType} width={leftIconSize} />
         </Button>
@@ -75,7 +77,7 @@ export function Header(props: HeaderProps) {
       )} */}
       {rightIcon && rightIcon !== "unset" && (
         <Button preset="link" onPress={onRightPress} type="highlight"
-        style={[BUTTON, {right: 0}]}
+        style={[BUTTON, {right: 0}, rightIconStyle]}
         >
           <Icon icon={rightIcon as IconsType} width={rightIconSize}/>
         </Button>

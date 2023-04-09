@@ -48,4 +48,6 @@ export interface HeaderProps {
 
   rightIconSize?: number
   leftIconSize?: number
+  rightIconStyle?: ViewStyle,
+  leftIconStyle?: ViewStyle,
 }
