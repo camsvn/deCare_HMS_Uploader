@@ -147,4 +147,8 @@ Read [e2e setup instructions](./e2e/README.md).
 
 ## Release Build
 
+- generate keystore
+  `keytool -genkey -alias your_alias_name -keyalg RSA -keystore your_keystore_name.keystore`
+  or
+  `keytool -genkeypair -alias your_alias_name -keyalg RSA -keysize 2048 -validity 365 -keystore your_keystore_name.jks`
 - copy .env.template to your android directory
