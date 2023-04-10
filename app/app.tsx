@@ -103,7 +103,7 @@ function App() {
           <ErrorBoundary catchErrors={"always"}>
             <AppNavigator
               isSessionRestored = {isSessionRestored}
-              // initialState={initialNavigationState}
+              initialState={initialNavigationState}
               onStateChange={onNavigationStateChange}
             />
           </ErrorBoundary>
