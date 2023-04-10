@@ -65,7 +65,7 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
         <Screen style={settingScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
           <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
 
-            <Text style={settingScreenStyles.PRIMARY_CONTENT}>Terms of Sevice</Text>
+            <Text style={[settingScreenStyles.PRIMARY_CONTENT, {marginTop: spacing[3]}]}>Terms of Sevice</Text>
             <Divider color={color.primary} />            
             <Text tx="aboutScreen.contentParaLicense" style={[settingScreenStyles.CONTENT, {marginTop: spacing[2]}]} />
             

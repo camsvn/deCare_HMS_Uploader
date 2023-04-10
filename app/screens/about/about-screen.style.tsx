@@ -66,7 +66,7 @@ export const CONTENT: TextStyle = {
 export const PRIMARY_CONTENT: TextStyle = {
   fontSize: 22,
   fontWeight: "bold",
-  marginTop: spacing[3],
+  // marginTop: spacing[3],
   letterSpacing: 0.3
 }
 
