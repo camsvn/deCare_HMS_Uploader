@@ -15,7 +15,8 @@ import {
   ConfigureURLScreen,
   LoginScreen,
   SettingScreen,
-  PermissionScreen 
+  PermissionScreen,
+  AboutScreen
 } from "../screens"
 import { MyTabBar } from "./tabBar";
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
@@ -46,6 +47,7 @@ export type NavigatorParamList = {
   demo: undefined
   demoList: undefined
   settings: undefined
+  about: undefined
   permission: {permissionNames: Array<string>, permissions: Array<Permission>}
 }
 
@@ -94,6 +96,7 @@ function SettingsStackScreen() {
       initialRouteName="SettingsRoot"    
     >
       <SettingsStack.Screen name="SettingsRoot" component={SettingScreen} />
+      <SettingsStack.Screen name="about" component={AboutScreen} />
       {/* <SettingsStack.Screen name="welcome" component={WelcomeScreen} />
       <SettingsStack.Screen name="demo" component={DemoScreen} />
       <SettingsStack.Screen name="demoList" component={DemoListScreen} /> */}
