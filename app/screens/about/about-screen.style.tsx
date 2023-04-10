@@ -58,7 +58,8 @@ export const CONTENT: TextStyle = {
   color: color.primary,
   fontSize: 14,
   letterSpacing: 0.5,
-  lineHeight: 20
+  lineHeight: 20,
+  textAlign: "justify"
   // lineHeight: 22
 }
 
@@ -69,7 +70,7 @@ export const PRIMARY_CONTENT: TextStyle = {
   letterSpacing: 0.3
 }
 
-export const MAINVIEW_CONTAINER: ViewStyle = { marginHorizontal: spacing[0] }
+export const MAINVIEW_CONTAINER: ViewStyle = { marginHorizontal: spacing[3] }
 export const LOGOVIEW_CONTAINER: ViewStyle = {
   flex: 1,
   justifyContent: "center",
