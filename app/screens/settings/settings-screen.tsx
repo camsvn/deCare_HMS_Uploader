@@ -69,6 +69,7 @@ export const SettingScreen: FC<StackScreenProps<NavigatorParamList, "settings">>
 
             <Button type="opacity" preset="link" 
               style={settingScreenStyles.BUTTON_CONTAINER} 
+              onPress={() => navigation.navigate("about")}
             >
               <Text style={[settingScreenStyles.PRIMARY_CONTENT, settingScreenStyles.BUTTON_SPACING_CONTENT]}>About</Text>
               <Icon icon="arrow" containerStyle={{ transform: [{ rotate: '90deg' }] }} fillColor={color.primary}/>
