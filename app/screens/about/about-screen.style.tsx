@@ -1,4 +1,4 @@
-import { ViewStyle, TextStyle } from "react-native"
+import { ViewStyle, TextStyle, ImageStyle } from "react-native"
 import { color, spacing, typography } from "../../theme"
 
 export const FULL: ViewStyle = { flex: 1, backgroundColor: color.background }
@@ -63,6 +63,13 @@ export const CONTENT: TextStyle = {
   // lineHeight: 22
 }
 
+export const CONTENT_UNDERLINE: TextStyle = {
+  ...CONTENT,
+  textDecorationLine: "underline"
+}
+
+export const HEADER_LEFT_ICON: ViewStyle = {zIndex: 1, top:21}
+
 export const PRIMARY_CONTENT: TextStyle = {
   fontSize: 22,
   fontWeight: "bold",
@@ -79,8 +86,30 @@ export const LOGOVIEW_CONTAINER: ViewStyle = {
 }
 
 export const LOGO_CONTAINER: ViewStyle = {
-  width: 60,
-  height: 60,
+  // width: 180,
+  // height: 100,
+  // borderWidth: 1,
+  borderBottomWidth: 0.5,
+  borderColor: color.primary,
+  // justifyContent: "center",
+  alignItems: "center",
+  // flex: 1,
+}
+
+export const LOGO: ImageStyle = {
+  // marginVertical: spacing[6],
+  // alignSelf: "center",
+  width: 350,
+  // width: "100%",
+  height: 100,
+  // borderBottomWidth: 4,
+  // borderTopWidth: 4,
+  // borderLeftWidth: 4,
+  // borderRightWidth: 4,
+  // borderWidth: 4,
+  // borderColor: color.primary,
+  // position:"relative",
+  // right: 6
 }
 
 export const FORM_CONTAINER: ViewStyle = {

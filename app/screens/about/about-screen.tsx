@@ -1,21 +1,20 @@
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import { Linking, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
-  Button,
   Header,
   Screen,
   Text,
   Divider,
-  Icon
+  AutoImage as Image
 } from "../../components"
 import { color, spacing} from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
-import { useStores } from "../../models"
 import * as settingScreenStyles from "./about-screen.style";
 import { showMessage } from "react-native-flash-message"
+export const logoDecare = require("./decare-logo.jpeg")
 
 
 export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = observer(
@@ -51,19 +50,18 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
         <Header
          leftIcon="arrowLeft"
          headerTx="common.header" 
-         leftIconStyle={{zIndex: 1, top:21}}
+         leftIconStyle={settingScreenStyles.HEADER_LEFT_ICON}
          leftIconSize={20}
          style={settingScreenStyles.HEADER} 
          titleStyle={settingScreenStyles.HEADER_TITLE}
          onLeftPress={goBack}
         />
-        {/* <View style={settingScreenStyles.HEADER_VIEW}>
-          <Button onPress={() => goBack()} preset="link" type="highlight">
-            <Icon icon="back" width={30} height={30}/>
-          </Button>
-        </View> */}
+        <View style={settingScreenStyles.LOGO_CONTAINER}>
+            <Image source={logoDecare} style={settingScreenStyles.LOGO} />
+        </View>
         <Screen style={settingScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
           <View style={settingScreenStyles.MAINVIEW_CONTAINER}>
+            <Text tx="aboutScreen.contentParaCopyright" style={[settingScreenStyles.CONTENT, settingScreenStyles.CENTER, {fontStyle:"italic", marginTop: spacing[4], marginBottom: spacing[1]}]} />
 
             <Text style={[settingScreenStyles.PRIMARY_CONTENT, {marginTop: spacing[3]}]}>Terms of Sevice</Text>
             <Divider color={color.primary} />            
@@ -75,7 +73,6 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
             <Text tx="aboutScreen.contentParaIntro" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM, {marginTop: spacing[2]}]} />
             <Text tx="aboutScreen.contentParaTwo" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} />
             <Text tx="aboutScreen.contentParaThree" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} />
-            {/* <Text tx="aboutScreen.contentParaFinale" style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]} /> */}
 
             <Text style={settingScreenStyles.PRIMARY_CONTENT}>Contact Us</Text>
             <Divider color={color.primary} />            
@@ -83,15 +80,14 @@ export const AboutScreen: FC<StackScreenProps<NavigatorParamList, "about">> = ob
             
             <Text style={settingScreenStyles.CONTENT}>
               call us at {' '}
-              <Text text="+91 80863 58930" style={[settingScreenStyles.CONTENT, { textDecorationLine: 'underline' }]} onPress={handlePhonePress}/>
+              <Text text="+91 80863 58930" style={settingScreenStyles.CONTENT_UNDERLINE} onPress={handlePhonePress}/>
             </Text>
             <Text text="or" />
-            <Text style={settingScreenStyles.CONTENT}>
+            <Text style={[settingScreenStyles.CONTENT, settingScreenStyles.MARGIN_BOTTOM]}>
               visit our {' '}
-              <Text text="website (decare.team)" style={[settingScreenStyles.CONTENT, { textDecorationLine: 'underline' }]} onPress={handleWebsitePress}/>
+              <Text text="website (decare.team)" style={settingScreenStyles.CONTENT_UNDERLINE} onPress={handleWebsitePress}/>
             </Text>
 
-            <Text tx="aboutScreen.contentParaCopyright" style={[settingScreenStyles.CONTENT, settingScreenStyles.CENTER, {fontStyle:"italic", marginTop: spacing[4], marginBottom: spacing[1]}]} />
           </View>
         </Screen>
       </View>
