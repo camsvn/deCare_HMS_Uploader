@@ -163,21 +163,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
-            // storeFile file(env['UPLOAD_STORE_FILE'])
-            // storePassword env['UPLOAD_STORE_PASSWORD']
-            // keyAlias env['UPLOAD_KEY_ALIAS']
-            // keyPassword env['UPLOAD_KEY_PASSWORD']
-            if (envFile.exists() && env.containsKey('UPLOAD_STORE_FILE')) {
-                storeFile file(env['UPLOAD_STORE_FILE'])
-                storePassword env['UPLOAD_STORE_PASSWORD']
-                keyAlias env['UPLOAD_KEY_ALIAS']
-                keyPassword env['UPLOAD_KEY_PASSWORD']
-            } else {
-                // Use debug config if the .env file doesn't exist
-                signingConfig signingConfigs.debug
-            }
-        }
+        // release {
+        //     // storeFile file(env['UPLOAD_STORE_FILE'])
+        //     // storePassword env['UPLOAD_STORE_PASSWORD']
+        //     // keyAlias env['UPLOAD_KEY_ALIAS']
+        //     // keyPassword env['UPLOAD_KEY_PASSWORD']
+        //     if (envFile.exists() && env.containsKey('UPLOAD_STORE_FILE')) {
+        //         storeFile file(env['UPLOAD_STORE_FILE'])
+        //         storePassword env['UPLOAD_STORE_PASSWORD']
+        //         keyAlias env['UPLOAD_KEY_ALIAS']
+        //         keyPassword env['UPLOAD_KEY_PASSWORD']
+        //     } else {
+        //         // Use debug config if the .env file doesn't exist
+        //         signingConfig signingConfigs.debug
+        //     }
+        // }
     }
     buildTypes {
         debug {
@@ -191,8 +191,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            enableProguardInReleaseBuilds = true
-            signingConfig signingConfigs.release
+            // enableProguardInReleaseBuilds = true
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             // add the code from below line.
