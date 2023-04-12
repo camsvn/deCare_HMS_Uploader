@@ -27,10 +27,12 @@ const MODAL_BACKGROUND: ViewStyle = {
 
 const MARGIN_BOTTOM: TextStyle = {
   marginBottom: 5,
+  color: color.primary
 }
 
 const MARGIN_TOP: TextStyle = {
   marginTop: 5,
+  color: color.primary
 }
 
 export const LoaderModal = ({ visible, loadingText }: LoaderProps) => {
@@ -40,7 +42,7 @@ export const LoaderModal = ({ visible, loadingText }: LoaderProps) => {
     <View style={MODAL_BACKGROUND}>
       <View style={ACTIVITY_INDICATOR_WRAPPER}>
         <Text style={MARGIN_BOTTOM}>Please wait</Text>
-        <ActivityIndicator animating={visible} size={"large"}/>
+        <ActivityIndicator animating={visible} size={"large"} color={color.primary}/>
         <Text style={MARGIN_TOP}>{'. . .' + loadingTextDefault + '. . .'}</Text>
       </View>
     </View>

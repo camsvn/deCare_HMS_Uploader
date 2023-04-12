@@ -265,7 +265,8 @@ const NoTomogramView = () => {
           There is no tomogram added.
         </Text>
         <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>
-          Once you add tomogram details, they'll appear here.
+          {/* Once you add tomogram details, they'll appear here. */}
+          You can add tomogram details using the '+' button at top-right, they'll appear here as added.
         </Text>
         {/* <Text style={[tomogramScreenStyles.CONTENT, tomogramScreenStyles.CENTER]}>Render {renderCount}</Text> */}
       </View>
