@@ -89,6 +89,7 @@ export const TomogramStoreModel = types
         self.removeAllTomograms()
         callback(null)
       } else {
+        overrideLoadingState && self._setLoading(false)
         callback(result.kind)
         __DEV__ && console.tron.log(result.kind)
       }
