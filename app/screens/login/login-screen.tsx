@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react"
-import { View } from "react-native"
+import { View, ActivityIndicator } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -46,13 +46,24 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
 
     return (
       <View testID="LoginScreen" style={loginScreenStyles.FULL}>
-        <Screen style={loginScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
+        <Screen
+          style={loginScreenStyles.CONTAINER}
+          backgroundColor={color.transparent}
+          preset="scroll"
+        >
           <View style={loginScreenStyles.MAINVIEW_CONTAINER}>
             <View style={loginScreenStyles.LOGOVIEW_CONTAINER}>
               <View style={loginScreenStyles.LOGO_CONTAINER}>
-                <LogoSvg/>
+                <LogoSvg />
               </View>
-              <Text style={[loginScreenStyles.TITLE, {marginLeft: spacing[2], fontFamily: typography.secondary}]}>DeCare HMS</Text>
+              <Text
+                style={[
+                  loginScreenStyles.TITLE,
+                  { marginLeft: spacing[2], fontFamily: typography.secondary },
+                ]}
+              >
+                DeCare HMS
+              </Text>
               {/* <Image source={LogoSvg} style={loginScreenStyles.URLLOGO}/> */}
             </View>
             <View style={loginScreenStyles.FORM_CONTAINER}>
@@ -64,7 +75,7 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
                 value={username}
                 onChangeText={setUsername}
                 preset="secondary"
-                labelStyle={{color:color.palette.black}}
+                labelStyle={{ color: color.palette.black }}
               />
               <TextField
                 containerStyle={loginScreenStyles.TEXT_FIELD_WRAPPER}
@@ -78,17 +89,34 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
                 value={password}
                 onChangeText={setPassword}
                 preset="secondary"
-                labelStyle={{color:color.palette.black}}
+                labelStyle={{ color: color.palette.black }}
                 iconStyle={loginScreenStyles.SHOW_PASSWORD_ICON}
               />
-              <Button style={loginScreenStyles.SUBMIT_BUTTON} onPress={handleLogin}>
-                <Text style={loginScreenStyles.TEXT}>Sign In</Text>
+              <Button
+                style={[
+                  loginScreenStyles.SUBMIT_BUTTON,
+                  userSession.isLoading
+                    ? { backgroundColor: color.palette.lightGrey }
+                    : { backgroundColor: color.primary },
+                ]}
+                onPress={handleLogin}
+              >
+                {userSession.isLoading ? (
+                  <ActivityIndicator
+                    animating={userSession.isLoading}
+                    size={"small"}
+                    color={color.primary}
+                  />
+                ) : (
+                  <Text style={loginScreenStyles.TEXT}>Sign In</Text>
+                )}
               </Button>
-              <Button 
-                text="| Change URL |" 
+              <Button
+                text="| Change URL |"
                 preset="link"
-                onPress={() => navigation.navigate("configureURL")} 
-                textStyle={loginScreenStyles.CONFIG_URL_LINK}/>
+                onPress={() => navigation.navigate("configureURL")}
+                textStyle={loginScreenStyles.CONFIG_URL_LINK}
+              />
             </View>
           </View>
         </Screen>
