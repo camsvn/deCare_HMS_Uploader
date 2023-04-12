@@ -14,7 +14,8 @@ import {
   GradientBackground,
   AutoImage as Image,
   BottomSheet,
-  Divider
+  Divider,
+  LoaderModal
 } from "../../components"
 import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
@@ -51,12 +52,13 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
     }, [appConfig.configURL]);
 
     const onSubmitOP = async () => {
-      showMessage({
-        message: "Tomogram: Uploading, Please wait.",
-        type: "info"
-      })
+      // showMessage({
+      //   message: "Tomogram: Uploading, Please wait.",
+      //   type: "info"
+      // })
       tomogramStore.uploadTomograms( opid, true, (err) => {
         if (!err) {
+          tomogramStore._setLoading(false)
           showMessage({
             message: "Tomogram: Uploaded",
             type: "success"
@@ -141,6 +143,8 @@ export const TomogramScreen: FC<StackScreenProps<NavigatorParamList, "tomogram">
               titleStyle={tomogramScreenStyles.HEADER_TITLE}
               onRightPress={() => onSubmitOP()}
             />
+            <LoaderModal visible={tomogramStore.isLoading} loadingText="Uploading"/>
+
             <View style={tomogramScreenStyles.PATIENT_NAME_CONTAINER}>
               <GradientBackground colors={["#E6E6E6", "#FFF"]} locations={[0.5, 1]} />
               <Text style={[tomogramScreenStyles.TITLE, tomogramScreenStyles.TITLE_VIEW]}>
