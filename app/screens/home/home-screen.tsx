@@ -11,6 +11,7 @@ import {
   Icon,
   HideWithKeyboard,
   Divider,
+  LoaderModal
 } from "../../components"
 import { color, spacing } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
@@ -26,7 +27,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
 
     const {opStore, recentSearchesStore} = useStores()
     const { searches, clearAll, deletePatientIfExist } = recentSearchesStore
-    const { getPatient } = opStore
+    const { getPatient, isLoading: isPatientRecordLoading } = opStore
     
 
     // const renderCount = useRenderCount();
@@ -52,6 +53,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList, "home">> = obse
          style={homeScreenStyles.HEADER} 
          titleStyle={homeScreenStyles.HEADER_TITLE}
         />
+        <LoaderModal visible={isPatientRecordLoading} loadingText="Fetching Patient"/>
         <Screen style={homeScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="fixed">
           {/* <View style={homeScreenStyles.NO_PATIENT_CONTAINER}> */}
             { searches.length ? (
