@@ -52,9 +52,10 @@ export class UserSessionApi {
       )
 
       // the typical ways to die when calling an api
-      if (!response.ok) {
+      if (!response.ok || response?.data?.status !== "success") {
         const problem = getGeneralApiProblem(response)
         if (problem) return problem
+        else return { kind: "cannot-connect", temporary: true }
       }
 
       const healthCheck = response.data.data
