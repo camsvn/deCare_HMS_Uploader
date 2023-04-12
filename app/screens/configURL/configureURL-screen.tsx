@@ -115,7 +115,12 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
                 labelStyle={{ color: color.palette.black }}
               />
               <Button
-                style={[configureURLScreenStyles.SUBMIT_BUTTON, appConfig.isLoading ? {backgroundColor: color.palette.lightGrey} : {backgroundColor: color.primary}]}
+                style={[
+                  configureURLScreenStyles.SUBMIT_BUTTON,
+                  appConfig.isLoading
+                    ? { backgroundColor: color.palette.lightGrey }
+                    : { backgroundColor: color.primary },
+                ]}
                 onPress={handleConnect}
                 disabled={appConfig.isLoading}
                 type="highlight"
