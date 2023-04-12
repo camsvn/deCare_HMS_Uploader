@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react"
-import { View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -53,7 +53,11 @@ const installationURLImage = require("./installationurl.png")
  * @returns 
  */
 function isValidUrl(url: string) {
-  const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w-]+\.[a-z]{2,})(\/\S*)?$/i;
+  // const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w-]+\.[a-z]{2,})(\/\S*)?$/i;
+  /**
+   * new regex pattern to allow hypens as part of valid url
+   */
+  const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w\-]+\.[a-z]{2,})(\/\S*)?$/i
   return regex.test(url);
 }
 
@@ -86,15 +90,17 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
 
     return (
       <View testID="ServerSetupScreen" style={configureURLScreenStyles.FULL}>
-        <Screen style={configureURLScreenStyles.CONTAINER} backgroundColor={color.transparent} preset="scroll">
+        <Screen
+          style={configureURLScreenStyles.CONTAINER}
+          backgroundColor={color.transparent}
+          preset="scroll"
+        >
           <View style={configureURLScreenStyles.MAINVIEW_CONTAINER}>
             <View style={configureURLScreenStyles.URLLOGOVIEW_CONTAINER}>
-              <Image source={installationURLImage} style={configureURLScreenStyles.URLLOGO}/>
+              <Image source={installationURLImage} style={configureURLScreenStyles.URLLOGO} />
             </View>
             <View style={configureURLScreenStyles.INFO_TEXT_CONTAINER}>
-              <Text style={configureURLScreenStyles.TITLE}>
-                Installation URL
-              </Text>
+              <Text style={configureURLScreenStyles.TITLE}>Installation URL</Text>
               <Text style={[configureURLScreenStyles.CONTENT, configureURLScreenStyles.CENTER]}>
                 Input server URL of your self-hosted DeCare-HMS installation.
               </Text>
@@ -102,15 +108,28 @@ export const ConfigureURLScreen: FC<StackScreenProps<RootNavigatorParamList, "co
                 inputStyle={configureURLScreenStyles.URL_FIELD}
                 radius={5}
                 value={configURL}
-                placeholder={ 'Eg: '+ (API_URL || 'http://your-hms-server-url.com')}
+                placeholder={"Eg: " + (API_URL || "http://your-hms-server-url.com")}
                 // onChangeText={(text) => appConfig.set("configURL", text)}
                 onChangeText={setConfigURL}
                 preset="secondary"
-                labelStyle={{color:color.palette.black}}
+                labelStyle={{ color: color.palette.black }}
               />
-              <Button style={configureURLScreenStyles.SUBMIT_BUTTON} onPress={handleConnect} disabled={appConfig.isLoading} type="highlight">
-                <Text style={configureURLScreenStyles.TEXT}>Connect</Text>
-            </Button>
+              <Button
+                style={[configureURLScreenStyles.SUBMIT_BUTTON, appConfig.isLoading ? {backgroundColor: color.palette.lightGrey} : {backgroundColor: color.primary}]}
+                onPress={handleConnect}
+                disabled={appConfig.isLoading}
+                type="highlight"
+              >
+                {appConfig.isLoading ? (
+                  <ActivityIndicator
+                    animating={appConfig.isLoading}
+                    size={"small"}
+                    color={color.primary}
+                  />
+                ) : (
+                  <Text style={configureURLScreenStyles.TEXT}>Connect</Text>
+                )}
+              </Button>
             </View>
           </View>
         </Screen>
