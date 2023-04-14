@@ -19,8 +19,26 @@ import { AppNavigator, useNavigationPersistence } from "./navigators"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
-import { View, Text } from "react-native"
+import { View, Text, StatusBar, ViewStyle, TextStyle } from "react-native"
 import { Buffer } from 'buffer';
+import {AutoImage as Image} from './components/'
+import { color, typography } from "./theme"
+const hmsLogo = require("../assets/images/drawable-xxhdpi/hms_square.png")
+
+const SPLASH_SCREEN_WRAPPER: ViewStyle = {
+  backgroundColor: '#16142a', 
+  flex: 1, 
+  justifyContent: "center", 
+  alignItems: "center"
+}
+
+const SPLASH_SCREEN_LOGO_TEXT: TextStyle =  {
+  fontFamily: typography.primary, 
+  color: color.dimText, 
+  fontSize: 32, 
+  fontWeight: "700", 
+  letterSpacing: 2
+}
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -93,7 +111,13 @@ function App() {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rootStore || !isNavigationStateRestored) return <View><Text>Loading</Text></View>
+  if (!rootStore || !isNavigationStateRestored) return (
+    <View style={SPLASH_SCREEN_WRAPPER}>
+        <StatusBar backgroundColor= '#16142a' />
+        <Image source={hmsLogo} />
+        <Text style={SPLASH_SCREEN_LOGO_TEXT}>DeCare HMS</Text>
+      </View>
+  )
 
   // otherwise, we're ready to render the app
   return (
