@@ -57,7 +57,9 @@ function isValidUrl(url: string) {
   /**
    * new regex pattern to allow hypens as part of valid url
    */
-  const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w\-]+\.[a-z]{2,})(\/\S*)?$/i
+  // const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w\-]+\.[a-z]{2,})(\/\S*)?$/i
+  const regex = /^(https?:\/\/)?((localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d{1,5})?|(www\.)?[\w\-]+\.[a-z]{2,}|([A-Za-z0-9_-]+\.?[A-Za-z0-9_-]*:[0-9]+))(\/\S*)?$/i
+
   return regex.test(url);
 }
 
