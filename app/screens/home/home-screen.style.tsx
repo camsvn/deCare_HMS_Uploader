@@ -129,12 +129,14 @@ const LIST_CONTAINER: ViewStyle = {
 const LIST_BUTTON_VIEW: ViewStyle = {
   height: 40,
   flex: 2.5,
-  backgroundColor: color.palette.offWhite,
-  borderWidth: 1,
-  borderColor: color.palette.black,
+  // backgroundColor: color.palette.offWhite,
+  backgroundColor: '#e8e8e8',
+  // borderWidth: 1,
+  // borderColor: color.palette.black,
   borderRightWidth: 0,
   borderTopRightRadius: 0,
   borderBottomRightRadius: 0,
+  elevation: 3,
 }
 
 const BUTTON_TEXT: TextStyle = {
@@ -142,12 +144,14 @@ const BUTTON_TEXT: TextStyle = {
 }
 
 const DELETE_LIST: ViewStyle = {
-  borderWidth: 1,
-  borderColor: color.palette.black,
+  // borderWidth: 1,
+  // borderColor: color.palette.black,
+  elevation: 2,
   justifyContent: "center",
   backgroundColor: color.errorRed,
   borderTopRightRadius: 3,
   borderBottomRightRadius: 3,
+  borderRadius: 3,
   padding: spacing[2],
 }
 
