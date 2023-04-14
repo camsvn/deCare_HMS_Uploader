@@ -133,6 +133,7 @@ const LIST_BUTTON_VIEW: ViewStyle = {
   backgroundColor: '#e8e8e8',
   // borderWidth: 1,
   // borderColor: color.palette.black,
+  borderRadius: 5,
   borderRightWidth: 0,
   borderTopRightRadius: 0,
   borderBottomRightRadius: 0,
