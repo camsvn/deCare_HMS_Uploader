@@ -131,7 +131,7 @@ export const SUBMIT_BUTTON: ViewStyle = {
 export const TLV_CONTAINER: ViewStyle = {
   backgroundColor: "#E0E0E0",
   borderRadius: 5,
-  flex: 1,
+  // flex: 1,
   flexDirection: 'row',
   height: 130,
   marginHorizontal: 16,
@@ -143,18 +143,18 @@ export const TLV_IMAGE_CONTAINER: ViewStyle = {
   flex:1,
   marginRight: spacing[2],
   justifyContent: 'center',
-  marginTop: spacing[3],
+  // marginTop: spacing[3],
   borderRadius: 5
 }
 
 export const TLV_IMAGE_VIEW: ImageStyle = {
-  height: 70,
-  width:70,
+  height: 100,
+  width: 100,
   borderRadius: 5
 }
 
 export const TLV_DESCRIPTION_CONTAINER: ViewStyle = {
-  flex: 3
+  flex: 1.8
 }
 
 export const TLV_DESCRIPTION_FIELD: TextStyle = {
@@ -163,7 +163,8 @@ export const TLV_DESCRIPTION_FIELD: TextStyle = {
   borderRadius: 5,
   marginHorizontal: spacing[0],
   fontSize:11,
-  textAlignVertical: 'top'
+  textAlignVertical: 'top',
+  elevation: 1
 }
 
 export const TLV_DELETE_CONTAINER: ViewStyle = {
