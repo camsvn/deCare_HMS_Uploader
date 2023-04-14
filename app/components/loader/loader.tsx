@@ -16,6 +16,7 @@ const ACTIVITY_INDICATOR_WRAPPER: ViewStyle = {
   height: 100,
   justifyContent: 'center',
   width: 200,
+  elevation: 50
 }
 
 const MODAL_BACKGROUND: ViewStyle = {
@@ -27,12 +28,14 @@ const MODAL_BACKGROUND: ViewStyle = {
 
 const MARGIN_BOTTOM: TextStyle = {
   marginBottom: 5,
-  color: color.primary
+  color: color.primary,
+  letterSpacing: 1
 }
 
 const MARGIN_TOP: TextStyle = {
   marginTop: 5,
-  color: color.primary
+  color: color.primary,
+  letterSpacing: 0.75
 }
 
 export const LoaderModal = ({ visible, loadingText }: LoaderProps) => {
@@ -43,7 +46,7 @@ export const LoaderModal = ({ visible, loadingText }: LoaderProps) => {
       <View style={ACTIVITY_INDICATOR_WRAPPER}>
         <Text style={MARGIN_BOTTOM}>Please wait</Text>
         <ActivityIndicator animating={visible} size={"large"} color={color.primary}/>
-        <Text style={MARGIN_TOP}>{'. . .' + loadingTextDefault + '. . .'}</Text>
+        <Text style={MARGIN_TOP}>{'. . . ' + loadingTextDefault + ' . . .'}</Text>
       </View>
     </View>
   </Modal>
