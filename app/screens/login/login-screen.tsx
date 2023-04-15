@@ -34,7 +34,7 @@ export const LoginScreen: FC<StackScreenProps<RootNavigatorParamList, "login">> 
         if (!err) {
           setUsername('')
           setPassword('')
-          navigation.navigate("appHome");
+          navigation.navigate("appHome", { screen: 'Home' });
           return
         }
         showMessage({

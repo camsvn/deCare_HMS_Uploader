@@ -4,7 +4,7 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React from "react"
+import React, { useEffect } from "react"
 import { useColorScheme, StatusBar, Permission } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -152,7 +152,7 @@ export const AppNavigator = observer((props: NavigationProps) => {
     >
       <StatusBar backgroundColor={color.primary} />
       {props.isSessionRestored ? (
-        <AppRootStack initialRoute="home" />
+        <AppRootStack initialRoute="appHome" />
       ) : appConfig.configURL ? (
         <AppRootStack initialRoute="login" />
       ) : (
